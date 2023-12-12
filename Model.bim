@@ -212,6 +212,12 @@
               ]
             }
           }
+        ],
+        "measures": [
+          {
+            "name": "Line Amount",
+            "expression": "sum(FactSales[LineAmount])"
+          }
         ]
       },
       {
