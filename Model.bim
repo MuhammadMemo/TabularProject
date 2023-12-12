@@ -1,0 +1,1428 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1600,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "SQL/hyperv-srv;DataWarehouse",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "hyperv-srv",
+            "database": "DataWarehouse"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "ServiceAccount",
+          "EncryptConnection": false
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "FactSales",
+        "columns": [
+          {
+            "name": "InventTranceKey",
+            "dataType": "string",
+            "sourceColumn": "InventTranceKey"
+          },
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "ProductKey",
+            "dataType": "int64",
+            "sourceColumn": "ProductKey"
+          },
+          {
+            "name": "BrancheKey",
+            "dataType": "int64",
+            "sourceColumn": "BrancheKey"
+          },
+          {
+            "name": "GeographyKey",
+            "dataType": "int64",
+            "sourceColumn": "GeographyKey"
+          },
+          {
+            "name": "CustomerKey",
+            "dataType": "int64",
+            "sourceColumn": "CustomerKey"
+          },
+          {
+            "name": "PromotionKey",
+            "dataType": "int64",
+            "sourceColumn": "PromotionKey"
+          },
+          {
+            "name": "DimensionKey",
+            "dataType": "int64",
+            "sourceColumn": "DimensionKey"
+          },
+          {
+            "name": "UnitKey",
+            "dataType": "int64",
+            "sourceColumn": "UnitKey"
+          },
+          {
+            "name": "EmployeeKey",
+            "dataType": "int64",
+            "sourceColumn": "EmployeeKey"
+          },
+          {
+            "name": "StatusKey",
+            "dataType": "int64",
+            "sourceColumn": "StatusKey"
+          },
+          {
+            "name": "TypeKey",
+            "dataType": "int64",
+            "sourceColumn": "TypeKey"
+          },
+          {
+            "name": "CarKey",
+            "dataType": "int64",
+            "sourceColumn": "CarKey"
+          },
+          {
+            "name": "MethodAcquisitionKey",
+            "dataType": "int64",
+            "sourceColumn": "MethodAcquisitionKey"
+          },
+          {
+            "name": "MethodDeliverykey",
+            "dataType": "int64",
+            "sourceColumn": "MethodDeliverykey"
+          },
+          {
+            "name": "PaymentMethodKey",
+            "dataType": "int64",
+            "sourceColumn": "PaymentMethodKey"
+          },
+          {
+            "name": "OrderDateAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "OrderDateAlternativeKey"
+          },
+          {
+            "name": "ProductionDateAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "ProductionDateAlternativeKey"
+          },
+          {
+            "name": "ShippingDateAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "ShippingDateAlternativeKey"
+          },
+          {
+            "name": "SalesOrderNumber",
+            "dataType": "string",
+            "sourceColumn": "SalesOrderNumber"
+          },
+          {
+            "name": "SalesOrderLineNumber",
+            "dataType": "double",
+            "sourceColumn": "SalesOrderLineNumber"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "dateTime",
+            "sourceColumn": "OrderDate"
+          },
+          {
+            "name": "ProductionDate",
+            "dataType": "dateTime",
+            "sourceColumn": "ProductionDate"
+          },
+          {
+            "name": "ShippingDate",
+            "dataType": "dateTime",
+            "sourceColumn": "ShippingDate"
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "double",
+            "sourceColumn": "UnitPrice"
+          },
+          {
+            "name": "SalesQty",
+            "dataType": "double",
+            "sourceColumn": "SalesQty"
+          },
+          {
+            "name": "DiscountPercent",
+            "dataType": "double",
+            "sourceColumn": "DiscountPercent"
+          },
+          {
+            "name": "DiscountAmount",
+            "dataType": "double",
+            "sourceColumn": "DiscountAmount"
+          },
+          {
+            "name": "LineAmount",
+            "dataType": "double",
+            "sourceColumn": "LineAmount"
+          },
+          {
+            "name": "AmountAfterTax",
+            "dataType": "double",
+            "sourceColumn": "AmountAfterTax"
+          },
+          {
+            "name": "TaxAmount",
+            "dataType": "double",
+            "sourceColumn": "TaxAmount"
+          },
+          {
+            "name": "Payment",
+            "dataType": "double",
+            "sourceColumn": "Payment"
+          },
+          {
+            "name": "IsDeleted",
+            "dataType": "boolean",
+            "sourceColumn": "IsDeleted"
+          },
+          {
+            "name": "LastupdateDate",
+            "dataType": "dateTime",
+            "sourceColumn": "LastupdateDate"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data]",
+                "in",
+                "    dbo_FactSales"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimBranche",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "BrancheKey",
+            "dataType": "int64",
+            "sourceColumn": "BrancheKey"
+          },
+          {
+            "name": "BrancheAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "BrancheAlternativeKey"
+          },
+          {
+            "name": "BrancheName",
+            "dataType": "string",
+            "sourceColumn": "BrancheName"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimBranche = Source{[Schema=\"dbo\",Item=\"DimBranche\"]}[Data]",
+                "in",
+                "    dbo_DimBranche"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimCar",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "CarKey",
+            "dataType": "int64",
+            "sourceColumn": "CarKey"
+          },
+          {
+            "name": "CarAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "CarAlternativeKey"
+          },
+          {
+            "name": "CarNumber",
+            "dataType": "string",
+            "sourceColumn": "CarNumber"
+          },
+          {
+            "name": "CarName",
+            "dataType": "string",
+            "sourceColumn": "CarName"
+          },
+          {
+            "name": "CarType",
+            "dataType": "int64",
+            "sourceColumn": "CarType"
+          },
+          {
+            "name": "Description",
+            "dataType": "string",
+            "sourceColumn": "Description"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimCar = Source{[Schema=\"dbo\",Item=\"DimCar\"]}[Data]",
+                "in",
+                "    dbo_DimCar"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimCompany",
+        "columns": [
+          {
+            "name": "Companykey",
+            "dataType": "int64",
+            "sourceColumn": "Companykey"
+          },
+          {
+            "name": "CompanyAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "CompanyAlternativeKey"
+          },
+          {
+            "name": "CompanyName",
+            "dataType": "string",
+            "sourceColumn": "CompanyName"
+          },
+          {
+            "name": "Desc",
+            "dataType": "string",
+            "sourceColumn": "Desc"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimCompany = Source{[Schema=\"dbo\",Item=\"DimCompany\"]}[Data]",
+                "in",
+                "    dbo_DimCompany"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimCustomer",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "CustomerKey",
+            "dataType": "int64",
+            "sourceColumn": "CustomerKey"
+          },
+          {
+            "name": "CustomerAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "CustomerAlternativeKey"
+          },
+          {
+            "name": "CustomerName",
+            "dataType": "string",
+            "sourceColumn": "CustomerName"
+          },
+          {
+            "name": "CustomerGroup",
+            "dataType": "string",
+            "sourceColumn": "CustomerGroup"
+          },
+          {
+            "name": "CustomerType",
+            "dataType": "string",
+            "sourceColumn": "CustomerType"
+          },
+          {
+            "name": "CustomerClassification",
+            "dataType": "string",
+            "sourceColumn": "CustomerClassification"
+          },
+          {
+            "name": "Birthday",
+            "dataType": "dateTime",
+            "sourceColumn": "Birthday"
+          },
+          {
+            "name": "Gender",
+            "dataType": "string",
+            "sourceColumn": "Gender"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimCustomer = Source{[Schema=\"dbo\",Item=\"DimCustomer\"]}[Data]",
+                "in",
+                "    dbo_DimCustomer"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimDate",
+        "columns": [
+          {
+            "name": "DateKey",
+            "dataType": "int64",
+            "sourceColumn": "DateKey"
+          },
+          {
+            "name": "Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Date"
+          },
+          {
+            "name": "FullDate",
+            "dataType": "string",
+            "sourceColumn": "FullDate"
+          },
+          {
+            "name": "DayOfMonth",
+            "dataType": "string",
+            "sourceColumn": "DayOfMonth"
+          },
+          {
+            "name": "DaySuffix",
+            "dataType": "string",
+            "sourceColumn": "DaySuffix"
+          },
+          {
+            "name": "DayName",
+            "dataType": "string",
+            "sourceColumn": "DayName"
+          },
+          {
+            "name": "DayOfWeek",
+            "dataType": "string",
+            "sourceColumn": "DayOfWeek"
+          },
+          {
+            "name": "DayOfWeekInMonth",
+            "dataType": "string",
+            "sourceColumn": "DayOfWeekInMonth"
+          },
+          {
+            "name": "DayOfWeekInYear",
+            "dataType": "string",
+            "sourceColumn": "DayOfWeekInYear"
+          },
+          {
+            "name": "DayOfQuarter",
+            "dataType": "string",
+            "sourceColumn": "DayOfQuarter"
+          },
+          {
+            "name": "DayOfYear",
+            "dataType": "string",
+            "sourceColumn": "DayOfYear"
+          },
+          {
+            "name": "WeekOfMonth",
+            "dataType": "string",
+            "sourceColumn": "WeekOfMonth"
+          },
+          {
+            "name": "WeekOfQuarter",
+            "dataType": "string",
+            "sourceColumn": "WeekOfQuarter"
+          },
+          {
+            "name": "WeekOfYear",
+            "dataType": "string",
+            "sourceColumn": "WeekOfYear"
+          },
+          {
+            "name": "Month",
+            "dataType": "string",
+            "sourceColumn": "Month"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "string",
+            "sourceColumn": "MonthName"
+          },
+          {
+            "name": "MonthOfQuarter",
+            "dataType": "string",
+            "sourceColumn": "MonthOfQuarter"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "string",
+            "sourceColumn": "Quarter"
+          },
+          {
+            "name": "QuarterName",
+            "dataType": "string",
+            "sourceColumn": "QuarterName"
+          },
+          {
+            "name": "Year",
+            "dataType": "string",
+            "sourceColumn": "Year"
+          },
+          {
+            "name": "YearName",
+            "dataType": "string",
+            "sourceColumn": "YearName"
+          },
+          {
+            "name": "MonthYear",
+            "dataType": "string",
+            "sourceColumn": "MonthYear"
+          },
+          {
+            "name": "MMYYYY",
+            "dataType": "string",
+            "sourceColumn": "MMYYYY"
+          },
+          {
+            "name": "FirstDayOfMonth",
+            "dataType": "dateTime",
+            "sourceColumn": "FirstDayOfMonth"
+          },
+          {
+            "name": "LastDayOfMonth",
+            "dataType": "dateTime",
+            "sourceColumn": "LastDayOfMonth"
+          },
+          {
+            "name": "FirstDayOfQuarter",
+            "dataType": "dateTime",
+            "sourceColumn": "FirstDayOfQuarter"
+          },
+          {
+            "name": "LastDayOfQuarter",
+            "dataType": "dateTime",
+            "sourceColumn": "LastDayOfQuarter"
+          },
+          {
+            "name": "FirstDayOfYear",
+            "dataType": "dateTime",
+            "sourceColumn": "FirstDayOfYear"
+          },
+          {
+            "name": "LastDayOfYear",
+            "dataType": "dateTime",
+            "sourceColumn": "LastDayOfYear"
+          },
+          {
+            "name": "Season",
+            "dataType": "string",
+            "sourceColumn": "Season"
+          },
+          {
+            "name": "Semester",
+            "dataType": "string",
+            "sourceColumn": "Semester"
+          },
+          {
+            "name": "IsHoliday",
+            "dataType": "boolean",
+            "sourceColumn": "IsHoliday"
+          },
+          {
+            "name": "HolidayName",
+            "dataType": "string",
+            "sourceColumn": "HolidayName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimDate = Source{[Schema=\"dbo\",Item=\"DimDate\"]}[Data]",
+                "in",
+                "    dbo_DimDate"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimDimension",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "DimensionKey",
+            "dataType": "int64",
+            "sourceColumn": "DimensionKey"
+          },
+          {
+            "name": "DimensionAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "DimensionAlternativeKey"
+          },
+          {
+            "name": "InventLocationId",
+            "dataType": "string",
+            "sourceColumn": "InventLocationId"
+          },
+          {
+            "name": "WarehouseName",
+            "dataType": "string",
+            "sourceColumn": "WarehouseName"
+          },
+          {
+            "name": "SiteName",
+            "dataType": "string",
+            "sourceColumn": "SiteName"
+          },
+          {
+            "name": "ColorName",
+            "dataType": "string",
+            "sourceColumn": "ColorName"
+          },
+          {
+            "name": "SizeName",
+            "dataType": "string",
+            "sourceColumn": "SizeName"
+          },
+          {
+            "name": "ConfigrationName",
+            "dataType": "string",
+            "sourceColumn": "ConfigrationName"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimDimension = Source{[Schema=\"dbo\",Item=\"DimDimension\"]}[Data]",
+                "in",
+                "    dbo_DimDimension"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimEmployee",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "EmployeeKey",
+            "dataType": "int64",
+            "sourceColumn": "EmployeeKey"
+          },
+          {
+            "name": "EmployeeAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "EmployeeAlternativeKey"
+          },
+          {
+            "name": "EmployeeName",
+            "dataType": "string",
+            "sourceColumn": "EmployeeName"
+          },
+          {
+            "name": "Job",
+            "dataType": "string",
+            "sourceColumn": "Job"
+          },
+          {
+            "name": "DepartmenName",
+            "dataType": "string",
+            "sourceColumn": "DepartmenName"
+          },
+          {
+            "name": "DivisionName",
+            "dataType": "string",
+            "sourceColumn": "DivisionName"
+          },
+          {
+            "name": "Gender",
+            "dataType": "string",
+            "sourceColumn": "Gender"
+          },
+          {
+            "name": "ContractType",
+            "dataType": "string",
+            "sourceColumn": "ContractType"
+          },
+          {
+            "name": "ContractDate",
+            "dataType": "dateTime",
+            "sourceColumn": "ContractDate"
+          },
+          {
+            "name": "ContractEndDate",
+            "dataType": "dateTime",
+            "sourceColumn": "ContractEndDate"
+          },
+          {
+            "name": "BirthDate",
+            "dataType": "dateTime",
+            "sourceColumn": "BirthDate"
+          },
+          {
+            "name": "HireDate",
+            "dataType": "dateTime",
+            "sourceColumn": "HireDate"
+          },
+          {
+            "name": "InsuranceDate",
+            "dataType": "dateTime",
+            "sourceColumn": "InsuranceDate"
+          },
+          {
+            "name": "WorkeStatus",
+            "dataType": "string",
+            "sourceColumn": "WorkeStatus"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimEmployee = Source{[Schema=\"dbo\",Item=\"DimEmployee\"]}[Data]",
+                "in",
+                "    dbo_DimEmployee"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimFixOrderStatus",
+        "columns": [
+          {
+            "name": "StatusKey",
+            "dataType": "int64",
+            "sourceColumn": "StatusKey"
+          },
+          {
+            "name": "StatusName",
+            "dataType": "string",
+            "sourceColumn": "StatusName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimFixOrderStatus = Source{[Schema=\"dbo\",Item=\"DimFixOrderStatus\"]}[Data]",
+                "in",
+                "    dbo_DimFixOrderStatus"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimFixSalesType",
+        "columns": [
+          {
+            "name": "TypeKey",
+            "dataType": "int64",
+            "sourceColumn": "TypeKey"
+          },
+          {
+            "name": "TypeName",
+            "dataType": "string",
+            "sourceColumn": "TypeName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimFixSalesType = Source{[Schema=\"dbo\",Item=\"DimFixSalesType\"]}[Data]",
+                "in",
+                "    dbo_DimFixSalesType"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimGeography",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "GeographyKey",
+            "dataType": "int64",
+            "sourceColumn": "GeographyKey"
+          },
+          {
+            "name": "GeographyAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "GeographyAlternativeKey"
+          },
+          {
+            "name": "RegionName",
+            "dataType": "string",
+            "sourceColumn": "RegionName"
+          },
+          {
+            "name": "StateName",
+            "dataType": "string",
+            "sourceColumn": "StateName"
+          },
+          {
+            "name": "CityName",
+            "dataType": "string",
+            "sourceColumn": "CityName"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimGeography = Source{[Schema=\"dbo\",Item=\"DimGeography\"]}[Data]",
+                "in",
+                "    dbo_DimGeography"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimMethodAcquisition",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "MethodAcquisitionKey",
+            "dataType": "int64",
+            "sourceColumn": "MethodAcquisitionKey"
+          },
+          {
+            "name": "MethodAcquisitionAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "MethodAcquisitionAlternativeKey"
+          },
+          {
+            "name": "NameMethodAcquisition",
+            "dataType": "string",
+            "sourceColumn": "NameMethodAcquisition"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimMethodAcquisition = Source{[Schema=\"dbo\",Item=\"DimMethodAcquisition\"]}[Data]",
+                "in",
+                "    dbo_DimMethodAcquisition"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimMethodDelivery",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "MethodDeliveryKey",
+            "dataType": "int64",
+            "sourceColumn": "MethodDeliveryKey"
+          },
+          {
+            "name": "MethodDeliveryAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "MethodDeliveryAlternativeKey"
+          },
+          {
+            "name": "NameMethodDelivery",
+            "dataType": "string",
+            "sourceColumn": "NameMethodDelivery"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimMethodDelivery = Source{[Schema=\"dbo\",Item=\"DimMethodDelivery\"]}[Data]",
+                "in",
+                "    dbo_DimMethodDelivery"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimMethodPayment",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "MethodPaymentKey",
+            "dataType": "int64",
+            "sourceColumn": "MethodPaymentKey"
+          },
+          {
+            "name": "MethodPaymentAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "MethodPaymentAlternativeKey"
+          },
+          {
+            "name": "NameMethodsPayment",
+            "dataType": "string",
+            "sourceColumn": "NameMethodsPayment"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimMethodPayment = Source{[Schema=\"dbo\",Item=\"DimMethodPayment\"]}[Data]",
+                "in",
+                "    dbo_DimMethodPayment"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimProduct",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "ProductKey",
+            "dataType": "int64",
+            "sourceColumn": "ProductKey"
+          },
+          {
+            "name": "ProductAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "ProductAlternativeKey"
+          },
+          {
+            "name": "ProductName",
+            "dataType": "string",
+            "sourceColumn": "ProductName"
+          },
+          {
+            "name": "Category",
+            "dataType": "string",
+            "sourceColumn": "Category"
+          },
+          {
+            "name": "SubCategory",
+            "dataType": "string",
+            "sourceColumn": "SubCategory"
+          },
+          {
+            "name": "StatusCategory",
+            "dataType": "string",
+            "sourceColumn": "StatusCategory"
+          },
+          {
+            "name": "StatusProduct",
+            "dataType": "string",
+            "sourceColumn": "StatusProduct"
+          },
+          {
+            "name": "GroupType",
+            "dataType": "string",
+            "sourceColumn": "GroupType"
+          },
+          {
+            "name": "SalesPrice",
+            "dataType": "decimal",
+            "sourceColumn": "SalesPrice"
+          },
+          {
+            "name": "PurchasePrice",
+            "dataType": "decimal",
+            "sourceColumn": "PurchasePrice"
+          },
+          {
+            "name": "StartDate",
+            "dataType": "dateTime",
+            "sourceColumn": "StartDate"
+          },
+          {
+            "name": "EndDate",
+            "dataType": "dateTime",
+            "sourceColumn": "EndDate"
+          },
+          {
+            "name": "Status",
+            "dataType": "boolean",
+            "sourceColumn": "Status"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data]",
+                "in",
+                "    dbo_DimProduct"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimPromotion",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "PromotionKey",
+            "dataType": "int64",
+            "sourceColumn": "PromotionKey"
+          },
+          {
+            "name": "PromotionAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "PromotionAlternativeKey"
+          },
+          {
+            "name": "STATUS",
+            "dataType": "int64",
+            "sourceColumn": "STATUS"
+          },
+          {
+            "name": "FROMDATE",
+            "dataType": "dateTime",
+            "sourceColumn": "FROMDATE"
+          },
+          {
+            "name": "TODATE",
+            "dataType": "dateTime",
+            "sourceColumn": "TODATE"
+          },
+          {
+            "name": "DELIVERYDATE",
+            "dataType": "dateTime",
+            "sourceColumn": "DELIVERYDATE"
+          },
+          {
+            "name": "DESCRIPTION",
+            "dataType": "string",
+            "sourceColumn": "DESCRIPTION"
+          },
+          {
+            "name": "ITEMGROUP",
+            "dataType": "string",
+            "sourceColumn": "ITEMGROUP"
+          },
+          {
+            "name": "DESCACTIVE",
+            "dataType": "int64",
+            "sourceColumn": "DESCACTIVE"
+          },
+          {
+            "name": "SORTDISC",
+            "dataType": "int64",
+            "sourceColumn": "SORTDISC"
+          },
+          {
+            "name": "PRICEDISCOUNT",
+            "dataType": "decimal",
+            "sourceColumn": "PRICEDISCOUNT"
+          },
+          {
+            "name": "DISCOUNT",
+            "dataType": "double",
+            "sourceColumn": "DISCOUNT"
+          },
+          {
+            "name": "QUANTITY",
+            "dataType": "int64",
+            "sourceColumn": "QUANTITY"
+          },
+          {
+            "name": "Location",
+            "dataType": "string",
+            "sourceColumn": "Location"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimPromotion = Source{[Schema=\"dbo\",Item=\"DimPromotion\"]}[Data]",
+                "in",
+                "    dbo_DimPromotion"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimUnit",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "UnitKey",
+            "dataType": "int64",
+            "sourceColumn": "UnitKey"
+          },
+          {
+            "name": "UnitAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "UnitAlternativeKey"
+          },
+          {
+            "name": "UnitName",
+            "dataType": "string",
+            "sourceColumn": "UnitName"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimUnit = Source{[Schema=\"dbo\",Item=\"DimUnit\"]}[Data]",
+                "in",
+                "    dbo_DimUnit"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "FactSalesTrade",
+        "columns": [
+          {
+            "name": "InventTranceKey",
+            "dataType": "string",
+            "sourceColumn": "InventTranceKey"
+          },
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "TradTypeKey",
+            "dataType": "int64",
+            "sourceColumn": "TradTypeKey"
+          },
+          {
+            "name": "NoteTrad",
+            "dataType": "string",
+            "sourceColumn": "NoteTrad"
+          },
+          {
+            "name": "InvoiceDateAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "InvoiceDateAlternativeKey"
+          },
+          {
+            "name": "InvoiceDate",
+            "dataType": "dateTime",
+            "sourceColumn": "InvoiceDate"
+          },
+          {
+            "name": "InvoiceNumber",
+            "dataType": "string",
+            "sourceColumn": "InvoiceNumber"
+          },
+          {
+            "name": "InvoiceTotal",
+            "dataType": "double",
+            "sourceColumn": "InvoiceTotal"
+          },
+          {
+            "name": "IsDeleted",
+            "dataType": "boolean",
+            "sourceColumn": "IsDeleted"
+          },
+          {
+            "name": "LastupdateDate",
+            "dataType": "dateTime",
+            "sourceColumn": "LastupdateDate"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_FactSalesTrade = Source{[Schema=\"dbo\",Item=\"FactSalesTrade\"]}[Data]",
+                "in",
+                "    dbo_FactSalesTrade"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "6e4cc0e1-4a2c-4b92-9bb6-b8ca2e3343ac",
+        "fromTable": "FactSales",
+        "fromColumn": "OrderDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
+      },
+      {
+        "name": "af968cfa-45fd-4094-ad2d-2299ec614368",
+        "fromTable": "FactSales",
+        "fromColumn": "ProductionDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey",
+        "isActive": false
+      },
+      {
+        "name": "c8e34e60-1984-43d6-8ac4-d580c99dfb5d",
+        "fromTable": "FactSales",
+        "fromColumn": "ShippingDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey",
+        "isActive": false
+      },
+      {
+        "name": "824c62b4-5d5e-48c2-8c0c-9278ebf50d6c",
+        "fromTable": "FactSalesTrade",
+        "fromColumn": "CompanyKey",
+        "toTable": "DimCompany",
+        "toColumn": "Companykey"
+      },
+      {
+        "name": "efcc7883-a565-4dfd-9a51-1b3ee580e8a7",
+        "fromTable": "FactSales",
+        "fromColumn": "CompanyKey",
+        "toTable": "DimCompany",
+        "toColumn": "Companykey"
+      },
+      {
+        "name": "20a4f5a8-dc1b-425c-b945-32227fcfc412",
+        "fromTable": "FactSales",
+        "fromColumn": "StatusKey",
+        "toTable": "DimFixOrderStatus",
+        "toColumn": "StatusKey"
+      },
+      {
+        "name": "6f52df78-743c-42be-9b14-6b7827a890b0",
+        "fromTable": "FactSales",
+        "fromColumn": "TypeKey",
+        "toTable": "DimFixSalesType",
+        "toColumn": "TypeKey"
+      },
+      {
+        "name": "534a34b6-3b47-4e95-a953-12e8970311e4",
+        "fromTable": "FactSalesTrade",
+        "fromColumn": "InvoiceDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "700"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
