@@ -207,9 +207,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data]",
+                "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSales, each true)",
                 "in",
-                "    dbo_FactSales"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -217,23 +218,32 @@
         "measures": [
           {
             "name": "Line Amount",
-            "expression": "sum(FactSales[LineAmount])"
+            "expression": "ROUND(sum(FactSales[LineAmount]),0)"
           },
           {
-            "name": "Amount After Tax",
-            "expression": "sum(FactSales[AmountAfterTax])"
+            "name": "Total Amount",
+            "description": "Total Amount After Tax",
+            "expression": "round(sum(FactSales[AmountAfterTax]),0)"
           },
           {
             "name": "Tax Amount",
-            "expression": "sum(FactSales[TaxAmount])"
+            "expression": "round(sum(FactSales[TaxAmount]),0)"
           },
           {
             "name": "Total Payment",
-            "expression": "sum(FactSales[Payment])"
+            "expression": "round(sum(FactSales[Payment]),0)"
           },
           {
             "name": "Count SO",
             "expression": "DISTINCTCOUNT(FactSales[SalesOrderNumber])"
+          },
+          {
+            "name": "Unit Price",
+            "expression": "ROUND(sum(FactSales[UnitPrice]),0)"
+          },
+          {
+            "name": "Sales Qty",
+            "expression": "sum(FactSales[SalesQty])"
           }
         ]
       },
@@ -1657,6 +1667,393 @@
         "fromColumn": "TargetLevelkey",
         "toTable": "DimTargetLevel",
         "toColumn": "TargetLevelKey"
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "Sales",
+        "tables": [
+          {
+            "name": "DimBranche",
+            "columns": [
+              {
+                "name": "BrancheName"
+              }
+            ]
+          },
+          {
+            "name": "DimCar",
+            "columns": [
+              {
+                "name": "CarName"
+              }
+            ]
+          },
+          {
+            "name": "DimCompany",
+            "columns": [
+              {
+                "name": "CompanyName"
+              }
+            ]
+          },
+          {
+            "name": "DimCustomer",
+            "columns": [
+              {
+                "name": "Birthday"
+              },
+              {
+                "name": "CustomerClassification"
+              },
+              {
+                "name": "CustomerGroup"
+              },
+              {
+                "name": "CustomerName"
+              },
+              {
+                "name": "CustomerType"
+              },
+              {
+                "name": "Gender"
+              }
+            ]
+          },
+          {
+            "name": "DimDate",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "DateKey"
+              },
+              {
+                "name": "DayName"
+              },
+              {
+                "name": "DayOfMonth"
+              },
+              {
+                "name": "DayOfQuarter"
+              },
+              {
+                "name": "DayOfWeek"
+              },
+              {
+                "name": "DayOfWeekInMonth"
+              },
+              {
+                "name": "DayOfWeekInYear"
+              },
+              {
+                "name": "DayOfYear"
+              },
+              {
+                "name": "DaySuffix"
+              },
+              {
+                "name": "FirstDayOfMonth"
+              },
+              {
+                "name": "FirstDayOfQuarter"
+              },
+              {
+                "name": "FirstDayOfYear"
+              },
+              {
+                "name": "FullDate"
+              },
+              {
+                "name": "HolidayName"
+              },
+              {
+                "name": "IsHoliday"
+              },
+              {
+                "name": "LastDayOfMonth"
+              },
+              {
+                "name": "LastDayOfQuarter"
+              },
+              {
+                "name": "LastDayOfYear"
+              },
+              {
+                "name": "MMYYYY"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "MonthName"
+              },
+              {
+                "name": "MonthOfQuarter"
+              },
+              {
+                "name": "MonthYear"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "QuarterName"
+              },
+              {
+                "name": "Season"
+              },
+              {
+                "name": "Semester"
+              },
+              {
+                "name": "WeekOfMonth"
+              },
+              {
+                "name": "WeekOfQuarter"
+              },
+              {
+                "name": "WeekOfYear"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "YearName"
+              }
+            ]
+          },
+          {
+            "name": "DimDimension",
+            "columns": [
+              {
+                "name": "ColorName"
+              },
+              {
+                "name": "ConfigrationName"
+              },
+              {
+                "name": "SiteName"
+              },
+              {
+                "name": "SizeName"
+              },
+              {
+                "name": "WarehouseName"
+              }
+            ]
+          },
+          {
+            "name": "DimEmployee",
+            "columns": [
+              {
+                "name": "BirthDate"
+              },
+              {
+                "name": "DepartmenName"
+              },
+              {
+                "name": "DivisionName"
+              },
+              {
+                "name": "EmployeeName"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "HireDate"
+              },
+              {
+                "name": "Job"
+              },
+              {
+                "name": "WorkeStatus"
+              }
+            ]
+          },
+          {
+            "name": "DimFixOrderStatus",
+            "columns": [
+              {
+                "name": "StatusName"
+              }
+            ]
+          },
+          {
+            "name": "DimFixSalesType",
+            "columns": [
+              {
+                "name": "TypeName"
+              }
+            ]
+          },
+          {
+            "name": "DimGeography",
+            "columns": [
+              {
+                "name": "CityName"
+              },
+              {
+                "name": "RegionName"
+              },
+              {
+                "name": "StateName"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodAcquisition",
+            "columns": [
+              {
+                "name": "NameMethodAcquisition"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodDelivery",
+            "columns": [
+              {
+                "name": "NameMethodDelivery"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodPayment",
+            "columns": [
+              {
+                "name": "NameMethodsPayment"
+              }
+            ]
+          },
+          {
+            "name": "DimProduct",
+            "columns": [
+              {
+                "name": "Category"
+              },
+              {
+                "name": "GroupType"
+              },
+              {
+                "name": "ProductName"
+              },
+              {
+                "name": "PurchasePrice"
+              },
+              {
+                "name": "SalesPrice"
+              },
+              {
+                "name": "StatusCategory"
+              },
+              {
+                "name": "StatusProduct"
+              },
+              {
+                "name": "SubCategory"
+              }
+            ]
+          },
+          {
+            "name": "DimPromotion",
+            "columns": [
+              {
+                "name": "DELIVERYDATE"
+              },
+              {
+                "name": "DESCACTIVE"
+              },
+              {
+                "name": "DESCRIPTION"
+              },
+              {
+                "name": "DISCOUNT"
+              },
+              {
+                "name": "FROMDATE"
+              },
+              {
+                "name": "ITEMGROUP"
+              },
+              {
+                "name": "Location"
+              },
+              {
+                "name": "PRICEDISCOUNT"
+              },
+              {
+                "name": "QUANTITY"
+              },
+              {
+                "name": "SORTDISC"
+              },
+              {
+                "name": "STATUS"
+              },
+              {
+                "name": "TODATE"
+              }
+            ]
+          },
+          {
+            "name": "DimTargetLevel",
+            "columns": [
+              {
+                "name": "DgreeName"
+              }
+            ]
+          },
+          {
+            "name": "DimUnit",
+            "columns": [
+              {
+                "name": "UnitName"
+              }
+            ]
+          },
+          {
+            "name": "FactSales",
+            "columns": [
+              {
+                "name": "OrderDate"
+              },
+              {
+                "name": "SalesOrderNumber"
+              },
+              {
+                "name": "ProductionDate"
+              },
+              {
+                "name": "ShippingDate"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Total Amount"
+              },
+              {
+                "name": "Count SO"
+              },
+              {
+                "name": "Line Amount"
+              },
+              {
+                "name": "Tax Amount"
+              },
+              {
+                "name": "Total Payment"
+              },
+              {
+                "name": "Unit Price"
+              },
+              {
+                "name": "Sales Qty"
+              }
+            ]
+          }
+        ]
       }
     ],
     "annotations": [
