@@ -1291,77 +1291,6 @@
             }
           }
         ]
-      },
-      {
-        "name": "FactSalesTrade",
-        "columns": [
-          {
-            "name": "InventTranceKey",
-            "dataType": "string",
-            "sourceColumn": "InventTranceKey"
-          },
-          {
-            "name": "CompanyKey",
-            "dataType": "int64",
-            "sourceColumn": "CompanyKey"
-          },
-          {
-            "name": "TradTypeKey",
-            "dataType": "int64",
-            "sourceColumn": "TradTypeKey"
-          },
-          {
-            "name": "NoteTrad",
-            "dataType": "string",
-            "sourceColumn": "NoteTrad"
-          },
-          {
-            "name": "InvoiceDateAlternativeKey",
-            "dataType": "int64",
-            "sourceColumn": "InvoiceDateAlternativeKey"
-          },
-          {
-            "name": "InvoiceDate",
-            "dataType": "dateTime",
-            "sourceColumn": "InvoiceDate"
-          },
-          {
-            "name": "InvoiceNumber",
-            "dataType": "string",
-            "sourceColumn": "InvoiceNumber"
-          },
-          {
-            "name": "InvoiceTotal",
-            "dataType": "double",
-            "sourceColumn": "InvoiceTotal"
-          },
-          {
-            "name": "IsDeleted",
-            "dataType": "boolean",
-            "sourceColumn": "IsDeleted"
-          },
-          {
-            "name": "LastupdateDate",
-            "dataType": "dateTime",
-            "sourceColumn": "LastupdateDate"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_FactSalesTrade = Source{[Schema=\"dbo\",Item=\"FactSalesTrade\"]}[Data]",
-                "in",
-                "    dbo_FactSalesTrade"
-              ]
-            }
-          }
-        ]
       }
     ],
     "relationships": [
@@ -1389,13 +1318,6 @@
         "isActive": false
       },
       {
-        "name": "824c62b4-5d5e-48c2-8c0c-9278ebf50d6c",
-        "fromTable": "FactSalesTrade",
-        "fromColumn": "CompanyKey",
-        "toTable": "DimCompany",
-        "toColumn": "Companykey"
-      },
-      {
         "name": "efcc7883-a565-4dfd-9a51-1b3ee580e8a7",
         "fromTable": "FactSales",
         "fromColumn": "CompanyKey",
@@ -1415,13 +1337,6 @@
         "fromColumn": "TypeKey",
         "toTable": "DimFixSalesType",
         "toColumn": "TypeKey"
-      },
-      {
-        "name": "534a34b6-3b47-4e95-a953-12e8970311e4",
-        "fromTable": "FactSalesTrade",
-        "fromColumn": "InvoiceDateAlternativeKey",
-        "toTable": "DimDate",
-        "toColumn": "DateKey"
       },
       {
         "name": "79e6227d-31ad-4900-8d34-b33b2afe9fce",
