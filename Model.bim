@@ -3,6 +3,7 @@
   "compatibilityLevel": 1600,
   "model": {
     "culture": "en-US",
+    "discourageImplicitMeasures": true,
     "dataSources": [
       {
         "type": "structured",
@@ -1421,6 +1422,90 @@
         "fromColumn": "InvoiceDateAlternativeKey",
         "toTable": "DimDate",
         "toColumn": "DateKey"
+      },
+      {
+        "name": "79e6227d-31ad-4900-8d34-b33b2afe9fce",
+        "fromTable": "FactSales",
+        "fromColumn": "BrancheKey",
+        "toTable": "DimBranche",
+        "toColumn": "BrancheKey"
+      },
+      {
+        "name": "a8a9a89f-90b1-4ebc-9808-8437e634cfe2",
+        "fromTable": "FactSales",
+        "fromColumn": "CarKey",
+        "toTable": "DimCar",
+        "toColumn": "CarKey"
+      },
+      {
+        "name": "671e7041-af90-4534-9e1d-bf70eee94922",
+        "fromTable": "FactSales",
+        "fromColumn": "CustomerKey",
+        "toTable": "DimCustomer",
+        "toColumn": "CustomerKey"
+      },
+      {
+        "name": "75b87e4a-c9f4-4381-a2a8-f1fa8687c0fe",
+        "fromTable": "FactSales",
+        "fromColumn": "DimensionKey",
+        "toTable": "DimDimension",
+        "toColumn": "DimensionKey"
+      },
+      {
+        "name": "081c882e-a615-4c92-97e5-0d90b34e3524",
+        "fromTable": "FactSales",
+        "fromColumn": "EmployeeKey",
+        "toTable": "DimEmployee",
+        "toColumn": "EmployeeKey"
+      },
+      {
+        "name": "7bfbef40-1be6-47d8-b553-00605b9e71fe",
+        "fromTable": "FactSales",
+        "fromColumn": "GeographyKey",
+        "toTable": "DimGeography",
+        "toColumn": "GeographyKey"
+      },
+      {
+        "name": "5abc277d-ce70-4f78-996a-190d3de74032",
+        "fromTable": "FactSales",
+        "fromColumn": "MethodAcquisitionKey",
+        "toTable": "DimMethodAcquisition",
+        "toColumn": "MethodAcquisitionKey"
+      },
+      {
+        "name": "d223a52a-cb58-44b7-ae13-70135d56570b",
+        "fromTable": "FactSales",
+        "fromColumn": "MethodDeliverykey",
+        "toTable": "DimMethodDelivery",
+        "toColumn": "MethodDeliveryKey"
+      },
+      {
+        "name": "934f097e-9a0a-4860-838e-901584f6065f",
+        "fromTable": "FactSales",
+        "fromColumn": "PaymentMethodKey",
+        "toTable": "DimMethodPayment",
+        "toColumn": "MethodPaymentKey"
+      },
+      {
+        "name": "9c161b3d-7507-4639-a51f-72b0560714aa",
+        "fromTable": "FactSales",
+        "fromColumn": "ProductKey",
+        "toTable": "DimProduct",
+        "toColumn": "ProductKey"
+      },
+      {
+        "name": "6d62c46f-4e0d-48d7-a479-b881f40f845c",
+        "fromTable": "FactSales",
+        "fromColumn": "PromotionKey",
+        "toTable": "DimPromotion",
+        "toColumn": "PromotionKey"
+      },
+      {
+        "name": "e3cc56e2-90e5-427f-9b93-d04099174991",
+        "fromTable": "FactSales",
+        "fromColumn": "UnitKey",
+        "toTable": "DimUnit",
+        "toColumn": "UnitKey"
       }
     ],
     "annotations": [
