@@ -218,6 +218,22 @@
           {
             "name": "Line Amount",
             "expression": "sum(FactSales[LineAmount])"
+          },
+          {
+            "name": "Amount After Tax",
+            "expression": "sum(FactSales[AmountAfterTax])"
+          },
+          {
+            "name": "Tax Amount",
+            "expression": "sum(FactSales[TaxAmount])"
+          },
+          {
+            "name": "Total Payment",
+            "expression": "sum(FactSales[Payment])"
+          },
+          {
+            "name": "Count SO",
+            "expression": "DISTINCTCOUNT(FactSales[SalesOrderNumber])"
           }
         ]
       },
