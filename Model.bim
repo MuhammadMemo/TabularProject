@@ -1362,7 +1362,7 @@
             "sourceColumn": "SalesCommissionDateAlternativeKey"
           },
           {
-            "name": "SalesCommissionDateKey",
+            "name": "SalesCommissionDate",
             "dataType": "dateTime",
             "sourceColumn": "SalesCommissionDateKey"
           },
@@ -1421,6 +1421,20 @@
                 "    dbo_FactSalesCommission"
               ]
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Commission Amount",
+            "expression": "sum(FactSalesCommission[Amount])"
+          },
+          {
+            "name": "Total Sales",
+            "expression": "sum(FactSalesCommission[TotalSales])"
+          },
+          {
+            "name": "Order Count",
+            "expression": "SUM((FactSalesCommission[CountSo]))"
           }
         ]
       },
@@ -2052,6 +2066,248 @@
                 "name": "Sales Qty"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "SalesCommission",
+        "tables": [
+          {
+            "name": "DimBranche",
+            "columns": [
+              {
+                "name": "BrancheName"
+              }
+            ]
+          },
+          {
+            "name": "DimCompany",
+            "columns": [
+              {
+                "name": "CompanyName"
+              }
+            ]
+          },
+          {
+            "name": "DimDate",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "DateKey"
+              },
+              {
+                "name": "DayName"
+              },
+              {
+                "name": "DayOfMonth"
+              },
+              {
+                "name": "DayOfQuarter"
+              },
+              {
+                "name": "DayOfWeek"
+              },
+              {
+                "name": "DayOfWeekInMonth"
+              },
+              {
+                "name": "DayOfWeekInYear"
+              },
+              {
+                "name": "DayOfYear"
+              },
+              {
+                "name": "DaySuffix"
+              },
+              {
+                "name": "FirstDayOfMonth"
+              },
+              {
+                "name": "FirstDayOfQuarter"
+              },
+              {
+                "name": "FirstDayOfYear"
+              },
+              {
+                "name": "FullDate"
+              },
+              {
+                "name": "HolidayName"
+              },
+              {
+                "name": "IsHoliday"
+              },
+              {
+                "name": "LastDayOfMonth"
+              },
+              {
+                "name": "LastDayOfQuarter"
+              },
+              {
+                "name": "LastDayOfYear"
+              },
+              {
+                "name": "MMYYYY"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "MonthName"
+              },
+              {
+                "name": "MonthOfQuarter"
+              },
+              {
+                "name": "MonthYear"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "QuarterName"
+              },
+              {
+                "name": "Season"
+              },
+              {
+                "name": "Semester"
+              },
+              {
+                "name": "WeekOfMonth"
+              },
+              {
+                "name": "WeekOfQuarter"
+              },
+              {
+                "name": "WeekOfYear"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "YearName"
+              }
+            ]
+          },
+          {
+            "name": "DimEmployee",
+            "columns": [
+              {
+                "name": "BirthDate"
+              },
+              {
+                "name": "DepartmenName"
+              },
+              {
+                "name": "EmployeeName"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Job"
+              }
+            ]
+          },
+          {
+            "name": "DimEmpType",
+            "columns": [
+              {
+                "name": "TypeName"
+              }
+            ]
+          },
+          {
+            "name": "DimTargetLevel",
+            "columns": [
+              {
+                "name": "DgreeName"
+              }
+            ]
+          },
+          {
+            "name": "FactSalesCommission",
+            "columns": [
+              {
+                "name": "Amount"
+              },
+              {
+                "name": "SalesCommissionDate"
+              },
+              {
+                "name": "SalesCommissionKey"
+              },
+              {
+                "name": "EmpTypeKey"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Commission Amount"
+              },
+              {
+                "name": "Total Sales"
+              },
+              {
+                "name": "Order Count"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "roles": [
+      {
+        "name": "SalesCommission",
+        "modelPermission": "read",
+        "members": [
+          {
+            "memberName": "MFFCO\\SBD05",
+            "memberId": "S-1-5-21-1912877164-1294261322-872667718-159603"
+          }
+        ],
+        "tablePermissions": [
+          {
+            "name": "DimCompany",
+            "filterExpression": "[Companykey]=3",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "DimTargetLevel",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "FactSalesCommission",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "DimEmployee",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "DimDate",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "DimBranche",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "DimEmpType",
+            "metadataPermission": "none"
+          }
+        ]
+      },
+      {
+        "name": "Admin",
+        "modelPermission": "administrator",
+        "members": [
+          {
+            "memberName": "MFFCO\\ism01",
+            "memberId": "S-1-5-21-1912877164-1294261322-872667718-2682"
           }
         ]
       }
