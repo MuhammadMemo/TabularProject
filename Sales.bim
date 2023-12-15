@@ -269,11 +269,6 @@
             "name": "BrancheName",
             "dataType": "string",
             "sourceColumn": "BrancheName"
-          },
-          {
-            "name": "UpdatLasteTime",
-            "dataType": "dateTime",
-            "sourceColumn": "UpdatLasteTime"
           }
         ],
         "partitions": [
