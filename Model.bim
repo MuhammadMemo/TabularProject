@@ -2077,6 +2077,9 @@
             "columns": [
               {
                 "name": "BrancheName"
+              },
+              {
+                "name": "BrancheKey"
               }
             ]
           },
@@ -2236,20 +2239,6 @@
           },
           {
             "name": "FactSalesCommission",
-            "columns": [
-              {
-                "name": "Amount"
-              },
-              {
-                "name": "SalesCommissionDate"
-              },
-              {
-                "name": "SalesCommissionKey"
-              },
-              {
-                "name": "EmpTypeKey"
-              }
-            ],
             "measures": [
               {
                 "name": "Commission Amount"
@@ -2273,47 +2262,6 @@
           {
             "memberName": "MFFCO\\SBD05",
             "memberId": "S-1-5-21-1912877164-1294261322-872667718-159603"
-          }
-        ],
-        "tablePermissions": [
-          {
-            "name": "DimCompany",
-            "filterExpression": "[Companykey]=3",
-            "metadataPermission": "none"
-          },
-          {
-            "name": "DimTargetLevel",
-            "metadataPermission": "none"
-          },
-          {
-            "name": "FactSalesCommission",
-            "metadataPermission": "none"
-          },
-          {
-            "name": "DimEmployee",
-            "metadataPermission": "none"
-          },
-          {
-            "name": "DimDate",
-            "metadataPermission": "none"
-          },
-          {
-            "name": "DimBranche",
-            "metadataPermission": "none"
-          },
-          {
-            "name": "DimEmpType",
-            "metadataPermission": "none"
-          }
-        ]
-      },
-      {
-        "name": "Admin",
-        "modelPermission": "administrator",
-        "members": [
-          {
-            "memberName": "MFFCO\\ism01",
-            "memberId": "S-1-5-21-1912877164-1294261322-872667718-2682"
           }
         ]
       }
