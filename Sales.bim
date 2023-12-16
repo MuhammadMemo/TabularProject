@@ -11,7 +11,7 @@
         "connectionDetails": {
           "protocol": "tds",
           "address": {
-            "server": "hyperv-srv",
+            "server": "mffco-srv",
             "database": "DataWarehouse"
           },
           "authentication": null,
