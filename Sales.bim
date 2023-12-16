@@ -248,47 +248,6 @@
         ]
       },
       {
-        "name": "DimBranche",
-        "columns": [
-          {
-            "name": "CompanyKey",
-            "dataType": "int64",
-            "sourceColumn": "CompanyKey"
-          },
-          {
-            "name": "BrancheKey",
-            "dataType": "int64",
-            "sourceColumn": "BrancheKey"
-          },
-          {
-            "name": "BrancheAlternativeKey",
-            "dataType": "string",
-            "sourceColumn": "BrancheAlternativeKey"
-          },
-          {
-            "name": "BrancheName",
-            "dataType": "string",
-            "sourceColumn": "BrancheName"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimBranche = Source{[Schema=\"dbo\",Item=\"DimBranche\"]}[Data]",
-                "in",
-                "    dbo_DimBranche"
-              ]
-            }
-          }
-        ]
-      },
-      {
         "name": "DimCar",
         "columns": [
           {
@@ -1312,6 +1271,52 @@
             }
           }
         ]
+      },
+      {
+        "name": "DimBranche",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "BrancheKey",
+            "dataType": "int64",
+            "sourceColumn": "BrancheKey"
+          },
+          {
+            "name": "BrancheAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "BrancheAlternativeKey"
+          },
+          {
+            "name": "BrancheName",
+            "dataType": "string",
+            "sourceColumn": "BrancheName"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimBranche = Source{[Schema=\"dbo\",Item=\"DimBranche\"]}[Data]",
+                "in",
+                "    dbo_DimBranche"
+              ]
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -1358,13 +1363,6 @@
         "fromColumn": "TypeKey",
         "toTable": "DimFixSalesType",
         "toColumn": "TypeKey"
-      },
-      {
-        "name": "79e6227d-31ad-4900-8d34-b33b2afe9fce",
-        "fromTable": "FactSales",
-        "fromColumn": "BrancheKey",
-        "toTable": "DimBranche",
-        "toColumn": "BrancheKey"
       },
       {
         "name": "a8a9a89f-90b1-4ebc-9808-8437e634cfe2",
@@ -1442,6 +1440,25 @@
         "fromColumn": "UnitKey",
         "toTable": "DimUnit",
         "toColumn": "UnitKey"
+      },
+      {
+        "name": "88ffaa6a-2caf-46f6-b43e-8544725699d2",
+        "fromTable": "FactSales",
+        "fromColumn": "BrancheKey",
+        "toTable": "DimBranche",
+        "toColumn": "BrancheKey"
+      }
+    ],
+    "roles": [
+      {
+        "name": "User",
+        "modelPermission": "read",
+        "tablePermissions": [
+          {
+            "name": "DimCompany",
+            "filterExpression": "[Companykey]=3"
+          }
+        ]
       }
     ],
     "annotations": [
