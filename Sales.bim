@@ -1437,7 +1437,7 @@
         "toColumn": "PromotionKey"
       },
       {
-        "name": "e3cc56e2-90e5-427f-9b93-d04099174991",
+        "name": "a6c99fd9-5295-4781-9f3c-11d58f62b6cc",
         "fromTable": "FactSales",
         "fromColumn": "UnitKey",
         "toTable": "DimUnit",
