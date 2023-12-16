@@ -281,6 +281,22 @@
           {
             "name": "Discount Amount",
             "expression": "SUM(FactSales[DiscountAmount])"
+          },
+          {
+            "name": "Maximum of Discount Amount",
+            "expression": "MAX([DiscountAmount])"
+          },
+          {
+            "name": "Minimum of Discount Amount",
+            "expression": "MIN([DiscountAmount])"
+          },
+          {
+            "name": "Maximum of Discount Percent",
+            "expression": "MAX([DiscountPercent])"
+          },
+          {
+            "name": "Minimum of DiscountPercent",
+            "expression": "MIN([DiscountPercent])"
           }
         ]
       },
@@ -459,192 +475,6 @@
                 "    dbo_DimCustomer = Source{[Schema=\"dbo\",Item=\"DimCustomer\"]}[Data]",
                 "in",
                 "    dbo_DimCustomer"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "name": "DimDate",
-        "columns": [
-          {
-            "name": "DateKey",
-            "dataType": "int64",
-            "sourceColumn": "DateKey"
-          },
-          {
-            "name": "Date",
-            "dataType": "dateTime",
-            "sourceColumn": "Date"
-          },
-          {
-            "name": "FullDate",
-            "dataType": "string",
-            "sourceColumn": "FullDate"
-          },
-          {
-            "name": "DayOfMonth",
-            "dataType": "string",
-            "sourceColumn": "DayOfMonth"
-          },
-          {
-            "name": "DaySuffix",
-            "dataType": "string",
-            "sourceColumn": "DaySuffix"
-          },
-          {
-            "name": "DayName",
-            "dataType": "string",
-            "sourceColumn": "DayName"
-          },
-          {
-            "name": "DayOfWeek",
-            "dataType": "string",
-            "sourceColumn": "DayOfWeek"
-          },
-          {
-            "name": "DayOfWeekInMonth",
-            "dataType": "string",
-            "sourceColumn": "DayOfWeekInMonth"
-          },
-          {
-            "name": "DayOfWeekInYear",
-            "dataType": "string",
-            "sourceColumn": "DayOfWeekInYear"
-          },
-          {
-            "name": "DayOfQuarter",
-            "dataType": "string",
-            "sourceColumn": "DayOfQuarter"
-          },
-          {
-            "name": "DayOfYear",
-            "dataType": "string",
-            "sourceColumn": "DayOfYear"
-          },
-          {
-            "name": "WeekOfMonth",
-            "dataType": "string",
-            "sourceColumn": "WeekOfMonth"
-          },
-          {
-            "name": "WeekOfQuarter",
-            "dataType": "string",
-            "sourceColumn": "WeekOfQuarter"
-          },
-          {
-            "name": "WeekOfYear",
-            "dataType": "string",
-            "sourceColumn": "WeekOfYear"
-          },
-          {
-            "name": "Month",
-            "dataType": "string",
-            "sourceColumn": "Month"
-          },
-          {
-            "name": "MonthName",
-            "dataType": "string",
-            "sourceColumn": "MonthName"
-          },
-          {
-            "name": "MonthOfQuarter",
-            "dataType": "string",
-            "sourceColumn": "MonthOfQuarter"
-          },
-          {
-            "name": "Quarter",
-            "dataType": "string",
-            "sourceColumn": "Quarter"
-          },
-          {
-            "name": "QuarterName",
-            "dataType": "string",
-            "sourceColumn": "QuarterName"
-          },
-          {
-            "name": "Year",
-            "dataType": "string",
-            "sourceColumn": "Year"
-          },
-          {
-            "name": "YearName",
-            "dataType": "string",
-            "sourceColumn": "YearName"
-          },
-          {
-            "name": "MonthYear",
-            "dataType": "string",
-            "sourceColumn": "MonthYear"
-          },
-          {
-            "name": "MMYYYY",
-            "dataType": "string",
-            "sourceColumn": "MMYYYY"
-          },
-          {
-            "name": "FirstDayOfMonth",
-            "dataType": "dateTime",
-            "sourceColumn": "FirstDayOfMonth"
-          },
-          {
-            "name": "LastDayOfMonth",
-            "dataType": "dateTime",
-            "sourceColumn": "LastDayOfMonth"
-          },
-          {
-            "name": "FirstDayOfQuarter",
-            "dataType": "dateTime",
-            "sourceColumn": "FirstDayOfQuarter"
-          },
-          {
-            "name": "LastDayOfQuarter",
-            "dataType": "dateTime",
-            "sourceColumn": "LastDayOfQuarter"
-          },
-          {
-            "name": "FirstDayOfYear",
-            "dataType": "dateTime",
-            "sourceColumn": "FirstDayOfYear"
-          },
-          {
-            "name": "LastDayOfYear",
-            "dataType": "dateTime",
-            "sourceColumn": "LastDayOfYear"
-          },
-          {
-            "name": "Season",
-            "dataType": "string",
-            "sourceColumn": "Season"
-          },
-          {
-            "name": "Semester",
-            "dataType": "string",
-            "sourceColumn": "Semester"
-          },
-          {
-            "name": "IsHoliday",
-            "dataType": "boolean",
-            "sourceColumn": "IsHoliday"
-          },
-          {
-            "name": "HolidayName",
-            "dataType": "string",
-            "sourceColumn": "HolidayName"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimDate = Source{[Schema=\"dbo\",Item=\"DimDate\"]}[Data]",
-                "in",
-                "    dbo_DimDate"
               ]
             }
           }
@@ -946,6 +776,28 @@
               ]
             }
           }
+        ],
+        "hierarchies": [
+          {
+            "name": "HierarchyGeography",
+            "levels": [
+              {
+                "name": "RegionName",
+                "ordinal": 0,
+                "column": "RegionName"
+              },
+              {
+                "name": "StateName",
+                "ordinal": 1,
+                "column": "StateName"
+              },
+              {
+                "name": "CityName",
+                "ordinal": 2,
+                "column": "CityName"
+              }
+            ]
+          }
         ]
       },
       {
@@ -1003,6 +855,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -1013,6 +866,7 @@
           {
             "name": "MethodDeliveryAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "MethodDeliveryAlternativeKey"
           },
           {
@@ -1023,6 +877,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -1387,32 +1242,222 @@
             }
           }
         ]
+      },
+      {
+        "name": "DimDate",
+        "columns": [
+          {
+            "name": "DateKey",
+            "dataType": "int64",
+            "sourceColumn": "DateKey"
+          },
+          {
+            "name": "Date",
+            "dataType": "dateTime",
+            "sourceColumn": "Date"
+          },
+          {
+            "name": "FullDate",
+            "dataType": "string",
+            "sourceColumn": "FullDate"
+          },
+          {
+            "name": "DayOfMonth",
+            "dataType": "int64",
+            "sourceColumn": "DayOfMonth"
+          },
+          {
+            "name": "DaySuffix",
+            "dataType": "string",
+            "sourceColumn": "DaySuffix"
+          },
+          {
+            "name": "DayName",
+            "dataType": "string",
+            "sourceColumn": "DayName"
+          },
+          {
+            "name": "DayOfWeek",
+            "dataType": "int64",
+            "sourceColumn": "DayOfWeek"
+          },
+          {
+            "name": "DayOfWeekInMonth",
+            "dataType": "int64",
+            "sourceColumn": "DayOfWeekInMonth"
+          },
+          {
+            "name": "DayOfWeekInYear",
+            "dataType": "int64",
+            "sourceColumn": "DayOfWeekInYear"
+          },
+          {
+            "name": "DayOfQuarter",
+            "dataType": "int64",
+            "sourceColumn": "DayOfQuarter"
+          },
+          {
+            "name": "DayOfYear",
+            "dataType": "int64",
+            "sourceColumn": "DayOfYear"
+          },
+          {
+            "name": "WeekOfMonth",
+            "dataType": "int64",
+            "sourceColumn": "WeekOfMonth"
+          },
+          {
+            "name": "WeekOfQuarter",
+            "dataType": "int64",
+            "sourceColumn": "WeekOfQuarter"
+          },
+          {
+            "name": "WeekOfYear",
+            "dataType": "int64",
+            "sourceColumn": "WeekOfYear"
+          },
+          {
+            "name": "Month",
+            "dataType": "int64",
+            "sourceColumn": "Month"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "string",
+            "sourceColumn": "MonthName"
+          },
+          {
+            "name": "MonthOfQuarter",
+            "dataType": "string",
+            "sourceColumn": "MonthOfQuarter"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "int64",
+            "sourceColumn": "Quarter"
+          },
+          {
+            "name": "QuarterName",
+            "dataType": "string",
+            "sourceColumn": "QuarterName"
+          },
+          {
+            "name": "Year",
+            "dataType": "int64",
+            "sourceColumn": "Year"
+          },
+          {
+            "name": "YearName",
+            "dataType": "string",
+            "sourceColumn": "YearName"
+          },
+          {
+            "name": "MonthYear",
+            "dataType": "string",
+            "sourceColumn": "MonthYear"
+          },
+          {
+            "name": "MMYYYY",
+            "dataType": "string",
+            "sourceColumn": "MMYYYY"
+          },
+          {
+            "name": "FirstDayOfMonth",
+            "dataType": "dateTime",
+            "sourceColumn": "FirstDayOfMonth"
+          },
+          {
+            "name": "LastDayOfMonth",
+            "dataType": "dateTime",
+            "sourceColumn": "LastDayOfMonth"
+          },
+          {
+            "name": "FirstDayOfQuarter",
+            "dataType": "dateTime",
+            "sourceColumn": "FirstDayOfQuarter"
+          },
+          {
+            "name": "LastDayOfQuarter",
+            "dataType": "dateTime",
+            "sourceColumn": "LastDayOfQuarter"
+          },
+          {
+            "name": "FirstDayOfYear",
+            "dataType": "dateTime",
+            "sourceColumn": "FirstDayOfYear"
+          },
+          {
+            "name": "LastDayOfYear",
+            "dataType": "dateTime",
+            "sourceColumn": "LastDayOfYear"
+          },
+          {
+            "name": "Season",
+            "dataType": "string",
+            "sourceColumn": "Season"
+          },
+          {
+            "name": "Semester",
+            "dataType": "string",
+            "sourceColumn": "Semester"
+          },
+          {
+            "name": "IsHoliday",
+            "dataType": "boolean",
+            "sourceColumn": "IsHoliday"
+          },
+          {
+            "name": "HolidayName",
+            "dataType": "string",
+            "sourceColumn": "HolidayName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimDate = Source{[Schema=\"dbo\",Item=\"DimDate\"]}[Data]",
+                "in",
+                "    dbo_DimDate"
+              ]
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "HierarchyDate",
+            "levels": [
+              {
+                "name": "Year",
+                "ordinal": 0,
+                "column": "Year"
+              },
+              {
+                "name": "Month",
+                "ordinal": 2,
+                "column": "Month"
+              },
+              {
+                "name": "Quarter",
+                "ordinal": 1,
+                "column": "Quarter"
+              },
+              {
+                "name": "Day",
+                "ordinal": 3,
+                "column": "DayOfMonth"
+              }
+            ]
+          }
+        ]
       }
     ],
     "relationships": [
-      {
-        "name": "6e4cc0e1-4a2c-4b92-9bb6-b8ca2e3343ac",
-        "fromTable": "FactSales",
-        "fromColumn": "OrderDateAlternativeKey",
-        "toTable": "DimDate",
-        "toColumn": "DateKey"
-      },
-      {
-        "name": "af968cfa-45fd-4094-ad2d-2299ec614368",
-        "fromTable": "FactSales",
-        "fromColumn": "ProductionDateAlternativeKey",
-        "toTable": "DimDate",
-        "toColumn": "DateKey",
-        "isActive": false
-      },
-      {
-        "name": "c8e34e60-1984-43d6-8ac4-d580c99dfb5d",
-        "fromTable": "FactSales",
-        "fromColumn": "ShippingDateAlternativeKey",
-        "toTable": "DimDate",
-        "toColumn": "DateKey",
-        "isActive": false
-      },
       {
         "name": "efcc7883-a565-4dfd-9a51-1b3ee580e8a7",
         "fromTable": "FactSales",
@@ -1517,6 +1562,29 @@
         "fromColumn": "BrancheKey",
         "toTable": "DimBranche",
         "toColumn": "BrancheKey"
+      },
+      {
+        "name": "c4fd38a7-8477-4bac-8505-702a11a9ba54",
+        "fromTable": "FactSales",
+        "fromColumn": "ProductionDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey",
+        "isActive": false
+      },
+      {
+        "name": "a34a0957-168b-4eef-9dac-64692bcac096",
+        "fromTable": "FactSales",
+        "fromColumn": "ShippingDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey",
+        "isActive": false
+      },
+      {
+        "name": "b862e642-d68d-4d26-83ad-2f444abcf77b",
+        "fromTable": "FactSales",
+        "fromColumn": "OrderDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
       }
     ],
     "roles": [
