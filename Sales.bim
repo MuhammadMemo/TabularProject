@@ -35,91 +35,109 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
             "name": "ProductKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ProductKey"
           },
           {
             "name": "BrancheKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "BrancheKey"
           },
           {
             "name": "GeographyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "GeographyKey"
           },
           {
             "name": "CustomerKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CustomerKey"
           },
           {
             "name": "PromotionKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "PromotionKey"
           },
           {
             "name": "DimensionKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "DimensionKey"
           },
           {
             "name": "UnitKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "UnitKey"
           },
           {
             "name": "EmployeeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "EmployeeKey"
           },
           {
             "name": "StatusKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "StatusKey"
           },
           {
             "name": "TypeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "TypeKey"
           },
           {
             "name": "CarKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CarKey"
           },
           {
             "name": "MethodAcquisitionKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "MethodAcquisitionKey"
           },
           {
             "name": "MethodDeliverykey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "MethodDeliverykey"
           },
           {
             "name": "PaymentMethodKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "PaymentMethodKey"
           },
           {
             "name": "OrderDateAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "OrderDateAlternativeKey"
           },
           {
             "name": "ProductionDateAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ProductionDateAlternativeKey"
           },
           {
             "name": "ShippingDateAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ShippingDateAlternativeKey"
           },
           {
@@ -130,6 +148,7 @@
           {
             "name": "SalesOrderLineNumber",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "SalesOrderLineNumber"
           },
           {
@@ -150,51 +169,61 @@
           {
             "name": "UnitPrice",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "UnitPrice"
           },
           {
             "name": "SalesQty",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "SalesQty"
           },
           {
             "name": "DiscountPercent",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "DiscountPercent"
           },
           {
             "name": "DiscountAmount",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "DiscountAmount"
           },
           {
             "name": "LineAmount",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "LineAmount"
           },
           {
             "name": "AmountAfterTax",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "AmountAfterTax"
           },
           {
             "name": "TaxAmount",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "TaxAmount"
           },
           {
             "name": "Payment",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "Payment"
           },
           {
             "name": "IsDeleted",
             "dataType": "boolean",
+            "isHidden": true,
             "sourceColumn": "IsDeleted"
           },
           {
             "name": "LastupdateDate",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "LastupdateDate"
           }
         ],
@@ -244,6 +273,14 @@
           {
             "name": "Sales Qty",
             "expression": "sum(FactSales[SalesQty])"
+          },
+          {
+            "name": "Discount Percent",
+            "expression": "SUM(FactSales[DiscountPercent])"
+          },
+          {
+            "name": "Discount Amount",
+            "expression": "SUM(FactSales[DiscountAmount])"
           }
         ]
       },
@@ -253,6 +290,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -263,6 +301,7 @@
           {
             "name": "CarAlternativeKey",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "CarAlternativeKey"
           },
           {
@@ -288,6 +327,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -319,6 +359,7 @@
           {
             "name": "CompanyAlternativeKey",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "CompanyAlternativeKey"
           },
           {
@@ -329,6 +370,7 @@
           {
             "name": "Desc",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Desc"
           }
         ],
@@ -355,6 +397,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -400,6 +443,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -612,6 +656,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -622,6 +667,7 @@
           {
             "name": "DimensionAlternativeKey",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "DimensionAlternativeKey"
           },
           {
@@ -657,6 +703,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -683,6 +730,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -758,6 +806,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -846,6 +895,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -856,6 +906,7 @@
           {
             "name": "GeographyAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "GeographyAlternativeKey"
           },
           {
@@ -876,6 +927,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -902,6 +954,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -912,6 +965,7 @@
           {
             "name": "MethodAcquisitionAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "MethodAcquisitionAlternativeKey"
           },
           {
@@ -922,6 +976,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -994,6 +1049,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -1004,6 +1060,7 @@
           {
             "name": "MethodPaymentAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "MethodPaymentAlternativeKey"
           },
           {
@@ -1014,6 +1071,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -1040,6 +1098,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -1095,11 +1154,13 @@
           {
             "name": "StartDate",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "StartDate"
           },
           {
             "name": "EndDate",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "EndDate"
           },
           {
@@ -1131,6 +1192,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -1141,6 +1203,7 @@
           {
             "name": "PromotionAlternativeKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "PromotionAlternativeKey"
           },
           {
@@ -1206,6 +1269,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -1232,6 +1296,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -1242,6 +1307,7 @@
           {
             "name": "UnitAlternativeKey",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "UnitAlternativeKey"
           },
           {
@@ -1252,6 +1318,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -1278,6 +1345,7 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
@@ -1288,6 +1356,7 @@
           {
             "name": "BrancheAlternativeKey",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "BrancheAlternativeKey"
           },
           {
@@ -1298,6 +1367,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
