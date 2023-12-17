@@ -154,21 +154,36 @@
           {
             "name": "OrderDate",
             "dataType": "dateTime",
-            "sourceColumn": "OrderDate"
+            "sourceColumn": "OrderDate",
+            "formatString": "Short Date",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeShortDatePattern\" />"
+              }
+            ]
           },
           {
             "name": "ProductionDate",
             "dataType": "dateTime",
-            "sourceColumn": "ProductionDate"
+            "sourceColumn": "ProductionDate",
+            "formatString": "dd-MM-yyyy"
           },
           {
             "name": "ShippingDate",
             "dataType": "dateTime",
-            "sourceColumn": "ShippingDate"
+            "sourceColumn": "ShippingDate",
+            "formatString": "Short Date",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeShortDatePattern\" />"
+              }
+            ]
           },
           {
             "name": "UnitPrice",
-            "dataType": "double",
+            "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "UnitPrice"
           },
@@ -186,31 +201,31 @@
           },
           {
             "name": "DiscountAmount",
-            "dataType": "double",
+            "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "DiscountAmount"
           },
           {
             "name": "LineAmount",
-            "dataType": "double",
+            "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "LineAmount"
           },
           {
             "name": "AmountAfterTax",
-            "dataType": "double",
+            "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "AmountAfterTax"
           },
           {
             "name": "TaxAmount",
-            "dataType": "double",
+            "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "TaxAmount"
           },
           {
             "name": "Payment",
-            "dataType": "double",
+            "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "Payment"
           },
@@ -237,9 +252,10 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSales, each true)",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSales, each true),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Filtered Rows\",{{\"AmountAfterTax\", Currency.Type}, {\"LineAmount\", Currency.Type}, {\"TaxAmount\", Currency.Type}, {\"Payment\", Currency.Type}, {\"DiscountAmount\", Currency.Type}, {\"UnitPrice\", Currency.Type}})",
                 "in",
-                "    #\"Filtered Rows\""
+                "    #\"Changed Type\""
               ]
             }
           }
@@ -1254,7 +1270,14 @@
           {
             "name": "Date",
             "dataType": "dateTime",
-            "sourceColumn": "Date"
+            "sourceColumn": "Date",
+            "formatString": "dd-MM-yyyy",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"1033\" Group=\"ShortDate\" FormatString=\"dd-MM-yyyy\" /></DateTimes></Format>"
+              }
+            ]
           },
           {
             "name": "FullDate",
