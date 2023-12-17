@@ -185,7 +185,14 @@
             "name": "UnitPrice",
             "dataType": "decimal",
             "isHidden": true,
-            "sourceColumn": "UnitPrice"
+            "sourceColumn": "UnitPrice",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "SalesQty",
@@ -204,11 +211,11 @@
             "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "DiscountAmount",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
@@ -217,11 +224,11 @@
             "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "LineAmount",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
@@ -230,11 +237,11 @@
             "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "AmountAfterTax",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
@@ -243,11 +250,11 @@
             "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "TaxAmount",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
@@ -256,11 +263,11 @@
             "dataType": "decimal",
             "isHidden": true,
             "sourceColumn": "Payment",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
@@ -299,11 +306,11 @@
           {
             "name": "Line Amount",
             "expression": "ROUND(sum(FactSales[LineAmount]),0)",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
@@ -311,77 +318,112 @@
             "name": "Total Amount",
             "description": "Total Amount After Tax",
             "expression": "round(sum(FactSales[AmountAfterTax]),0)",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
           {
             "name": "Tax Amount",
             "expression": "round(sum(FactSales[TaxAmount]),0)",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
           {
             "name": "Total Payment",
             "expression": "round(sum(FactSales[Payment]),0)",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
           {
             "name": "Count SO",
-            "expression": "DISTINCTCOUNT(FactSales[SalesOrderNumber])"
+            "expression": "DISTINCTCOUNT(FactSales[SalesOrderNumber])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Unit Price",
             "expression": "ROUND(sum(FactSales[UnitPrice]),0)",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
           {
             "name": "Sales Qty",
-            "expression": "sum(FactSales[SalesQty])"
+            "expression": "sum(FactSales[SalesQty])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Discount Percent",
-            "expression": "SUM(FactSales[DiscountPercent])"
+            "expression": "SUM(FactSales[DiscountPercent])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Discount Amount",
             "expression": "SUM(FactSales[DiscountAmount])",
-            "formatString": "#,0.00 \"ج.م.‏\";-#,0.00 \"ج.م.‏\";#,0.00 \"ج.م.‏\"",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"3073\" DisplayName=\"ج.م.‏ Arabic (Egypt)\" Symbol=\"ج.م.‏\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
           },
           {
             "name": "Maximum of Discount Amount",
-            "expression": "MAX([DiscountAmount])"
+            "expression": "MAX([DiscountAmount])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Minimum of Discount Amount",
-            "expression": "MIN([DiscountAmount])"
+            "expression": "MIN([DiscountAmount])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Maximum of Discount Percent",
