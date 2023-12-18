@@ -183,7 +183,7 @@
           },
           {
             "name": "UnitPrice",
-            "dataType": "decimal",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "UnitPrice",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
@@ -208,7 +208,7 @@
           },
           {
             "name": "DiscountAmount",
-            "dataType": "decimal",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "DiscountAmount",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
@@ -221,7 +221,7 @@
           },
           {
             "name": "LineAmount",
-            "dataType": "decimal",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "LineAmount",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
@@ -234,7 +234,7 @@
           },
           {
             "name": "AmountAfterTax",
-            "dataType": "decimal",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "AmountAfterTax",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
@@ -247,7 +247,7 @@
           },
           {
             "name": "TaxAmount",
-            "dataType": "decimal",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "TaxAmount",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
@@ -260,7 +260,7 @@
           },
           {
             "name": "Payment",
-            "dataType": "decimal",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "Payment",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
@@ -294,10 +294,9 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSales, each true),",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Filtered Rows\",{{\"AmountAfterTax\", Currency.Type}, {\"LineAmount\", Currency.Type}, {\"TaxAmount\", Currency.Type}, {\"Payment\", Currency.Type}, {\"DiscountAmount\", Currency.Type}, {\"UnitPrice\", Currency.Type}})",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSales, each true)",
                 "in",
-                "    #\"Changed Type\""
+                "    #\"Filtered Rows\""
               ]
             }
           }
