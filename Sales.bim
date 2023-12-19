@@ -1358,6 +1358,11 @@
             "dataType": "dateTime",
             "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
+          },
+          {
+            "name": "BrancheSort",
+            "dataType": "int64",
+            "sourceColumn": "BrancheSort"
           }
         ],
         "partitions": [
