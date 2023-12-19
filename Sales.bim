@@ -1357,12 +1357,15 @@
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
             "isHidden": true,
-            "sourceColumn": "UpdatLasteTime"
+            "sourceColumn": "UpdatLasteTime",
+            "formatString": "General Date"
           },
           {
             "name": "BrancheSort",
             "dataType": "int64",
-            "sourceColumn": "BrancheSort"
+            "sourceColumn": "BrancheSort",
+            "formatString": "0",
+            "summarizeBy": "none"
           }
         ],
         "partitions": [
