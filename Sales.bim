@@ -28,8 +28,9 @@
         "name": "FactSales",
         "columns": [
           {
-            "name": "InventTranceKey",
+            "name": "Invent Trance Key",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "InventTranceKey"
           },
           {
@@ -141,7 +142,7 @@
             "sourceColumn": "ShippingDateAlternativeKey"
           },
           {
-            "name": "SalesOrderNumber",
+            "name": "Sales Order",
             "dataType": "string",
             "sourceColumn": "SalesOrderNumber"
           },
@@ -152,7 +153,7 @@
             "sourceColumn": "SalesOrderLineNumber"
           },
           {
-            "name": "OrderDate",
+            "name": "Order Date",
             "dataType": "dateTime",
             "sourceColumn": "OrderDate",
             "formatString": "Short Date",
@@ -164,13 +165,13 @@
             ]
           },
           {
-            "name": "ProductionDate",
+            "name": "Production Date",
             "dataType": "dateTime",
             "sourceColumn": "ProductionDate",
             "formatString": "dd-MM-yyyy"
           },
           {
-            "name": "ShippingDate",
+            "name": "Shipping Date",
             "dataType": "dateTime",
             "sourceColumn": "ShippingDate",
             "formatString": "Short Date",
@@ -349,7 +350,7 @@
           },
           {
             "name": "Count SO",
-            "expression": "DISTINCTCOUNT(FactSales[SalesOrderNumber])",
+            "expression": "DISTINCTCOUNT(FactSales[Sales Order])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
@@ -455,17 +456,17 @@
             "sourceColumn": "CarAlternativeKey"
           },
           {
-            "name": "CarNumber",
+            "name": "Car Number",
             "dataType": "string",
             "sourceColumn": "CarNumber"
           },
           {
-            "name": "CarName",
+            "name": "Car Name",
             "dataType": "string",
             "sourceColumn": "CarName"
           },
           {
-            "name": "CarType",
+            "name": "Car Type",
             "dataType": "int64",
             "sourceColumn": "CarType"
           },
@@ -792,7 +793,7 @@
         ]
       },
       {
-        "name": "DimFixOrderStatus",
+        "name": "DimOrderStatus",
         "columns": [
           {
             "name": "StatusKey",
@@ -823,7 +824,7 @@
         ]
       },
       {
-        "name": "DimFixSalesType",
+        "name": "DimSalesType",
         "columns": [
           {
             "name": "TypeKey",
@@ -1338,9 +1339,12 @@
             "sourceColumn": "CompanyKey"
           },
           {
-            "name": "BrancheKey",
+            "name": "Branche Key",
             "dataType": "int64",
-            "sourceColumn": "BrancheKey"
+            "isHidden": true,
+            "sourceColumn": "BrancheKey",
+            "formatString": "0",
+            "sortByColumn": "Branche Sort"
           },
           {
             "name": "BrancheAlternativeKey",
@@ -1351,6 +1355,7 @@
           {
             "name": "BrancheName",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "BrancheName"
           },
           {
@@ -1361,11 +1366,19 @@
             "formatString": "General Date"
           },
           {
-            "name": "BrancheSort",
+            "name": "Branche Sort",
             "dataType": "int64",
             "sourceColumn": "BrancheSort",
             "formatString": "0",
             "summarizeBy": "none"
+          },
+          {
+            "type": "calculated",
+            "name": "Branche Name",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": " if([CompanyKey]==3,[BrancheName],[BrancheName] & \" \" & [CompanyKey])",
+            "sortByColumn": "Branche Sort"
           }
         ],
         "partitions": [
@@ -1618,14 +1631,14 @@
         "name": "20a4f5a8-dc1b-425c-b945-32227fcfc412",
         "fromTable": "FactSales",
         "fromColumn": "StatusKey",
-        "toTable": "DimFixOrderStatus",
+        "toTable": "DimOrderStatus",
         "toColumn": "StatusKey"
       },
       {
         "name": "6f52df78-743c-42be-9b14-6b7827a890b0",
         "fromTable": "FactSales",
         "fromColumn": "TypeKey",
-        "toTable": "DimFixSalesType",
+        "toTable": "DimSalesType",
         "toColumn": "TypeKey"
       },
       {
@@ -1710,7 +1723,7 @@
         "fromTable": "FactSales",
         "fromColumn": "BrancheKey",
         "toTable": "DimBranche",
-        "toColumn": "BrancheKey"
+        "toColumn": "Branche Key"
       },
       {
         "name": "c4fd38a7-8477-4bac-8505-702a11a9ba54",
@@ -1734,6 +1747,11 @@
         "fromColumn": "OrderDateAlternativeKey",
         "toTable": "DimDate",
         "toColumn": "DateKey"
+      }
+    ],
+    "cultures": [
+      {
+        "name": "ar-EG"
       }
     ],
     "roles": [
