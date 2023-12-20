@@ -157,6 +157,7 @@
             "dataType": "dateTime",
             "sourceColumn": "OrderDate",
             "formatString": "Short Date",
+            "displayFolder": "Date",
             "annotations": [
               {
                 "name": "Format",
@@ -168,13 +169,15 @@
             "name": "Production Date",
             "dataType": "dateTime",
             "sourceColumn": "ProductionDate",
-            "formatString": "dd-MM-yyyy"
+            "formatString": "dd-MM-yyyy",
+            "displayFolder": "Date"
           },
           {
             "name": "Shipping Date",
             "dataType": "dateTime",
             "sourceColumn": "ShippingDate",
             "formatString": "Short Date",
+            "displayFolder": "Date",
             "annotations": [
               {
                 "name": "Format",
@@ -307,6 +310,7 @@
             "name": "Line Amount",
             "expression": "ROUND(sum(FactSales[LineAmount]),0)",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Amount",
             "annotations": [
               {
                 "name": "Format",
@@ -319,6 +323,7 @@
             "description": "Total Amount After Tax",
             "expression": "round(sum(FactSales[AmountAfterTax]),0)",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Amount",
             "annotations": [
               {
                 "name": "Format",
@@ -330,6 +335,7 @@
             "name": "Tax Amount",
             "expression": "round(sum(FactSales[TaxAmount]),0)",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Amount",
             "annotations": [
               {
                 "name": "Format",
@@ -341,6 +347,7 @@
             "name": "Total Payment",
             "expression": "round(sum(FactSales[Payment]),0)",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Amount",
             "annotations": [
               {
                 "name": "Format",
@@ -352,6 +359,7 @@
             "name": "Count SO",
             "expression": "DISTINCTCOUNT(FactSales[Sales Order])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Other",
             "annotations": [
               {
                 "name": "Format",
@@ -363,6 +371,7 @@
             "name": "Unit Price",
             "expression": "ROUND(sum(FactSales[UnitPrice]),0)",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Amount",
             "annotations": [
               {
                 "name": "Format",
@@ -374,6 +383,7 @@
             "name": "Sales Qty",
             "expression": "sum(FactSales[SalesQty])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Other",
             "annotations": [
               {
                 "name": "Format",
@@ -385,6 +395,7 @@
             "name": "Discount Percent",
             "expression": "SUM(FactSales[DiscountPercent])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Discount",
             "annotations": [
               {
                 "name": "Format",
@@ -396,6 +407,7 @@
             "name": "Discount Amount",
             "expression": "SUM(FactSales[DiscountAmount])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Discount",
             "annotations": [
               {
                 "name": "Format",
@@ -407,6 +419,7 @@
             "name": "Maximum of Discount Amount",
             "expression": "MAX([DiscountAmount])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Discount",
             "annotations": [
               {
                 "name": "Format",
@@ -418,6 +431,7 @@
             "name": "Minimum of Discount Amount",
             "expression": "MIN([DiscountAmount])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Discount",
             "annotations": [
               {
                 "name": "Format",
@@ -427,11 +441,13 @@
           },
           {
             "name": "Maximum of Discount Percent",
-            "expression": "MAX([DiscountPercent])"
+            "expression": "MAX([DiscountPercent])",
+            "displayFolder": "Discount"
           },
           {
             "name": "Minimum of DiscountPercent",
-            "expression": "MIN([DiscountPercent])"
+            "expression": "MIN([DiscountPercent])",
+            "displayFolder": "Discount"
           }
         ]
       },
