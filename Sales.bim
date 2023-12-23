@@ -2039,6 +2039,37 @@
             }
           }
         ]
+      },
+      {
+        "name": "DimFixFinTransType",
+        "columns": [
+          {
+            "name": "TransTypeKey",
+            "dataType": "int64",
+            "sourceColumn": "TransTypeKey"
+          },
+          {
+            "name": "TransTypeName",
+            "dataType": "string",
+            "sourceColumn": "TransTypeName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimFixFinTransType = Source{[Schema=\"dbo\",Item=\"DimFixFinTransType\"]}[Data]",
+                "in",
+                "    dbo_DimFixFinTransType"
+              ]
+            }
+          }
+        ]
       }
     ],
     "relationships": [
