@@ -2077,6 +2077,7 @@
           {
             "name": "Id",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Id"
           },
           {
@@ -2111,6 +2112,7 @@
           {
             "name": "Amount",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "Amount"
           },
           {
@@ -2118,6 +2120,11 @@
             "dataType": "dateTime",
             "isHidden": true,
             "sourceColumn": "LastupdateDate"
+          },
+          {
+            "name": "PostingType",
+            "dataType": "int64",
+            "sourceColumn": "PostingType"
           }
         ],
         "partitions": [
@@ -2257,6 +2264,37 @@
                 "    dbo_DimAccountCategory = Source{[Schema=\"dbo\",Item=\"DimAccountCategory\"]}[Data]",
                 "in",
                 "    dbo_DimAccountCategory"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimFinPostingType",
+        "columns": [
+          {
+            "name": "TransTypeKey",
+            "dataType": "int64",
+            "sourceColumn": "TransTypeKey"
+          },
+          {
+            "name": "TransTypeName",
+            "dataType": "string",
+            "sourceColumn": "TransTypeName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimFixFinPostingType = Source{[Schema=\"dbo\",Item=\"DimFixFinPostingType\"]}[Data]",
+                "in",
+                "    dbo_DimFixFinPostingType"
               ]
             }
           }
@@ -2554,6 +2592,13 @@
         "fromColumn": "AccountGroup",
         "toTable": "DimAccountCategory",
         "toColumn": "AccountCategoryKey"
+      },
+      {
+        "name": "c19c0b6d-92ba-4a30-836e-d27587298576",
+        "fromTable": "FactFinance",
+        "fromColumn": "PostingType",
+        "toTable": "DimFinPostingType",
+        "toColumn": "TransTypeKey"
       }
     ],
     "cultures": [
