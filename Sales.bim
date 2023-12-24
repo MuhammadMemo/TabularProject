@@ -2149,11 +2149,13 @@
           {
             "name": "CompanyKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "CompanyKey"
           },
           {
             "name": "AccountKey",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "AccountKey"
           },
           {
@@ -2179,6 +2181,7 @@
           {
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
+            "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
           }
         ],
@@ -2194,6 +2197,66 @@
                 "    dbo_DimAccount = Source{[Schema=\"dbo\",Item=\"DimAccount\"]}[Data]",
                 "in",
                 "    dbo_DimAccount"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimAccountCategory",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "AccountCategoryKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "AccountCategoryKey"
+          },
+          {
+            "name": "AccountCategoryAlternativeKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "AccountCategoryAlternativeKey"
+          },
+          {
+            "name": "AccountCategoryName",
+            "dataType": "string",
+            "sourceColumn": "AccountCategoryName",
+            "sortByColumn": "SortGroup"
+          },
+          {
+            "name": "DescriptionGroup",
+            "dataType": "string",
+            "sourceColumn": "DescriptionGroup"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "UpdatLasteTime"
+          },
+          {
+            "name": "SortGroup",
+            "dataType": "int64",
+            "sourceColumn": "SortGroup"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimAccountCategory = Source{[Schema=\"dbo\",Item=\"DimAccountCategory\"]}[Data]",
+                "in",
+                "    dbo_DimAccountCategory"
               ]
             }
           }
@@ -2484,6 +2547,13 @@
         "fromColumn": "TransTypeKey",
         "toTable": "DimFinTransType",
         "toColumn": "TransTypeKey"
+      },
+      {
+        "name": "80d0cb0b-c3b2-4b79-87a3-bb41615e8173",
+        "fromTable": "DimAccount",
+        "fromColumn": "AccountGroup",
+        "toTable": "DimAccountCategory",
+        "toColumn": "AccountCategoryKey"
       }
     ],
     "cultures": [
