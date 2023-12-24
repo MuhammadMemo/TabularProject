@@ -2041,7 +2041,7 @@
         ]
       },
       {
-        "name": "DimFixFinTransType",
+        "name": "DimFinTransType",
         "columns": [
           {
             "name": "TransTypeKey",
@@ -2066,6 +2066,134 @@
                 "    dbo_DimFixFinTransType = Source{[Schema=\"dbo\",Item=\"DimFixFinTransType\"]}[Data]",
                 "in",
                 "    dbo_DimFixFinTransType"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "FactFinance",
+        "columns": [
+          {
+            "name": "Id",
+            "dataType": "int64",
+            "sourceColumn": "Id"
+          },
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "AccountKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "AccountKey"
+          },
+          {
+            "name": "FinancialDateAlternativeKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "FinancialDateAlternativeKey"
+          },
+          {
+            "name": "TransTypeKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TransTypeKey"
+          },
+          {
+            "name": "FinancialDate",
+            "dataType": "dateTime",
+            "sourceColumn": "FinancialDate"
+          },
+          {
+            "name": "Amount",
+            "dataType": "double",
+            "sourceColumn": "Amount"
+          },
+          {
+            "name": "LastupdateDate",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "LastupdateDate"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_FactFinance = Source{[Schema=\"dbo\",Item=\"FactFinance\"]}[Data]",
+                "in",
+                "    dbo_FactFinance"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Finance Amount",
+            "expression": "sum(FactFinance[Amount])"
+          }
+        ]
+      },
+      {
+        "name": "DimAccount",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "AccountKey",
+            "dataType": "int64",
+            "sourceColumn": "AccountKey"
+          },
+          {
+            "name": "AccountAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "AccountAlternativeKey"
+          },
+          {
+            "name": "AccountName",
+            "dataType": "string",
+            "sourceColumn": "AccountName"
+          },
+          {
+            "name": "AccountType",
+            "dataType": "int64",
+            "sourceColumn": "AccountType"
+          },
+          {
+            "name": "AccountGroup",
+            "dataType": "string",
+            "sourceColumn": "AccountGroup"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimAccount = Source{[Schema=\"dbo\",Item=\"DimAccount\"]}[Data]",
+                "in",
+                "    dbo_DimAccount"
               ]
             }
           }
@@ -2328,6 +2456,34 @@
         "fromColumn": "EmpTypeKey",
         "toTable": "DimEmpType",
         "toColumn": "TypeKey"
+      },
+      {
+        "name": "81a3f43c-4015-4618-8c51-40ebe082052c",
+        "fromTable": "FactFinance",
+        "fromColumn": "AccountKey",
+        "toTable": "DimAccount",
+        "toColumn": "AccountKey"
+      },
+      {
+        "name": "870c3d0d-085c-479b-b916-10d73f2a9ef8",
+        "fromTable": "FactFinance",
+        "fromColumn": "CompanyKey",
+        "toTable": "DimCompany",
+        "toColumn": "Companykey"
+      },
+      {
+        "name": "5405fd2c-05df-4c58-9a9d-5fe6201b936a",
+        "fromTable": "FactFinance",
+        "fromColumn": "FinancialDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
+      },
+      {
+        "name": "ce0bd279-0635-4e88-a31f-22eb99cb23ec",
+        "fromTable": "FactFinance",
+        "fromColumn": "TransTypeKey",
+        "toTable": "DimFinTransType",
+        "toColumn": "TransTypeKey"
       }
     ],
     "cultures": [
