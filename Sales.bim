@@ -1224,6 +1224,20 @@
               ]
             }
           }
+        ],
+        "measures": [
+          {
+            "name": "Sales Price",
+            "expression": "sum(DimProduct[SalesPrice])"
+          },
+          {
+            "name": "AVG Price",
+            "expression": "AVERAGE(DimProduct[SalesPrice])"
+          },
+          {
+            "name": "Count Product",
+            "expression": "COUNT(DimProduct[ProductAlternativeKey])"
+          }
         ]
       },
       {
@@ -1868,7 +1882,50 @@
           {
             "name": "#Total Payment",
             "expression": "round(sum(FactSalesOrder[Payment]),0)",
-            "displayFolder": "Amount"
+            "displayFolder": "Amount",
+            "kpi": {
+              "targetExpression": "'FactSalesOrder'[#Total Amount]",
+              "statusGraphic": "Road Signs",
+              "statusExpression": [
+                "var x='FactSalesOrder'[#Total Payment]/'FactSalesOrder'[_#Total Payment Goal] return",
+                "            if(ISBLANK(x),BLANK(),",
+                "                    If(x<0.499,-1,",
+                "\t                If(x<0.999,0,1)",
+                "                )",
+                "            )",
+                "            "
+              ],
+              "annotations": [
+                {
+                  "name": "GoalType",
+                  "value": "Measure"
+                },
+                {
+                  "name": "KpiStatusType",
+                  "value": "Linear"
+                },
+                {
+                  "name": "KpiThresholdType",
+                  "value": "Percentage"
+                },
+                {
+                  "name": "KpiThresholdOrdering",
+                  "value": "Ascending"
+                },
+                {
+                  "name": "KpiThresholdCount",
+                  "value": "2"
+                },
+                {
+                  "name": "KpiThreshold_0",
+                  "value": "49.9"
+                },
+                {
+                  "name": "KpiThreshold_1",
+                  "value": "99.9"
+                }
+              ]
+            }
           }
         ]
       },
@@ -2299,6 +2356,123 @@
             }
           }
         ]
+      },
+      {
+        "name": "FactPayment",
+        "columns": [
+          {
+            "name": "Id",
+            "dataType": "int64",
+            "sourceColumn": "Id"
+          },
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "AccountKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "AccountKey"
+          },
+          {
+            "name": "FinancialDateAlternativeKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "FinancialDateAlternativeKey"
+          },
+          {
+            "name": "TransTypeKey",
+            "dataType": "int64",
+            "sourceColumn": "TransTypeKey"
+          },
+          {
+            "name": "PostingType",
+            "dataType": "int64",
+            "sourceColumn": "PostingType"
+          },
+          {
+            "name": "FinancialDate",
+            "dataType": "dateTime",
+            "sourceColumn": "FinancialDate"
+          },
+          {
+            "name": "Amount",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "Amount"
+          },
+          {
+            "name": "LastupdateDate",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "LastupdateDate"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_FactPayment = Source{[Schema=\"dbo\",Item=\"FactPayment\"]}[Data]",
+                "in",
+                "    dbo_FactPayment"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Payment Amount",
+            "expression": "SUM(FactPayment[Amount])"
+          },
+          {
+            "name": "Payment Count",
+            "expression": "DISTINCTCOUNT(FactPayment[Id])"
+          }
+        ]
+      },
+      {
+        "name": "DateTime",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Date",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Date]",
+            "formatString": "dd-MM-yyyy h:mm:ss AM/PM",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"1033\" Group=\"GeneralLongDateTime\" FormatString=\"dd-MM-yyyy h:mm:ss tt\" /></DateTimes></Format>"
+              }
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Time",
+            "dataType": "dateTime",
+            "isDataTypeInferred": true,
+            "expression": "Now()"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALENDAR(UTCNOW(),UTCNOW())"
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -2598,6 +2772,41 @@
         "fromTable": "FactFinance",
         "fromColumn": "PostingType",
         "toTable": "DimFinPostingType",
+        "toColumn": "TransTypeKey"
+      },
+      {
+        "name": "1ca9867a-6e8a-4fff-bdbd-469e71f38862",
+        "fromTable": "FactPayment",
+        "fromColumn": "AccountKey",
+        "toTable": "DimAccount",
+        "toColumn": "AccountKey"
+      },
+      {
+        "name": "c33e022c-796a-49d3-88a4-13fc266b0638",
+        "fromTable": "FactPayment",
+        "fromColumn": "FinancialDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
+      },
+      {
+        "name": "ed03c3b7-0e2f-44b9-9672-e6cf2dbfe691",
+        "fromTable": "FactPayment",
+        "fromColumn": "CompanyKey",
+        "toTable": "DimCompany",
+        "toColumn": "Companykey"
+      },
+      {
+        "name": "62848656-2b0b-444b-9423-c054f9522393",
+        "fromTable": "FactPayment",
+        "fromColumn": "PostingType",
+        "toTable": "DimFinPostingType",
+        "toColumn": "TransTypeKey"
+      },
+      {
+        "name": "bc1c29f0-ea63-40b7-a34c-d2bfb5040b9e",
+        "fromTable": "FactPayment",
+        "fromColumn": "TransTypeKey",
+        "toTable": "DimFinTransType",
         "toColumn": "TransTypeKey"
       }
     ],
