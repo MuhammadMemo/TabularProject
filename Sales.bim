@@ -2461,7 +2461,14 @@
             "name": "Time",
             "dataType": "dateTime",
             "isDataTypeInferred": true,
-            "expression": "Now()"
+            "expression": "Now()",
+            "formatString": "dd-MM-yyyy h:mm:ss AM/PM",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"1033\" Group=\"GeneralLongDateTime\" FormatString=\"dd-MM-yyyy h:mm:ss tt\" /></DateTimes></Format>"
+              }
+            ]
           }
         ],
         "partitions": [
