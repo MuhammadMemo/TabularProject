@@ -2327,118 +2327,6 @@
         ]
       },
       {
-        "name": "DimFinPostingType",
-        "columns": [
-          {
-            "name": "TransTypeKey",
-            "dataType": "int64",
-            "sourceColumn": "TransTypeKey"
-          },
-          {
-            "name": "TransTypeName",
-            "dataType": "string",
-            "sourceColumn": "TransTypeName"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimFixFinPostingType = Source{[Schema=\"dbo\",Item=\"DimFixFinPostingType\"]}[Data]",
-                "in",
-                "    dbo_DimFixFinPostingType"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "name": "FactPayment",
-        "columns": [
-          {
-            "name": "Id",
-            "dataType": "int64",
-            "sourceColumn": "Id"
-          },
-          {
-            "name": "CompanyKey",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "CompanyKey"
-          },
-          {
-            "name": "AccountKey",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "AccountKey"
-          },
-          {
-            "name": "FinancialDateAlternativeKey",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "FinancialDateAlternativeKey"
-          },
-          {
-            "name": "TransTypeKey",
-            "dataType": "int64",
-            "sourceColumn": "TransTypeKey"
-          },
-          {
-            "name": "PostingType",
-            "dataType": "int64",
-            "sourceColumn": "PostingType"
-          },
-          {
-            "name": "FinancialDate",
-            "dataType": "dateTime",
-            "sourceColumn": "FinancialDate"
-          },
-          {
-            "name": "Amount",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "Amount"
-          },
-          {
-            "name": "LastupdateDate",
-            "dataType": "dateTime",
-            "isHidden": true,
-            "sourceColumn": "LastupdateDate"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_FactPayment = Source{[Schema=\"dbo\",Item=\"FactPayment\"]}[Data]",
-                "in",
-                "    dbo_FactPayment"
-              ]
-            }
-          }
-        ],
-        "measures": [
-          {
-            "name": "Payment Amount",
-            "expression": "SUM(FactPayment[Amount])"
-          },
-          {
-            "name": "Payment Count",
-            "expression": "DISTINCTCOUNT(FactPayment[Id])"
-          }
-        ]
-      },
-      {
         "name": "DateTime",
         "columns": [
           {
@@ -2477,6 +2365,378 @@
             "source": {
               "type": "calculated",
               "expression": "CALENDAR(UTCNOW(),UTCNOW())"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimFixFinPostingType",
+        "columns": [
+          {
+            "name": "PostingTypeKey",
+            "dataType": "int64",
+            "sourceColumn": "PostingTypeKey"
+          },
+          {
+            "name": "PostingTypeName",
+            "dataType": "string",
+            "sourceColumn": "PostingTypeName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimFixFinPostingType = Source{[Schema=\"dbo\",Item=\"DimFixFinPostingType\"]}[Data]",
+                "in",
+                "    dbo_DimFixFinPostingType"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimFixFinOffsetAccountType",
+        "columns": [
+          {
+            "name": "OffsetAccountTypeKey",
+            "dataType": "int64",
+            "sourceColumn": "OffsetAccountTypeKey"
+          },
+          {
+            "name": "OffsetAccountTypeName",
+            "dataType": "string",
+            "sourceColumn": "OffsetAccountTypeName"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimFixFinOffsetAccountType = Source{[Schema=\"dbo\",Item=\"DimFixFinOffsetAccountType\"]}[Data]",
+                "in",
+                "    dbo_DimFixFinOffsetAccountType"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "FactBank",
+        "isHidden": true,
+        "columns": [
+          {
+            "name": "Id",
+            "dataType": "int64",
+            "sourceColumn": "Id"
+          },
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "AccountKey",
+            "dataType": "int64",
+            "sourceColumn": "AccountKey"
+          },
+          {
+            "name": "OffsetAccountKey",
+            "dataType": "int64",
+            "sourceColumn": "OffsetAccountKey"
+          },
+          {
+            "name": "PaymentDateAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "PaymentDateAlternativeKey"
+          },
+          {
+            "name": "AccountType",
+            "dataType": "int64",
+            "sourceColumn": "AccountType"
+          },
+          {
+            "name": "OffsetAccountType",
+            "dataType": "int64",
+            "sourceColumn": "OffsetAccountType"
+          },
+          {
+            "name": "PaymentDate",
+            "dataType": "dateTime",
+            "sourceColumn": "PaymentDate"
+          },
+          {
+            "name": "JournalNum",
+            "dataType": "string",
+            "sourceColumn": "JournalNum"
+          },
+          {
+            "name": "AmountDebit",
+            "dataType": "double",
+            "sourceColumn": "AmountDebit"
+          },
+          {
+            "name": "AmountCredit",
+            "dataType": "double",
+            "sourceColumn": "AmountCredit"
+          },
+          {
+            "name": "SalesId",
+            "dataType": "string",
+            "sourceColumn": "SalesId"
+          },
+          {
+            "name": "Voucher",
+            "dataType": "string",
+            "sourceColumn": "Voucher"
+          },
+          {
+            "name": "txt",
+            "dataType": "string",
+            "sourceColumn": "txt"
+          },
+          {
+            "name": "LastupdateDate",
+            "dataType": "dateTime",
+            "sourceColumn": "LastupdateDate"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_FactBank = Source{[Schema=\"dbo\",Item=\"FactBank\"]}[Data]",
+                "in",
+                "    dbo_FactBank"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "FactPymentCustomer",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Id",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[Id]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "FactBank[CompanyKey]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "AccountKey",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "FactBank[AccountKey]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "OffsetAccountKey",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "FactBank[OffsetAccountKey]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "PaymentDateAlternativeKey",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "FactBank[PaymentDateAlternativeKey]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "AccountType",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "FactBank[AccountType]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "OffsetAccountType",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "FactBank[OffsetAccountType]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "PaymentDate",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[PaymentDate]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "JournalNum",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[JournalNum]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "AmountDebit",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[AmountDebit]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "AmountCredit",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[AmountCredit]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "SalesId",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[SalesId]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Voucher",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[Voucher]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "txt",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "FactBank[txt]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "LastupdateDate",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "FactBank[LastupdateDate]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALCULATETABLE(FactBank,FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6)"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Amount Payment",
+            "expression": " sum(FactPymentCustomer[AmountCredit])"
+          }
+        ]
+      },
+      {
+        "name": "DimBank",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "BankKey",
+            "dataType": "int64",
+            "sourceColumn": "BankKey"
+          },
+          {
+            "name": "BankAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "BankAlternativeKey"
+          },
+          {
+            "name": "BnakName",
+            "dataType": "string",
+            "sourceColumn": "BnakName"
+          },
+          {
+            "name": "BankGroupName",
+            "dataType": "string",
+            "sourceColumn": "BankGroupName"
+          },
+          {
+            "name": "BrancheKey",
+            "dataType": "int64",
+            "sourceColumn": "BrancheKey"
+          },
+          {
+            "name": "AccountKey",
+            "dataType": "int64",
+            "sourceColumn": "AccountKey"
+          },
+          {
+            "name": "CurrencyCode",
+            "dataType": "string",
+            "sourceColumn": "CurrencyCode"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimBank = Source{[Schema=\"dbo\",Item=\"DimBank\"]}[Data]",
+                "in",
+                "    dbo_DimBank"
+              ]
             }
           }
         ]
@@ -2775,46 +3035,90 @@
         "toColumn": "AccountCategoryKey"
       },
       {
-        "name": "c19c0b6d-92ba-4a30-836e-d27587298576",
+        "name": "19f7e126-2764-4ccb-9aea-1584fcd9c462",
         "fromTable": "FactFinance",
         "fromColumn": "PostingType",
-        "toTable": "DimFinPostingType",
-        "toColumn": "TransTypeKey"
+        "toTable": "DimFixFinPostingType",
+        "toColumn": "PostingTypeKey"
       },
       {
-        "name": "1ca9867a-6e8a-4fff-bdbd-469e71f38862",
-        "fromTable": "FactPayment",
-        "fromColumn": "AccountKey",
-        "toTable": "DimAccount",
-        "toColumn": "AccountKey"
-      },
-      {
-        "name": "c33e022c-796a-49d3-88a4-13fc266b0638",
-        "fromTable": "FactPayment",
-        "fromColumn": "FinancialDateAlternativeKey",
+        "name": "5b9fb114-7a49-4d43-8797-24ec8db86199",
+        "fromTable": "FactBank",
+        "fromColumn": "PaymentDateAlternativeKey",
         "toTable": "DimDate",
         "toColumn": "DateKey"
       },
       {
-        "name": "ed03c3b7-0e2f-44b9-9672-e6cf2dbfe691",
-        "fromTable": "FactPayment",
+        "name": "00433f79-90ef-4e9d-bb3d-d3aa366116f8",
+        "fromTable": "FactBank",
+        "fromColumn": "OffsetAccountType",
+        "toTable": "DimFixFinOffsetAccountType",
+        "toColumn": "OffsetAccountTypeKey"
+      },
+      {
+        "name": "3b39cb40-da38-415d-835b-b88464be3e54",
+        "fromTable": "FactBank",
+        "fromColumn": "AccountType",
+        "toTable": "DimFixFinOffsetAccountType",
+        "toColumn": "OffsetAccountTypeKey",
+        "isActive": false
+      },
+      {
+        "name": "f2ab16de-67a3-46c6-af95-b980dcc787bc",
+        "fromTable": "FactBank",
         "fromColumn": "CompanyKey",
         "toTable": "DimCompany",
         "toColumn": "Companykey"
       },
       {
-        "name": "62848656-2b0b-444b-9423-c054f9522393",
-        "fromTable": "FactPayment",
-        "fromColumn": "PostingType",
-        "toTable": "DimFinPostingType",
-        "toColumn": "TransTypeKey"
+        "name": "63c11b39-3cfa-469b-af84-8fbb8760d899",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "AccountKey",
+        "toTable": "DimCustomer",
+        "toColumn": "CustomerKey"
       },
       {
-        "name": "bc1c29f0-ea63-40b7-a34c-d2bfb5040b9e",
-        "fromTable": "FactPayment",
-        "fromColumn": "TransTypeKey",
-        "toTable": "DimFinTransType",
-        "toColumn": "TransTypeKey"
+        "name": "f4f44107-4c7a-420a-adf1-7b3c02394a1e",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "CompanyKey",
+        "toTable": "DimCompany",
+        "toColumn": "Companykey"
+      },
+      {
+        "name": "b1a536c7-2b85-4987-a228-a8613113bb38",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "PaymentDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
+      },
+      {
+        "name": "eca6b78a-35c9-4c5b-9eda-7e918f25d474",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "OffsetAccountKey",
+        "toTable": "DimBank",
+        "toColumn": "BankKey"
+      },
+      {
+        "name": "e57bbd47-9e83-4ffe-a68d-880e3ef08bab",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "AccountType",
+        "toTable": "DimFixFinOffsetAccountType",
+        "toColumn": "OffsetAccountTypeKey"
+      },
+      {
+        "name": "55c99e27-0730-4810-91ef-f9d84e73aadb",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "OffsetAccountKey",
+        "toTable": "DimFixFinOffsetAccountType",
+        "toColumn": "OffsetAccountTypeKey",
+        "isActive": false
+      },
+      {
+        "name": "51c80d5f-7245-42dd-a2f4-81ee35b7c48c",
+        "fromTable": "DimBank",
+        "fromColumn": "BrancheKey",
+        "toTable": "DimBranche",
+        "toColumn": "Branche Key"
       }
     ],
     "cultures": [
