@@ -2670,8 +2670,19 @@
         ],
         "measures": [
           {
-            "name": "Amount Payment",
-            "expression": " sum(FactPymentCustomer[AmountCredit])"
+            "name": "Payment Amount",
+            "expression": " sum(FactPymentCustomer[AmountCredit])",
+            "formatString": "\"\"#,0.00;(\"\"#,0.00);\"\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "#CountID",
+            "expression": "COUNT(FactPymentCustomer[Id])"
           }
         ]
       },
@@ -3085,13 +3096,6 @@
         "toColumn": "Companykey"
       },
       {
-        "name": "b1a536c7-2b85-4987-a228-a8613113bb38",
-        "fromTable": "FactPymentCustomer",
-        "fromColumn": "PaymentDateAlternativeKey",
-        "toTable": "DimDate",
-        "toColumn": "DateKey"
-      },
-      {
         "name": "eca6b78a-35c9-4c5b-9eda-7e918f25d474",
         "fromTable": "FactPymentCustomer",
         "fromColumn": "OffsetAccountKey",
@@ -3119,6 +3123,13 @@
         "fromColumn": "BrancheKey",
         "toTable": "DimBranche",
         "toColumn": "Branche Key"
+      },
+      {
+        "name": "ec71a141-7ec9-4613-9fde-13c5cd7fb143",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "PaymentDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
       }
     ],
     "cultures": [
