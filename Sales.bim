@@ -659,6 +659,11 @@
             "dataType": "dateTime",
             "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
+          },
+          {
+            "name": "CustomerNameFull",
+            "dataType": "string",
+            "sourceColumn": "CustomerNameFull"
           }
         ],
         "partitions": [
@@ -671,9 +676,12 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimCustomer = Source{[Schema=\"dbo\",Item=\"DimCustomer\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimCustomer, each ([CompanyKey] = 3))",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimCustomer, each ([CompanyKey] = 3)),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Filtered Rows\",{{\"CustomerName\", \"CustomerNameFull\"}}),",
+                "    #\"Inserted Text Before Delimiter\" = Table.AddColumn(#\"Renamed Columns\", \"CustomerName\", each Text.BeforeDelimiter([CustomerNameFull], \" \", 1), type text),",
+                "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Inserted Text Before Delimiter\",{\"CompanyKey\", \"CustomerKey\", \"CustomerAlternativeKey\", \"CustomerNameFull\", \"CustomerName\", \"CustomerGroup\", \"CustomerType\", \"CustomerClassification\", \"Birthday\", \"Gender\", \"UpdatLasteTime\", \"FactSales\"})",
                 "in",
-                "    #\"Filtered Rows\""
+                "    #\"Reordered Columns\""
               ]
             }
           }
@@ -840,6 +848,11 @@
             "dataType": "dateTime",
             "isHidden": true,
             "sourceColumn": "UpdatLasteTime"
+          },
+          {
+            "name": "EmployeeNameFull",
+            "dataType": "string",
+            "sourceColumn": "EmployeeNameFull"
           }
         ],
         "partitions": [
@@ -852,9 +865,13 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimEmployee = Source{[Schema=\"dbo\",Item=\"DimEmployee\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimEmployee, each ([CompanyKey] = 3))",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimEmployee, each ([CompanyKey] = 3)),",
+                "    #\"Cleaned Text\" = Table.TransformColumns(#\"Filtered Rows\",{{\"EmployeeName\", Text.Clean, type text}}),",
+                "    #\"Inserted Text Before Delimiter\" = Table.AddColumn(#\"Cleaned Text\", \"Text Before Delimiter\", each Text.BeforeDelimiter([EmployeeName], \" \", 1), type text),",
+                "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Inserted Text Before Delimiter\",{\"CompanyKey\", \"EmployeeKey\", \"EmployeeAlternativeKey\", \"EmployeeName\", \"Text Before Delimiter\", \"Job\", \"DepartmenName\", \"DivisionName\", \"Gender\", \"ContractType\", \"ContractDate\", \"ContractEndDate\", \"BirthDate\", \"HireDate\", \"InsuranceDate\", \"WorkeStatus\", \"UpdatLasteTime\", \"FactPurchase\", \"FactSalary\", \"FactSales\", \"FactSalesCommission\"}),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Reordered Columns\",{{\"EmployeeName\", \"EmployeeNameFull\"}, {\"Text Before Delimiter\", \"EmployeeName\"}})",
                 "in",
-                "    #\"Filtered Rows\""
+                "    #\"Renamed Columns\""
               ]
             }
           }
@@ -976,9 +993,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimGeography = Source{[Schema=\"dbo\",Item=\"DimGeography\"]}[Data]",
+                "    dbo_DimGeography = Source{[Schema=\"dbo\",Item=\"DimGeography\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimGeography, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimGeography"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -2095,16 +2113,67 @@
         ],
         "measures": [
           {
-            "name": "Total Commission",
-            "expression": "sum(FactSalesCommission[Amount])"
+            "name": "Commission Amount",
+            "expression": "sum(FactSalesCommission[Amount])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Total Sales",
-            "expression": "sum(FactSalesCommission[TotalSales])"
+            "expression": "sum(FactSalesCommission[TotalSales])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Count Of SO Commission",
-            "expression": "SUM(FactSalesCommission[CountSo])"
+            "expression": "SUM(FactSalesCommission[CountSo])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Count Of Employee",
+            "expression": "DISTINCTCOUNT(FactSalesCommission[EmployeeKey])"
+          },
+          {
+            "name": "Average per Employee",
+            "expression": "DIVIDE(FactSalesCommission[Commission Amount],FactSalesCommission[Count Of Employee])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Average per Month",
+            "expression": "DIVIDE(FactSalesCommission[Commission Amount],FactSalesCommission[Count Of Month])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Count Of Month",
+            "expression": "DISTINCTCOUNT(FactSalesCommission[SalesCommissionDateAlternativeKey])"
           }
         ]
       },
