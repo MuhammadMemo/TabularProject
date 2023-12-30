@@ -291,6 +291,11 @@
             "dataType": "dateTime",
             "sourceColumn": "CreateDateTime",
             "displayFolder": "Date"
+          },
+          {
+            "name": "StatusOrderKey",
+            "dataType": "int64",
+            "sourceColumn": "StatusOrderKey"
           }
         ],
         "partitions": [
@@ -302,9 +307,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data]",
+                "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSales, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_FactSales"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -461,14 +467,26 @@
           {
             "name": "Average per Day",
             "expression": " DIVIDE(sum(FactSales[AmountAfterTax]),DISTINCTCOUNT(FactSales[Order Date])) ",
-            "formatString": "0",
-            "displayFolder": "Average"
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Average",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Average per Order",
             "expression": " DIVIDE(sum(FactSales[AmountAfterTax]),DISTINCTCOUNT(FactSales[Sales Order])) ",
-            "formatString": "0",
-            "displayFolder": "Average"
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Average",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "Count Of Day",
@@ -533,9 +551,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimCar = Source{[Schema=\"dbo\",Item=\"DimCar\"]}[Data]",
+                "    dbo_DimCar = Source{[Schema=\"dbo\",Item=\"DimCar\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimCar, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimCar"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -576,9 +595,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimCompany = Source{[Schema=\"dbo\",Item=\"DimCompany\"]}[Data]",
+                "    dbo_DimCompany = Source{[Schema=\"dbo\",Item=\"DimCompany\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimCompany, each ([Companykey] = 3))",
                 "in",
-                "    dbo_DimCompany"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -650,9 +670,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimCustomer = Source{[Schema=\"dbo\",Item=\"DimCustomer\"]}[Data]",
+                "    dbo_DimCustomer = Source{[Schema=\"dbo\",Item=\"DimCustomer\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimCustomer, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimCustomer"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -725,9 +746,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimDimension = Source{[Schema=\"dbo\",Item=\"DimDimension\"]}[Data]",
+                "    dbo_DimDimension = Source{[Schema=\"dbo\",Item=\"DimDimension\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimDimension, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimDimension"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -829,9 +851,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimEmployee = Source{[Schema=\"dbo\",Item=\"DimEmployee\"]}[Data]",
+                "    dbo_DimEmployee = Source{[Schema=\"dbo\",Item=\"DimEmployee\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimEmployee, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimEmployee"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -1218,9 +1241,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data]",
+                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimProduct, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimProduct"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -1336,9 +1360,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimPromotion = Source{[Schema=\"dbo\",Item=\"DimPromotion\"]}[Data]",
+                "    dbo_DimPromotion = Source{[Schema=\"dbo\",Item=\"DimPromotion\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimPromotion, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimPromotion"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -1385,9 +1410,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimUnit = Source{[Schema=\"dbo\",Item=\"DimUnit\"]}[Data]",
+                "    dbo_DimUnit = Source{[Schema=\"dbo\",Item=\"DimUnit\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimUnit, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimUnit"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -1453,9 +1479,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimBranche = Source{[Schema=\"dbo\",Item=\"DimBranche\"]}[Data]",
+                "    dbo_DimBranche = Source{[Schema=\"dbo\",Item=\"DimBranche\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimBranche, each ([CompanyKey] = 3) and ([BrancheName] <> \"None\" and [BrancheName] <> \"الدور الخامس\" and [BrancheName] <> \"مخزن نصف جاهز\" and [BrancheName] <> \"نشارة\"))",
                 "in",
-                "    dbo_DimBranche"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -1856,9 +1883,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_FactSalesOrder = Source{[Schema=\"dbo\",Item=\"FactSalesOrder\"]}[Data]",
+                "    dbo_FactSalesOrder = Source{[Schema=\"dbo\",Item=\"FactSalesOrder\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSalesOrder, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_FactSalesOrder"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -1877,14 +1905,23 @@
           {
             "name": "#Total Amount",
             "expression": "round(sum(FactSalesOrder[AmountAfterTax]),0)",
-            "displayFolder": "Amount"
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Amount",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           },
           {
             "name": "#Total Payment",
             "expression": "round(sum(FactSalesOrder[Payment]),0)",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "displayFolder": "Amount",
             "kpi": {
               "targetExpression": "'FactSalesOrder'[#Total Amount]",
+              "targetFormatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
               "statusGraphic": "Road Signs",
               "statusExpression": [
                 "var x='FactSalesOrder'[#Total Payment]/'FactSalesOrder'[_#Total Payment Goal] return",
@@ -1925,7 +1962,13 @@
                   "value": "99.9"
                 }
               ]
-            }
+            },
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           }
         ]
       },
@@ -2193,9 +2236,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_FactFinance = Source{[Schema=\"dbo\",Item=\"FactFinance\"]}[Data]",
+                "    dbo_FactFinance = Source{[Schema=\"dbo\",Item=\"FactFinance\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactFinance, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_FactFinance"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -2239,7 +2283,7 @@
           },
           {
             "name": "AccountGroup",
-            "dataType": "string",
+            "dataType": "int64",
             "sourceColumn": "AccountGroup"
           },
           {
@@ -2258,9 +2302,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimAccount = Source{[Schema=\"dbo\",Item=\"DimAccount\"]}[Data]",
+                "    dbo_DimAccount = Source{[Schema=\"dbo\",Item=\"DimAccount\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimAccount, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimAccount"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -2318,9 +2363,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimAccountCategory = Source{[Schema=\"dbo\",Item=\"DimAccountCategory\"]}[Data]",
+                "    dbo_DimAccountCategory = Source{[Schema=\"dbo\",Item=\"DimAccountCategory\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimAccountCategory, each true)",
                 "in",
-                "    dbo_DimAccountCategory"
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -2664,7 +2710,7 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "CALCULATETABLE(FactBank,FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6)"
+              "expression": "CALCULATETABLE(FactBank,FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6 && FactBank[CompanyKey]=3)"
             }
           }
         ],
@@ -2744,9 +2790,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimBank = Source{[Schema=\"dbo\",Item=\"DimBank\"]}[Data]",
+                "    dbo_DimBank = Source{[Schema=\"dbo\",Item=\"DimBank\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimBank, each ([CompanyKey] = 3))",
                 "in",
-                "    dbo_DimBank"
+                "    #\"Filtered Rows\""
               ]
             }
           }
