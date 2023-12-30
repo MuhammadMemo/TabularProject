@@ -2093,6 +2093,12 @@
             "dataType": "dateTime",
             "isHidden": true,
             "sourceColumn": "LastupdateDate"
+          },
+          {
+            "name": "DgreeName",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "DimTargetLevel.DgreeName"
           }
         ],
         "partitions": [
@@ -2104,9 +2110,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_FactSalesCommission = Source{[Schema=\"dbo\",Item=\"FactSalesCommission\"]}[Data]",
+                "    dbo_FactSalesCommission = Source{[Schema=\"dbo\",Item=\"FactSalesCommission\"]}[Data],",
+                "    #\"Expanded DimTargetLevel\" = Table.ExpandRecordColumn(dbo_FactSalesCommission, \"DimTargetLevel\", {\"DgreeName\"}, {\"DimTargetLevel.DgreeName\"})",
                 "in",
-                "    dbo_FactSalesCommission"
+                "    #\"Expanded DimTargetLevel\""
               ]
             }
           }
@@ -2174,6 +2181,14 @@
           {
             "name": "Count Of Month",
             "expression": "DISTINCTCOUNT(FactSalesCommission[SalesCommissionDateAlternativeKey])"
+          },
+          {
+            "name": "Maximum of DgreeName",
+            "expression": "MAX([DgreeName])"
+          },
+          {
+            "name": "Maximum of TargetLevelkey",
+            "expression": "sum([TargetLevelkey])"
           }
         ]
       },
@@ -2867,6 +2882,49 @@
             }
           }
         ]
+      },
+      {
+        "name": "DimTargetLevel",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "TargetLevelKey",
+            "dataType": "int64",
+            "sourceColumn": "TargetLevelKey"
+          },
+          {
+            "name": "DgreeName",
+            "dataType": "string",
+            "sourceColumn": "DgreeName"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimTargetLevel = Source{[Schema=\"dbo\",Item=\"DimTargetLevel\"]}[Data]",
+                "in",
+                "    dbo_DimTargetLevel"
+              ]
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -3246,6 +3304,13 @@
         "fromColumn": "PaymentDateAlternativeKey",
         "toTable": "DimDate",
         "toColumn": "DateKey"
+      },
+      {
+        "name": "31314b21-1e75-4df0-ada6-262091529533",
+        "fromTable": "FactSalesCommission",
+        "fromColumn": "TargetLevelkey",
+        "toTable": "DimTargetLevel",
+        "toColumn": "TargetLevelKey"
       }
     ],
     "cultures": [
