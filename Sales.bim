@@ -106,7 +106,7 @@
           },
           {
             "name": "MethodAcquisitionKey",
-            "dataType": "int64",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "MethodAcquisitionKey"
           },
@@ -308,9 +308,9 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_FactSales, each ([CompanyKey] = 3))",
+                "    #\"Replaced Value\" = Table.ReplaceValue(dbo_FactSales,1,17,Replacer.ReplaceValue,{\"MethodAcquisitionKey\"})",
                 "in",
-                "    #\"Filtered Rows\""
+                "    #\"Replaced Value\""
               ]
             }
           }
@@ -661,9 +661,9 @@
             "sourceColumn": "UpdatLasteTime"
           },
           {
-            "name": "CustomerNameFull",
-            "dataType": "string",
-            "sourceColumn": "CustomerNameFull"
+            "name": "Age",
+            "dataType": "int64",
+            "sourceColumn": "Age"
           }
         ],
         "partitions": [
@@ -677,11 +677,10 @@
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimCustomer = Source{[Schema=\"dbo\",Item=\"DimCustomer\"]}[Data],",
                 "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimCustomer, each ([CompanyKey] = 3)),",
-                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Filtered Rows\",{{\"CustomerName\", \"CustomerNameFull\"}}),",
-                "    #\"Inserted Text Before Delimiter\" = Table.AddColumn(#\"Renamed Columns\", \"CustomerName\", each Text.BeforeDelimiter([CustomerNameFull], \" \", 1), type text),",
-                "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Inserted Text Before Delimiter\",{\"CompanyKey\", \"CustomerKey\", \"CustomerAlternativeKey\", \"CustomerNameFull\", \"CustomerName\", \"CustomerGroup\", \"CustomerType\", \"CustomerClassification\", \"Birthday\", \"Gender\", \"UpdatLasteTime\", \"FactSales\"})",
+                "    #\"Inserted Age\" = Table.AddColumn(#\"Filtered Rows\", \"Age\", each (Date.From(DateTime.LocalNow()) - [Birthday])/365),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Inserted Age\",{{\"Age\", Int64.Type}})",
                 "in",
-                "    #\"Reordered Columns\""
+                "    #\"Changed Type\""
               ]
             }
           }
@@ -1166,9 +1165,10 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimMethodPayment = Source{[Schema=\"dbo\",Item=\"DimMethodPayment\"]}[Data]",
+                "    dbo_DimMethodPayment = Source{[Schema=\"dbo\",Item=\"DimMethodPayment\"]}[Data],",
+                "    #\"Replaced Value\" = Table.ReplaceValue(dbo_DimMethodPayment,\"UnKown\",\"نقدي\",Replacer.ReplaceText,{\"NameMethodsPayment\"})",
                 "in",
-                "    dbo_DimMethodPayment"
+                "    #\"Replaced Value\""
               ]
             }
           }
@@ -1259,10 +1259,9 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimProduct, each ([CompanyKey] = 3))",
+                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data]",
                 "in",
-                "    #\"Filtered Rows\""
+                "    dbo_DimProduct"
               ]
             }
           }
@@ -1693,7 +1692,7 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimDate = Source{[Schema=\"dbo\",Item=\"DimDate\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimDate, each Date.IsInPreviousNYears([Date], 10) or Date.IsInCurrentYear([Date]))",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimDate, each Date.IsInPreviousNYears([Date], 11) or Date.IsInCurrentYear([Date]))",
                 "in",
                 "    #\"Filtered Rows\""
               ]
@@ -2189,6 +2188,17 @@
           {
             "name": "Maximum of TargetLevelkey",
             "expression": "sum([TargetLevelkey])"
+          },
+          {
+            "name": "Average",
+            "expression": "AVERAGE(FactSalesCommission[Amount])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           }
         ]
       },
