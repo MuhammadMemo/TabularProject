@@ -8,7 +8,7 @@
     <AssemblyName>MyAssemblyName</AssemblyName>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <OutputPath>bin\</OutputPath>
-    <Name>Tabular_Sales</Name>
+    <Name>Tabular_MffcoSales</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Development' ">
     <OutputPath>bin\</OutputPath>
@@ -16,7 +16,7 @@
     <DeploymentServerEdition>Enterprise</DeploymentServerEdition>
     <DeploymentServerVersion>Unknown</DeploymentServerVersion>
     <DeploymentServerDatabase>MffcoSales</DeploymentServerDatabase>
-    <DeploymentServerCubeName>Sales</DeploymentServerCubeName>
+    <DeploymentServerCubeName>MffcoSales</DeploymentServerCubeName>
     <DeploymentOptionProcessing>Full</DeploymentOptionProcessing>
     <DeploymentOptionTransactionalDeployment>False</DeploymentOptionTransactionalDeployment>
     <DeploymentOptionADALCache>Default</DeploymentOptionADALCache>
@@ -27,7 +27,7 @@
     <DeploymentServerName>localhost</DeploymentServerName>
     <DeploymentServerEdition>Developer</DeploymentServerEdition>
     <DeploymentServerVersion>Unknown</DeploymentServerVersion>
-    <DeploymentServerDatabase>Tabular_Sales</DeploymentServerDatabase>
+    <DeploymentServerDatabase>Tabular_MffcoSales</DeploymentServerDatabase>
     <DeploymentServerCubeName>Model</DeploymentServerCubeName>
     <DeploymentOptionProcessing>Default</DeploymentOptionProcessing>
     <DeploymentOptionTransactionalDeployment>False</DeploymentOptionTransactionalDeployment>
@@ -36,7 +36,7 @@
     <DeploymentOptionQueryImpersonation>Default</DeploymentOptionQueryImpersonation>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Sales.bim">
+    <Compile Include="MffcoSales.bim">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
