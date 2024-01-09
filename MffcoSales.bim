@@ -2285,7 +2285,7 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "CALCULATETABLE(FactBank,FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6 && FactBank[CompanyKey]=3)"
+              "expression": "CALCULATETABLE(FactBank, FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6 && FactBank[CompanyKey]=3 && FactBank[PaymentDateAlternativeKey]>=20130101)"
             }
           }
         ],
@@ -2366,7 +2366,7 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimBank = Source{[Schema=\"dbo\",Item=\"DimBank\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimBank, each ([CompanyKey] = 3))",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimBank, each ([CompanyKey] = 3) and ([BankKey] <> 71))",
                 "in",
                 "    #\"Filtered Rows\""
               ]
@@ -2412,6 +2412,118 @@
                 "    dbo_DimTargetLevel = Source{[Schema=\"dbo\",Item=\"DimTargetLevel\"]}[Data]",
                 "in",
                 "    dbo_DimTargetLevel"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimAccount",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "AccountKey",
+            "dataType": "int64",
+            "sourceColumn": "AccountKey"
+          },
+          {
+            "name": "AccountAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "AccountAlternativeKey"
+          },
+          {
+            "name": "AccountName",
+            "dataType": "string",
+            "sourceColumn": "AccountName"
+          },
+          {
+            "name": "AccountType",
+            "dataType": "int64",
+            "sourceColumn": "AccountType"
+          },
+          {
+            "name": "AccountGroup",
+            "dataType": "int64",
+            "sourceColumn": "AccountGroup"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimAccount = Source{[Schema=\"dbo\",Item=\"DimAccount\"]}[Data]",
+                "in",
+                "    dbo_DimAccount"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimAccountCategory",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "AccountCategoryKey",
+            "dataType": "int64",
+            "sourceColumn": "AccountCategoryKey"
+          },
+          {
+            "name": "AccountCategoryAlternativeKey",
+            "dataType": "int64",
+            "sourceColumn": "AccountCategoryAlternativeKey"
+          },
+          {
+            "name": "AccountCategoryName",
+            "dataType": "string",
+            "sourceColumn": "AccountCategoryName"
+          },
+          {
+            "name": "DescriptionGroup",
+            "dataType": "string",
+            "sourceColumn": "DescriptionGroup"
+          },
+          {
+            "name": "SortGroup",
+            "dataType": "int64",
+            "sourceColumn": "SortGroup"
+          },
+          {
+            "name": "UpdatLasteTime",
+            "dataType": "dateTime",
+            "sourceColumn": "UpdatLasteTime"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimAccountCategory = Source{[Schema=\"dbo\",Item=\"DimAccountCategory\"]}[Data]",
+                "in",
+                "    dbo_DimAccountCategory"
               ]
             }
           }
@@ -2626,33 +2738,12 @@
         "toColumn": "Companykey"
       },
       {
-        "name": "eca6b78a-35c9-4c5b-9eda-7e918f25d474",
-        "fromTable": "FactPymentCustomer",
-        "fromColumn": "OffsetAccountKey",
-        "toTable": "DimBank",
-        "toColumn": "BankKey"
-      },
-      {
-        "name": "e57bbd47-9e83-4ffe-a68d-880e3ef08bab",
-        "fromTable": "FactPymentCustomer",
-        "fromColumn": "AccountType",
-        "toTable": "DimFixFinOffsetAccountType",
-        "toColumn": "OffsetAccountTypeKey"
-      },
-      {
         "name": "55c99e27-0730-4810-91ef-f9d84e73aadb",
         "fromTable": "FactPymentCustomer",
         "fromColumn": "OffsetAccountKey",
         "toTable": "DimFixFinOffsetAccountType",
         "toColumn": "OffsetAccountTypeKey",
         "isActive": false
-      },
-      {
-        "name": "51c80d5f-7245-42dd-a2f4-81ee35b7c48c",
-        "fromTable": "DimBank",
-        "fromColumn": "BrancheKey",
-        "toTable": "DimBranche",
-        "toColumn": "Branche Key"
       },
       {
         "name": "ec71a141-7ec9-4613-9fde-13c5cd7fb143",
@@ -2667,6 +2758,57 @@
         "fromColumn": "TargetLevelkey",
         "toTable": "DimTargetLevel",
         "toColumn": "TargetLevelKey"
+      },
+      {
+        "name": "505aec16-c1a5-4ff4-8da2-e9b835d8af0b",
+        "fromTable": "DimAccount",
+        "fromColumn": "UpdatLasteTime",
+        "toTable": "DimAccountCategory",
+        "toColumn": "AccountCategoryKey"
+      },
+      {
+        "name": "b1557354-380d-4a32-a6a4-fcd2d6073435",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "AccountKey",
+        "toTable": "DimAccount",
+        "toColumn": "AccountKey"
+      },
+      {
+        "name": "863a8a27-d988-4baa-9d2a-d120e9d065a8",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "OffsetAccountKey",
+        "toTable": "DimAccount",
+        "toColumn": "AccountKey",
+        "isActive": false
+      },
+      {
+        "name": "b3cbcfee-b260-4113-9505-f67771296656",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "AccountKey",
+        "toTable": "DimBank",
+        "toColumn": "BankKey",
+        "isActive": false
+      },
+      {
+        "name": "4531a568-674d-42d0-a84e-d64430ef7301",
+        "fromTable": "DimBank",
+        "fromColumn": "BrancheKey",
+        "toTable": "DimBranche",
+        "toColumn": "Branche Key"
+      },
+      {
+        "name": "22a92c18-fbf2-44d9-b70a-78c7ed8d9e10",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "OffsetAccountKey",
+        "toTable": "DimBank",
+        "toColumn": "BankKey"
+      },
+      {
+        "name": "f8c3f213-28e2-4569-9685-3e64bf7f58cc",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "OffsetAccountType",
+        "toTable": "DimFixFinOffsetAccountType",
+        "toColumn": "OffsetAccountTypeKey"
       }
     ],
     "cultures": [
