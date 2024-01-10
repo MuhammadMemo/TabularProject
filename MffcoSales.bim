@@ -2285,7 +2285,15 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "CALCULATETABLE(FactBank, FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6 && FactBank[CompanyKey]=3 && FactBank[PaymentDateAlternativeKey]>=20130101,FILTER(DimBank,DimBank[BrancheName] <> \"None\"))"
+              "expression": [
+                "CALCULATETABLE(FactBank,  KEEPFILTERS( TREATAS( {3}, FactBank[CompanyKey] )),",
+                "    KEEPFILTERS( TREATAS( {1}, FactBank[AccountType] )),",
+                "    KEEPFILTERS( TREATAS( {6}, FactBank[OffsetAccountType] )),",
+                "    KEEPFILTERS( TREATAS( {6}, FactBank[OffsetAccountType] )),",
+                "      KEEPFILTERS( FILTER( ALL( FactBank[PaymentDateAlternativeKey] ), FactBank[PaymentDateAlternativeKey] >= 20130101))",
+                "    )",
+                ""
+              ]
             }
           }
         ],
@@ -2412,118 +2420,6 @@
                 "    dbo_DimTargetLevel = Source{[Schema=\"dbo\",Item=\"DimTargetLevel\"]}[Data]",
                 "in",
                 "    dbo_DimTargetLevel"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "name": "DimAccount",
-        "columns": [
-          {
-            "name": "CompanyKey",
-            "dataType": "int64",
-            "sourceColumn": "CompanyKey"
-          },
-          {
-            "name": "AccountKey",
-            "dataType": "int64",
-            "sourceColumn": "AccountKey"
-          },
-          {
-            "name": "AccountAlternativeKey",
-            "dataType": "string",
-            "sourceColumn": "AccountAlternativeKey"
-          },
-          {
-            "name": "AccountName",
-            "dataType": "string",
-            "sourceColumn": "AccountName"
-          },
-          {
-            "name": "AccountType",
-            "dataType": "int64",
-            "sourceColumn": "AccountType"
-          },
-          {
-            "name": "AccountGroup",
-            "dataType": "int64",
-            "sourceColumn": "AccountGroup"
-          },
-          {
-            "name": "UpdatLasteTime",
-            "dataType": "dateTime",
-            "sourceColumn": "UpdatLasteTime"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimAccount = Source{[Schema=\"dbo\",Item=\"DimAccount\"]}[Data]",
-                "in",
-                "    dbo_DimAccount"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "name": "DimAccountCategory",
-        "columns": [
-          {
-            "name": "CompanyKey",
-            "dataType": "int64",
-            "sourceColumn": "CompanyKey"
-          },
-          {
-            "name": "AccountCategoryKey",
-            "dataType": "int64",
-            "sourceColumn": "AccountCategoryKey"
-          },
-          {
-            "name": "AccountCategoryAlternativeKey",
-            "dataType": "int64",
-            "sourceColumn": "AccountCategoryAlternativeKey"
-          },
-          {
-            "name": "AccountCategoryName",
-            "dataType": "string",
-            "sourceColumn": "AccountCategoryName"
-          },
-          {
-            "name": "DescriptionGroup",
-            "dataType": "string",
-            "sourceColumn": "DescriptionGroup"
-          },
-          {
-            "name": "SortGroup",
-            "dataType": "int64",
-            "sourceColumn": "SortGroup"
-          },
-          {
-            "name": "UpdatLasteTime",
-            "dataType": "dateTime",
-            "sourceColumn": "UpdatLasteTime"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimAccountCategory = Source{[Schema=\"dbo\",Item=\"DimAccountCategory\"]}[Data]",
-                "in",
-                "    dbo_DimAccountCategory"
               ]
             }
           }
@@ -2738,14 +2634,6 @@
         "toColumn": "Companykey"
       },
       {
-        "name": "55c99e27-0730-4810-91ef-f9d84e73aadb",
-        "fromTable": "FactPymentCustomer",
-        "fromColumn": "OffsetAccountKey",
-        "toTable": "DimFixFinOffsetAccountType",
-        "toColumn": "OffsetAccountTypeKey",
-        "isActive": false
-      },
-      {
         "name": "ec71a141-7ec9-4613-9fde-13c5cd7fb143",
         "fromTable": "FactPymentCustomer",
         "fromColumn": "PaymentDateAlternativeKey",
@@ -2760,36 +2648,6 @@
         "toColumn": "TargetLevelKey"
       },
       {
-        "name": "505aec16-c1a5-4ff4-8da2-e9b835d8af0b",
-        "fromTable": "DimAccount",
-        "fromColumn": "UpdatLasteTime",
-        "toTable": "DimAccountCategory",
-        "toColumn": "AccountCategoryKey"
-      },
-      {
-        "name": "b1557354-380d-4a32-a6a4-fcd2d6073435",
-        "fromTable": "FactPymentCustomer",
-        "fromColumn": "AccountKey",
-        "toTable": "DimAccount",
-        "toColumn": "AccountKey"
-      },
-      {
-        "name": "863a8a27-d988-4baa-9d2a-d120e9d065a8",
-        "fromTable": "FactPymentCustomer",
-        "fromColumn": "OffsetAccountKey",
-        "toTable": "DimAccount",
-        "toColumn": "AccountKey",
-        "isActive": false
-      },
-      {
-        "name": "b3cbcfee-b260-4113-9505-f67771296656",
-        "fromTable": "FactPymentCustomer",
-        "fromColumn": "AccountKey",
-        "toTable": "DimBank",
-        "toColumn": "BankKey",
-        "isActive": false
-      },
-      {
         "name": "22a92c18-fbf2-44d9-b70a-78c7ed8d9e10",
         "fromTable": "FactPymentCustomer",
         "fromColumn": "OffsetAccountKey",
@@ -2802,11 +2660,291 @@
         "fromColumn": "OffsetAccountType",
         "toTable": "DimFixFinOffsetAccountType",
         "toColumn": "OffsetAccountTypeKey"
+      },
+      {
+        "name": "816efd07-03f9-4928-a51a-0e24bbba4995",
+        "fromTable": "FactPymentCustomer",
+        "fromColumn": "AccountKey",
+        "toTable": "DimFixFinOffsetAccountType",
+        "toColumn": "OffsetAccountTypeKey",
+        "isActive": false
       }
     ],
     "cultures": [
       {
         "name": "ar-EG"
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "PaymentPerspective",
+        "tables": [
+          {
+            "name": "DimBank",
+            "columns": [
+              {
+                "name": "AccountKey"
+              },
+              {
+                "name": "BankAlternativeKey"
+              },
+              {
+                "name": "BankGroupName"
+              },
+              {
+                "name": "BankKey"
+              },
+              {
+                "name": "BnakName"
+              },
+              {
+                "name": "BrancheName"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "CurrencyCode"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimCompany",
+            "columns": [
+              {
+                "name": "CompanyAlternativeKey"
+              },
+              {
+                "name": "Companykey"
+              },
+              {
+                "name": "CompanyName"
+              },
+              {
+                "name": "Desc"
+              }
+            ]
+          },
+          {
+            "name": "DimCustomer",
+            "columns": [
+              {
+                "name": "Age"
+              },
+              {
+                "name": "Birthday"
+              },
+              {
+                "name": "Classification"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Customer"
+              },
+              {
+                "name": "Customer Group"
+              },
+              {
+                "name": "Customer No."
+              },
+              {
+                "name": "CustomerKey"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Type"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimDate",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "DateKey"
+              },
+              {
+                "name": "DayName"
+              },
+              {
+                "name": "DayOfMonth"
+              },
+              {
+                "name": "DayOfQuarter"
+              },
+              {
+                "name": "DayOfWeek"
+              },
+              {
+                "name": "DayOfWeekInMonth"
+              },
+              {
+                "name": "DayOfWeekInYear"
+              },
+              {
+                "name": "DayOfYear"
+              },
+              {
+                "name": "DaySuffix"
+              },
+              {
+                "name": "FirstDayOfMonth"
+              },
+              {
+                "name": "FirstDayOfQuarter"
+              },
+              {
+                "name": "FirstDayOfYear"
+              },
+              {
+                "name": "FullDate"
+              },
+              {
+                "name": "HolidayName"
+              },
+              {
+                "name": "IsHoliday"
+              },
+              {
+                "name": "LastDayOfMonth"
+              },
+              {
+                "name": "LastDayOfQuarter"
+              },
+              {
+                "name": "LastDayOfYear"
+              },
+              {
+                "name": "MMYYYY"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "MonthName"
+              },
+              {
+                "name": "MonthOfQuarter"
+              },
+              {
+                "name": "MonthYear"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "QuarterName"
+              },
+              {
+                "name": "Season"
+              },
+              {
+                "name": "Semester"
+              },
+              {
+                "name": "WeekOfMonth"
+              },
+              {
+                "name": "WeekOfQuarter"
+              },
+              {
+                "name": "WeekOfYear"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "YearName"
+              }
+            ],
+            "hierarchies": [
+              {
+                "name": "HierarchyDate"
+              }
+            ]
+          },
+          {
+            "name": "DimFixFinOffsetAccountType",
+            "columns": [
+              {
+                "name": "OffsetAccountTypeKey"
+              },
+              {
+                "name": "OffsetAccountTypeName"
+              }
+            ]
+          },
+          {
+            "name": "FactPymentCustomer",
+            "columns": [
+              {
+                "name": "AccountKey"
+              },
+              {
+                "name": "AccountType"
+              },
+              {
+                "name": "AmountCredit"
+              },
+              {
+                "name": "AmountDebit"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Id"
+              },
+              {
+                "name": "JournalNum"
+              },
+              {
+                "name": "LastupdateDate"
+              },
+              {
+                "name": "OffsetAccountKey"
+              },
+              {
+                "name": "OffsetAccountType"
+              },
+              {
+                "name": "PaymentDate"
+              },
+              {
+                "name": "PaymentDateAlternativeKey"
+              },
+              {
+                "name": "SalesId"
+              },
+              {
+                "name": "txt"
+              },
+              {
+                "name": "Voucher"
+              }
+            ],
+            "measures": [
+              {
+                "name": "#CountID"
+              },
+              {
+                "name": "Payment Amount"
+              }
+            ]
+          }
+        ]
       }
     ],
     "roles": [
