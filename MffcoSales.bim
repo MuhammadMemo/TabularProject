@@ -2285,7 +2285,7 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "CALCULATETABLE(FactBank, FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6 && FactBank[CompanyKey]=3 && FactBank[PaymentDateAlternativeKey]>=20130101)"
+              "expression": "CALCULATETABLE(FactBank, FactBank[AccountType]=1 &&  FactBank[OffsetAccountType]=6 && FactBank[CompanyKey]=3 && FactBank[PaymentDateAlternativeKey]>=20130101,FILTER(DimBank,DimBank[BrancheName] <> \"None\"))"
             }
           }
         ],
@@ -2336,11 +2336,6 @@
             "sourceColumn": "BankGroupName"
           },
           {
-            "name": "BrancheKey",
-            "dataType": "int64",
-            "sourceColumn": "BrancheKey"
-          },
-          {
             "name": "AccountKey",
             "dataType": "int64",
             "sourceColumn": "AccountKey"
@@ -2354,6 +2349,11 @@
             "name": "UpdatLasteTime",
             "dataType": "dateTime",
             "sourceColumn": "UpdatLasteTime"
+          },
+          {
+            "name": "BrancheName",
+            "dataType": "string",
+            "sourceColumn": "BrancheName"
           }
         ],
         "partitions": [
@@ -2366,7 +2366,7 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimBank = Source{[Schema=\"dbo\",Item=\"DimBank\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimBank, each ([CompanyKey] = 3) and ([BankKey] <> 71))",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimBank, each ([CompanyKey] = 3) )",
                 "in",
                 "    #\"Filtered Rows\""
               ]
@@ -2788,13 +2788,6 @@
         "toTable": "DimBank",
         "toColumn": "BankKey",
         "isActive": false
-      },
-      {
-        "name": "4531a568-674d-42d0-a84e-d64430ef7301",
-        "fromTable": "DimBank",
-        "fromColumn": "BrancheKey",
-        "toTable": "DimBranche",
-        "toColumn": "Branche Key"
       },
       {
         "name": "22a92c18-fbf2-44d9-b70a-78c7ed8d9e10",
