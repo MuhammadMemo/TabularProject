@@ -2290,7 +2290,8 @@
                 "    KEEPFILTERS( TREATAS( {1}, FactBank[AccountType] )),",
                 "    KEEPFILTERS( TREATAS( {6}, FactBank[OffsetAccountType] )),",
                 "    KEEPFILTERS( TREATAS( {6}, FactBank[OffsetAccountType] )),",
-                "      KEEPFILTERS( FILTER( ALL( FactBank[PaymentDateAlternativeKey] ), FactBank[PaymentDateAlternativeKey] >= 20130101))",
+                "    KEEPFILTERS( FILTER( ALL( FactBank[PaymentDateAlternativeKey] ), FactBank[PaymentDateAlternativeKey] >= 20130101)), ",
+                "    KEEPFILTERS( FILTER( DimBank , NOT( SEARCH( \"None\", DimBank[BrancheName], 1, 0 ) >= 1 )))",
                 "    )",
                 ""
               ]
