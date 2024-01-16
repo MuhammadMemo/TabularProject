@@ -1480,7 +1480,6 @@
             "name": "Branche Sort",
             "dataType": "string",
             "sourceColumn": "BrancheSort",
-            "formatString": "0",
             "summarizeBy": "none"
           },
           {
@@ -1503,7 +1502,7 @@
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimBranche = Source{[Schema=\"dbo\",Item=\"DimBranche\"]}[Data],",
                 "    #\"Added Conditional Column\" = Table.AddColumn(dbo_DimBranche, \"BrancheSort\", each if [BrancheAlternativeKey] = \"02\" then 1 else if [BrancheAlternativeKey] = \"06\" then 2 else if [BrancheAlternativeKey] = \"01\" then 3 else if [BrancheAlternativeKey] = \"05\" then 4 else if [BrancheAlternativeKey] = \"04\" then 5 else if [BrancheAlternativeKey] = \"03\" then 6 else if [BrancheAlternativeKey] = \"07\" then 7 else if [BrancheAlternativeKey] = \"08\" then 8 else if [BrancheAlternativeKey] = \"12\" then 9 else if [BrancheAlternativeKey] = \"13\" then 10 else 0),",
-                "    #\"Filtered Rows\" = Table.SelectRows(#\"Added Conditional Column\", each ([CompanyKey] = 3))",
+                "    #\"Filtered Rows\" = Table.SelectRows(#\"Added Conditional Column\", each ([CompanyKey] = 3) and ([BrancheName] <> \"None\" and [BrancheName] <> \"الدور الخامس\" and [BrancheName] <> \"مخزن نصف جاهز\" and [BrancheName] <> \"نشارة\"))",
                 "in",
                 "    #\"Filtered Rows\""
               ]
@@ -2356,10 +2355,9 @@
             "sourceColumn": "LastupdateDate"
           },
           {
-            "name": "BrancheName",
-            "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "BrancheName"
+            "name": "BrancheKey",
+            "dataType": "int64",
+            "sourceColumn": "BrancheKey"
           }
         ],
         "partitions": [
@@ -2372,10 +2370,12 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_FactBank = Source{[Schema=\"dbo\",Item=\"FactBank\"]}[Data],",
-                "    #\"Expanded DimBank\" = Table.ExpandRecordColumn(dbo_FactBank, \"DimBank\", {\"BrancheName\"}, {\"BrancheName\"}),",
-                "    #\"Filtered Rows\" = Table.SelectRows(#\"Expanded DimBank\", each ([CompanyKey] = 3) and ([AccountType] = 1) and ([OffsetAccountType] = 6) and ([PaymentDateAlternativeKey] >= 20130101) and ([BrancheName] <> \"None\"))",
+                "    #\"Expanded DimBank\" = Table.ExpandRecordColumn(dbo_FactBank, \"DimBank\", {\"BrancheKey\"}, {\"BrancheKey\"}),",
+                "    #\"Filtered Rows\" = Table.SelectRows(#\"Expanded DimBank\", each ([BrancheKey] <> 1)),",
+                "    #\"Filtered Rows2\" = Table.SelectRows(#\"Filtered Rows\", each [AmountCredit] > 0),",
+                "    #\"Filtered Rows1\" = Table.SelectRows(#\"Filtered Rows2\", each ([OffsetAccountType] = 6) and ([AccountType] = 1))",
                 "in",
-                "    #\"Filtered Rows\""
+                "    #\"Filtered Rows1\""
               ]
             }
           }
@@ -2402,6 +2402,10 @@
                 "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
+          },
+          {
+            "name": "Count Payment",
+            "expression": "COUNT(FactBankCustomerPayment[AccountKey])"
           }
         ]
       }
@@ -2666,13 +2670,12 @@
         "toColumn": "Branche Key"
       },
       {
-        "name": "c5939a4a-79c1-4e20-8e7e-2a89a82fa12a",
+        "name": "649cd144-54e9-4b5e-b471-0210deb3a096",
         "toCardinality": "many",
-        "fromTable": "DimBranche",
+        "fromTable": "DimBank",
         "fromColumn": "CompanyKey",
-        "toTable": "DimBank",
-        "toColumn": "CompanyKey",
-        "isActive": false
+        "toTable": "DimBranche",
+        "toColumn": "CompanyKey"
       }
     ],
     "cultures": [
@@ -2907,9 +2910,6 @@
                 "name": "AmountDebit"
               },
               {
-                "name": "BrancheName"
-              },
-              {
                 "name": "CompanyKey"
               },
               {
@@ -2941,11 +2941,17 @@
               },
               {
                 "name": "Voucher"
+              },
+              {
+                "name": "BrancheKey"
               }
             ],
             "measures": [
               {
                 "name": "Payment Amount"
+              },
+              {
+                "name": "Count Payment"
               }
             ]
           },
