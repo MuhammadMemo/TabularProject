@@ -1478,8 +1478,10 @@
           },
           {
             "name": "Branche Sort",
-            "dataType": "string",
+            "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "BrancheSort",
+            "formatString": "0",
             "summarizeBy": "none"
           },
           {
@@ -2345,7 +2347,6 @@
           {
             "name": "txt",
             "dataType": "string",
-            "isHidden": true,
             "sourceColumn": "txt"
           },
           {
