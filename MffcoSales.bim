@@ -308,9 +308,10 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data],",
-                "    #\"Replaced Value\" = Table.ReplaceValue(dbo_FactSales,1,17,Replacer.ReplaceValue,{\"MethodAcquisitionKey\"})",
+                "    #\"Replaced Value\" = Table.ReplaceValue(dbo_FactSales,1,17,Replacer.ReplaceValue,{\"MethodAcquisitionKey\"}),",
+                "    #\"Filtered Rows\" = Table.SelectRows(#\"Replaced Value\", each ([CompanyKey] = 3))",
                 "in",
-                "    #\"Replaced Value\""
+                "    #\"Filtered Rows\""
               ]
             }
           }
