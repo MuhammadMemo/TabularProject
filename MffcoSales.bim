@@ -647,7 +647,14 @@
           {
             "name": "Birthday",
             "dataType": "dateTime",
-            "sourceColumn": "Birthday"
+            "sourceColumn": "Birthday",
+            "formatString": "dd-MM-yyyy",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"1033\" Group=\"ShortDate\" FormatString=\"dd-MM-yyyy\" /></DateTimes></Format>"
+              }
+            ]
           },
           {
             "name": "Gender",
@@ -662,8 +669,9 @@
           },
           {
             "name": "Age",
-            "dataType": "int64",
-            "sourceColumn": "Age"
+            "dataType": "double",
+            "sourceColumn": "Age",
+            "formatString": "0"
           }
         ],
         "partitions": [
@@ -678,9 +686,10 @@
                 "    dbo_DimCustomer = Source{[Schema=\"dbo\",Item=\"DimCustomer\"]}[Data],",
                 "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimCustomer, each ([CompanyKey] = 3)),",
                 "    #\"Inserted Age\" = Table.AddColumn(#\"Filtered Rows\", \"Age\", each (Date.From(DateTime.LocalNow()) - [Birthday])/365),",
-                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Inserted Age\",{{\"Age\", Int64.Type}})",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Inserted Age\",{{\"Age\", Int64.Type}}),",
+                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Changed Type\",124,0,Replacer.ReplaceValue,{\"Age\"})",
                 "in",
-                "    #\"Changed Type\""
+                "    #\"Replaced Value\""
               ]
             }
           }
@@ -1687,6 +1696,12 @@
             "name": "HolidayName",
             "dataType": "string",
             "sourceColumn": "HolidayName"
+          },
+          {
+            "name": "MM-YYYY",
+            "dataType": "dateTime",
+            "sourceColumn": "MM-YYYY",
+            "formatString": "MM-yyyy"
           }
         ],
         "partitions": [
@@ -1699,9 +1714,11 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimDate = Source{[Schema=\"dbo\",Item=\"DimDate\"]}[Data],",
-                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimDate, each Date.IsInPreviousNYears([Date], 11) or Date.IsInCurrentYear([Date]))",
+                "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimDate, each Date.IsInPreviousNYears([Date], 11) or Date.IsInCurrentYear([Date])),",
+                "    #\"Added Custom Column\" = Table.AddColumn(#\"Filtered Rows\", \"MM-YYYY\", each Text.Combine({DateTime.ToText([Date], \"MM\"), \"-\", DateTime.ToText([Date], \"yyyy\")}), type text),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Added Custom Column\",{{\"MM-YYYY\", type date}})",
                 "in",
-                "    #\"Filtered Rows\""
+                "    #\"Changed Type\""
               ]
             }
           }
@@ -1843,6 +1860,11 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "DimTargetLevel.DgreeName"
+          },
+          {
+            "name": "WorkeStatus",
+            "dataType": "string",
+            "sourceColumn": "WorkeStatus"
           }
         ],
         "partitions": [
@@ -1855,9 +1877,11 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_FactSalesCommission = Source{[Schema=\"dbo\",Item=\"FactSalesCommission\"]}[Data],",
-                "    #\"Expanded DimTargetLevel\" = Table.ExpandRecordColumn(dbo_FactSalesCommission, \"DimTargetLevel\", {\"DgreeName\"}, {\"DimTargetLevel.DgreeName\"})",
+                "    #\"Expanded DimTargetLevel\" = Table.ExpandRecordColumn(dbo_FactSalesCommission, \"DimTargetLevel\", {\"DgreeName\"}, {\"DimTargetLevel.DgreeName\"}),",
+                "    #\"Expanded DimEmployee\" = Table.ExpandRecordColumn(#\"Expanded DimTargetLevel\", \"DimEmployee\", {\"WorkeStatus\"}, {\"WorkeStatus\"}),",
+                "    #\"Filtered Rows\" = Table.SelectRows(#\"Expanded DimEmployee\", each ([WorkeStatus] <> \"leave\"))",
                 "in",
-                "    #\"Expanded DimTargetLevel\""
+                "    #\"Filtered Rows\""
               ]
             }
           }
@@ -2383,30 +2407,261 @@
         ],
         "measures": [
           {
-            "name": "Payment Amount",
-            "expression": "sum(FactBankCustomerPayment[AmountCredit])",
-            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
-              }
-            ]
-          },
-          {
-            "name": "Payment Count",
-            "expression": "COUNT(FactBankCustomerPayment[Id])",
-            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
-              }
-            ]
-          },
-          {
-            "name": "Count Payment",
+            "name": "Count Of  Payment",
             "expression": "COUNT(FactBankCustomerPayment[AccountKey])"
+          },
+          {
+            "name": "Payment Customer",
+            "expression": "sum(FactBank[AmountCredit])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "FactSalesOrder",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "BrancheKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "BrancheKey"
+          },
+          {
+            "name": "GeographyKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "GeographyKey"
+          },
+          {
+            "name": "CustomerKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "CustomerKey"
+          },
+          {
+            "name": "DimensionKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "DimensionKey"
+          },
+          {
+            "name": "EmployeeKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "EmployeeKey"
+          },
+          {
+            "name": "TypeKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "TypeKey"
+          },
+          {
+            "name": "SalesOrderNumber",
+            "dataType": "string",
+            "sourceColumn": "SalesOrderNumber"
+          },
+          {
+            "name": "DiscountPercent",
+            "dataType": "double",
+            "sourceColumn": "DiscountPercent",
+            "formatString": "#,0"
+          },
+          {
+            "name": "DiscountAmount",
+            "dataType": "double",
+            "sourceColumn": "DiscountAmount"
+          },
+          {
+            "name": "Payment",
+            "dataType": "int64",
+            "sourceColumn": "Payment",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Amount",
+            "dataType": "int64",
+            "sourceColumn": "Amount",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "AmountTax",
+            "dataType": "int64",
+            "sourceColumn": "AmountTax",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "StatuseOrderKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "StatuseOrderKey"
+          },
+          {
+            "name": "MethodAcquisition",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "MethodAcquisition"
+          },
+          {
+            "name": "MethodDelivery",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "MethodDelivery"
+          },
+          {
+            "name": "MethodPayment",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "MethodPayment"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "dateTime",
+            "sourceColumn": "OrderDate",
+            "formatString": "Short Date",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeShortDatePattern\" />"
+              }
+            ]
+          },
+          {
+            "name": "ShippingDate",
+            "dataType": "dateTime",
+            "sourceColumn": "ShippingDate",
+            "formatString": "dd-MM-yyyy",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"1033\" Group=\"ShortDate\" FormatString=\"dd-MM-yyyy\" /></DateTimes></Format>"
+              }
+            ]
+          },
+          {
+            "name": "OrderDateKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "OrderDateKey"
+          },
+          {
+            "name": "ShippingDateKey",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "ShippingDateKey"
+          },
+          {
+            "type": "calculated",
+            "name": "Payment%",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "ROUND( DIVIDE(FactSalesOrder[Payment],FactSalesOrder[Amount]),2)",
+            "formatString": "0%;-0%;0%"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_FactSales = Source{[Schema=\"dbo\",Item=\"FactSales\"]}[Data],",
+                "    #\"Removed Columns\" = Table.RemoveColumns(dbo_FactSales,{\"ProductKey\", \"PromotionKey\", \"UnitKey\", \"UnitPrice\", \"SalesQty\", \"ProductionDate\", \"InventTranceKey\", \"DimPromotion\", \"DimUnit\", \"FactSalesTrade\", \"DimProduct\", \"DimCar\"}),",
+                "    #\"Grouped Rows\" = Table.Group(#\"Removed Columns\", {\"SalesOrderNumber\"}, {{\"Amount\", each List.Sum([AmountAfterTax]), type number}, {\"AmountTax\", each List.Sum([TaxAmount]), type number}, {\"DiscountPercent\", each List.Average([DiscountPercent]), type number}, {\"DiscountAmount\", each List.Sum([DiscountAmount]), type nullable number}, {\"Payment\", each List.Sum([Payment]), type nullable number}, {\"CompanyKey\", each List.Max([CompanyKey]), type number}, {\"BrancheKey\", each List.Max([BrancheKey]), type number}, {\"GeographyKey\", each List.Max([GeographyKey]), type nullable number}, {\"CustomerKey\", each List.Max([CustomerKey]), type number}, {\"DimensionKey\", each List.Max([DimensionKey]), type number}, {\"EmployeeKey\", each List.Max([EmployeeKey]), type number}, {\"StatuseOrderKey\", each List.Max([StatusOrderKey]), type number}, {\"TypeKey\", each List.Max([TypeKey]), type number}, {\"MethodAcquisition\", each List.Max([MethodAcquisitionKey]), type number}, {\"MethodDelivery\", each List.Max([MethodDeliverykey]), type number}, {\"MethodPayment\", each List.Max([PaymentMethodKey]), type number}, {\"OrderDate\", each List.Max([OrderDate]), type nullable date}, {\"ShippingDate\", each List.Max([ShippingDate]), type nullable date}, {\"OrderDateKey\", each List.Max([OrderDateAlternativeKey]), type number}, {\"ShippingDateKey\", each List.Max([ShippingDateAlternativeKey]), type number}})",
+                "in",
+                "    #\"Grouped Rows\""
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Sales Total",
+            "expression": "SUM(FactSalesOrder[Amount])"
+          },
+          {
+            "name": "Payment Total",
+            "expression": "sum(FactSalesOrder[Amount])"
+          },
+          {
+            "name": "Payment Amount",
+            "expression": "SUM(FactSalesOrder[Payment])",
+            "kpi": {
+              "targetExpression": "'FactSalesOrder'[Sales Total]",
+              "statusGraphic": "Road Signs",
+              "statusExpression": [
+                "var x='FactSalesOrder'[Payment Amount]/'FactSalesOrder'[_Payment Amount Goal] return",
+                "            if(ISBLANK(x),BLANK(),",
+                "                    If(x<0.496,-1,",
+                "\t                If(x<0.99,0,1)",
+                "                )",
+                "            )",
+                "            "
+              ],
+              "annotations": [
+                {
+                  "name": "GoalType",
+                  "value": "Measure"
+                },
+                {
+                  "name": "KpiStatusType",
+                  "value": "Linear"
+                },
+                {
+                  "name": "KpiThresholdType",
+                  "value": "Percentage"
+                },
+                {
+                  "name": "KpiThresholdOrdering",
+                  "value": "Ascending"
+                },
+                {
+                  "name": "KpiThresholdCount",
+                  "value": "2"
+                },
+                {
+                  "name": "KpiThreshold_0",
+                  "value": "49.6"
+                },
+                {
+                  "name": "KpiThreshold_1",
+                  "value": "99"
+                }
+              ]
+            }
           }
         ]
       }
@@ -2646,24 +2901,6 @@
         "toColumn": "CustomerKey"
       },
       {
-        "name": "07ae7504-0a4b-449d-bfda-cbd4946309b4",
-        "toCardinality": "many",
-        "fromTable": "FactBankCustomerPayment",
-        "fromColumn": "CompanyKey",
-        "toTable": "DimBank",
-        "toColumn": "CompanyKey",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
-        "name": "668b4a7b-1263-4b12-b14b-6701b5fce72d",
-        "toCardinality": "many",
-        "fromTable": "FactBankCustomerPayment",
-        "fromColumn": "CompanyKey",
-        "toTable": "DimCustomer",
-        "toColumn": "CompanyKey",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
         "name": "018c7bb7-ebc7-45ae-88bb-467d2539ce43",
         "fromTable": "DimBank",
         "fromColumn": "BrancheKey",
@@ -2671,12 +2908,108 @@
         "toColumn": "Branche Key"
       },
       {
-        "name": "649cd144-54e9-4b5e-b471-0210deb3a096",
+        "name": "76213e22-b405-4104-bb9b-f30d9cafddec",
         "toCardinality": "many",
-        "fromTable": "DimBank",
+        "fromTable": "FactSalesCommission",
         "fromColumn": "CompanyKey",
         "toTable": "DimBranche",
         "toColumn": "CompanyKey"
+      },
+      {
+        "name": "8091430d-9e52-4ac0-a620-c92d5bf128ea",
+        "toCardinality": "many",
+        "fromTable": "FactSalesCommission",
+        "fromColumn": "CompanyKey",
+        "toTable": "DimEmployee",
+        "toColumn": "CompanyKey",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "7abc329a-dbea-4706-8d95-5830e1003a93",
+        "toCardinality": "many",
+        "fromTable": "DimTargetLevel",
+        "fromColumn": "CompanyKey",
+        "toTable": "FactSalesCommission",
+        "toColumn": "CompanyKey",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "6bfc5457-dc52-48f3-9969-580b60aa31a3",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "OrderDateKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
+      },
+      {
+        "name": "f10f38fa-286e-40de-8fcd-3d28cd726609",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "ShippingDateKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey",
+        "isActive": false
+      },
+      {
+        "name": "8213f454-8571-4e2e-9c13-4b6646021f76",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "BrancheKey",
+        "toTable": "DimBranche",
+        "toColumn": "Branche Key"
+      },
+      {
+        "name": "39fc5752-3ada-4004-b8b3-13cb5b64f11e",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "MethodPayment",
+        "toTable": "DimMethodPayment",
+        "toColumn": "MethodPaymentKey"
+      },
+      {
+        "name": "547d468d-6d76-4758-ae8e-e9eaefcd5ca8",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "MethodDelivery",
+        "toTable": "DimMethodDelivery",
+        "toColumn": "MethodDeliveryKey"
+      },
+      {
+        "name": "d75d20f3-5ec7-409e-aa31-81c4b6d471bc",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "MethodAcquisition",
+        "toTable": "DimMethodAcquisition",
+        "toColumn": "MethodAcquisitionKey"
+      },
+      {
+        "name": "225caf7b-7356-43cd-a81d-122f9ec8fd8f",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "GeographyKey",
+        "toTable": "DimGeography",
+        "toColumn": "GeographyKey"
+      },
+      {
+        "name": "bd8558dd-180f-4eb5-8545-f43b97ec5d06",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "EmployeeKey",
+        "toTable": "DimEmployee",
+        "toColumn": "EmployeeKey"
+      },
+      {
+        "name": "b2d61798-4ccf-4a95-b89b-7a328cc35007",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "TypeKey",
+        "toTable": "DimSalesType",
+        "toColumn": "TypeKey"
+      },
+      {
+        "name": "5b1ae2fd-d275-43db-8102-ce9b53bf89b7",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "StatuseOrderKey",
+        "toTable": "DimOrderStatus",
+        "toColumn": "StatusKey"
+      },
+      {
+        "name": "1be9b562-0311-4f34-84ab-269aa8b2b6eb",
+        "fromTable": "FactSalesOrder",
+        "fromColumn": "CustomerKey",
+        "toTable": "DimCustomer",
+        "toColumn": "CustomerKey"
       }
     ],
     "cultures": [
@@ -2686,7 +3019,7 @@
     ],
     "perspectives": [
       {
-        "name": "PaymentPerspective",
+        "name": "Payment Perspective",
         "tables": [
           {
             "name": "DimBank",
@@ -2876,6 +3209,9 @@
               },
               {
                 "name": "YearName"
+              },
+              {
+                "name": "MM-YYYY"
               }
             ],
             "hierarchies": [
@@ -2949,10 +3285,10 @@
             ],
             "measures": [
               {
-                "name": "Payment Amount"
+                "name": "Count Of  Payment"
               },
               {
-                "name": "Count Payment"
+                "name": "Payment Customer"
               }
             ]
           },
@@ -2979,6 +3315,1496 @@
               },
               {
                 "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DateTime",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "Time"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sales Commission Perspective",
+        "tables": [
+          {
+            "name": "DimBranche",
+            "columns": [
+              {
+                "name": "Branche"
+              },
+              {
+                "name": "Branche Key"
+              },
+              {
+                "name": "Branche Sort"
+              },
+              {
+                "name": "BrancheAlternativeKey"
+              },
+              {
+                "name": "BrancheName"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimCompany",
+            "columns": [
+              {
+                "name": "CompanyAlternativeKey"
+              },
+              {
+                "name": "Companykey"
+              },
+              {
+                "name": "CompanyName"
+              },
+              {
+                "name": "Desc"
+              }
+            ]
+          },
+          {
+            "name": "DimDate",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "DateKey"
+              },
+              {
+                "name": "DayName"
+              },
+              {
+                "name": "DayOfMonth"
+              },
+              {
+                "name": "DayOfQuarter"
+              },
+              {
+                "name": "DayOfWeek"
+              },
+              {
+                "name": "DayOfWeekInMonth"
+              },
+              {
+                "name": "DayOfWeekInYear"
+              },
+              {
+                "name": "DayOfYear"
+              },
+              {
+                "name": "DaySuffix"
+              },
+              {
+                "name": "FirstDayOfMonth"
+              },
+              {
+                "name": "FirstDayOfQuarter"
+              },
+              {
+                "name": "FirstDayOfYear"
+              },
+              {
+                "name": "FullDate"
+              },
+              {
+                "name": "HolidayName"
+              },
+              {
+                "name": "IsHoliday"
+              },
+              {
+                "name": "LastDayOfMonth"
+              },
+              {
+                "name": "LastDayOfQuarter"
+              },
+              {
+                "name": "LastDayOfYear"
+              },
+              {
+                "name": "MMYYYY"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "MonthName"
+              },
+              {
+                "name": "MonthOfQuarter"
+              },
+              {
+                "name": "MonthYear"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "QuarterName"
+              },
+              {
+                "name": "Season"
+              },
+              {
+                "name": "Semester"
+              },
+              {
+                "name": "WeekOfMonth"
+              },
+              {
+                "name": "WeekOfQuarter"
+              },
+              {
+                "name": "WeekOfYear"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "YearName"
+              },
+              {
+                "name": "MM-YYYY"
+              }
+            ],
+            "hierarchies": [
+              {
+                "name": "HierarchyDate"
+              }
+            ]
+          },
+          {
+            "name": "DimEmployee",
+            "columns": [
+              {
+                "name": "BirthDate"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Contract End Date"
+              },
+              {
+                "name": "Contract Type"
+              },
+              {
+                "name": "ContractDate"
+              },
+              {
+                "name": "Departmen"
+              },
+              {
+                "name": "Division"
+              },
+              {
+                "name": "Employee"
+              },
+              {
+                "name": "EmployeeID"
+              },
+              {
+                "name": "EmployeeKey"
+              },
+              {
+                "name": "EmployeeNameFull"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Hire Date"
+              },
+              {
+                "name": "InsuranceDate"
+              },
+              {
+                "name": "Job"
+              },
+              {
+                "name": "UpdatLasteTime"
+              },
+              {
+                "name": "Worke Status"
+              }
+            ]
+          },
+          {
+            "name": "DimEmpType",
+            "columns": [
+              {
+                "name": "TypeKey"
+              },
+              {
+                "name": "TypeName"
+              }
+            ]
+          },
+          {
+            "name": "DimTargetLevel",
+            "columns": [
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "DgreeName"
+              },
+              {
+                "name": "TargetLevelKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "FactSalesCommission",
+            "columns": [
+              {
+                "name": "Amount"
+              },
+              {
+                "name": "AmountFrom"
+              },
+              {
+                "name": "AmountTo"
+              },
+              {
+                "name": "BrancheKey"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "CountSo"
+              },
+              {
+                "name": "DgreeName"
+              },
+              {
+                "name": "EmployeeKey"
+              },
+              {
+                "name": "EmpTypeKey"
+              },
+              {
+                "name": "IsDeleted"
+              },
+              {
+                "name": "LastupdateDate"
+              },
+              {
+                "name": "Precent"
+              },
+              {
+                "name": "SalesCommissionAlternativeKey"
+              },
+              {
+                "name": "SalesCommissionDateAlternativeKey"
+              },
+              {
+                "name": "SalesCommissionDateKey"
+              },
+              {
+                "name": "SalesCommissionKey"
+              },
+              {
+                "name": "TargetLevelkey"
+              },
+              {
+                "name": "TotalSales"
+              },
+              {
+                "name": "WorkeStatus"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Average"
+              },
+              {
+                "name": "Average per Employee"
+              },
+              {
+                "name": "Average per Month"
+              },
+              {
+                "name": "Commission Amount"
+              },
+              {
+                "name": "Count Of Employee"
+              },
+              {
+                "name": "Count Of Month"
+              },
+              {
+                "name": "Count Of SO Commission"
+              },
+              {
+                "name": "Maximum of DgreeName"
+              },
+              {
+                "name": "Maximum of TargetLevelkey"
+              },
+              {
+                "name": "Total Sales"
+              }
+            ]
+          },
+          {
+            "name": "DateTime",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "Time"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sales Perspective",
+        "tables": [
+          {
+            "name": "DateTime",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "Time"
+              }
+            ]
+          },
+          {
+            "name": "DimBranche",
+            "columns": [
+              {
+                "name": "Branche"
+              },
+              {
+                "name": "Branche Key"
+              },
+              {
+                "name": "Branche Sort"
+              },
+              {
+                "name": "BrancheAlternativeKey"
+              },
+              {
+                "name": "BrancheName"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimCustomer",
+            "columns": [
+              {
+                "name": "Age"
+              },
+              {
+                "name": "Birthday"
+              },
+              {
+                "name": "Classification"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Customer"
+              },
+              {
+                "name": "Customer Group"
+              },
+              {
+                "name": "Customer No."
+              },
+              {
+                "name": "CustomerKey"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Type"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimDate",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "DateKey"
+              },
+              {
+                "name": "DayName"
+              },
+              {
+                "name": "DayOfMonth"
+              },
+              {
+                "name": "DayOfQuarter"
+              },
+              {
+                "name": "DayOfWeek"
+              },
+              {
+                "name": "DayOfWeekInMonth"
+              },
+              {
+                "name": "DayOfWeekInYear"
+              },
+              {
+                "name": "DayOfYear"
+              },
+              {
+                "name": "DaySuffix"
+              },
+              {
+                "name": "FirstDayOfMonth"
+              },
+              {
+                "name": "FirstDayOfQuarter"
+              },
+              {
+                "name": "FirstDayOfYear"
+              },
+              {
+                "name": "FullDate"
+              },
+              {
+                "name": "HolidayName"
+              },
+              {
+                "name": "IsHoliday"
+              },
+              {
+                "name": "LastDayOfMonth"
+              },
+              {
+                "name": "LastDayOfQuarter"
+              },
+              {
+                "name": "LastDayOfYear"
+              },
+              {
+                "name": "MMYYYY"
+              },
+              {
+                "name": "MM-YYYY"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "MonthName"
+              },
+              {
+                "name": "MonthOfQuarter"
+              },
+              {
+                "name": "MonthYear"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "QuarterName"
+              },
+              {
+                "name": "Season"
+              },
+              {
+                "name": "Semester"
+              },
+              {
+                "name": "WeekOfMonth"
+              },
+              {
+                "name": "WeekOfQuarter"
+              },
+              {
+                "name": "WeekOfYear"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "YearName"
+              }
+            ],
+            "hierarchies": [
+              {
+                "name": "HierarchyDate"
+              }
+            ]
+          },
+          {
+            "name": "DimDimension",
+            "columns": [
+              {
+                "name": "Color"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Configration"
+              },
+              {
+                "name": "DimensionAlternativeKey"
+              },
+              {
+                "name": "DimensionKey"
+              },
+              {
+                "name": "LocationId"
+              },
+              {
+                "name": "Site"
+              },
+              {
+                "name": "Size"
+              },
+              {
+                "name": "UpdatLasteTime"
+              },
+              {
+                "name": "Warehouse"
+              }
+            ]
+          },
+          {
+            "name": "DimEmployee",
+            "columns": [
+              {
+                "name": "BirthDate"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Contract End Date"
+              },
+              {
+                "name": "Contract Type"
+              },
+              {
+                "name": "ContractDate"
+              },
+              {
+                "name": "Departmen"
+              },
+              {
+                "name": "Division"
+              },
+              {
+                "name": "Employee"
+              },
+              {
+                "name": "EmployeeID"
+              },
+              {
+                "name": "EmployeeKey"
+              },
+              {
+                "name": "EmployeeNameFull"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Hire Date"
+              },
+              {
+                "name": "InsuranceDate"
+              },
+              {
+                "name": "Job"
+              },
+              {
+                "name": "UpdatLasteTime"
+              },
+              {
+                "name": "Worke Status"
+              }
+            ]
+          },
+          {
+            "name": "DimGeography",
+            "columns": [
+              {
+                "name": "City"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "GeographyAlternativeKey"
+              },
+              {
+                "name": "GeographyKey"
+              },
+              {
+                "name": "Region"
+              },
+              {
+                "name": "State"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ],
+            "hierarchies": [
+              {
+                "name": "HierarchyGeography"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodAcquisition",
+            "columns": [
+              {
+                "name": "Acquisition"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "MethodAcquisitionAlternativeKey"
+              },
+              {
+                "name": "MethodAcquisitionKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodDelivery",
+            "columns": [
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Delivery"
+              },
+              {
+                "name": "MethodDeliveryAlternativeKey"
+              },
+              {
+                "name": "MethodDeliveryKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodPayment",
+            "columns": [
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "MethodPaymentAlternativeKey"
+              },
+              {
+                "name": "MethodPaymentKey"
+              },
+              {
+                "name": "Payment"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimOrderStatus",
+            "columns": [
+              {
+                "name": "Status"
+              },
+              {
+                "name": "StatusKey"
+              }
+            ]
+          },
+          {
+            "name": "DimProduct",
+            "columns": [
+              {
+                "name": "Category"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "EndDate"
+              },
+              {
+                "name": "GroupType"
+              },
+              {
+                "name": "ProductAlternativeKey"
+              },
+              {
+                "name": "ProductKey"
+              },
+              {
+                "name": "ProductLine"
+              },
+              {
+                "name": "ProductName"
+              },
+              {
+                "name": "PurchasePrice"
+              },
+              {
+                "name": "SalesPrice"
+              },
+              {
+                "name": "StartDate"
+              },
+              {
+                "name": "Status"
+              },
+              {
+                "name": "StatusCategory"
+              },
+              {
+                "name": "StatusProduct"
+              },
+              {
+                "name": "SubCategory"
+              }
+            ],
+            "measures": [
+              {
+                "name": "AVG Price"
+              },
+              {
+                "name": "Count Product"
+              },
+              {
+                "name": "Sales Price"
+              }
+            ]
+          },
+          {
+            "name": "DimPromotion",
+            "columns": [
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "DELIVERYDATE"
+              },
+              {
+                "name": "DESCACTIVE"
+              },
+              {
+                "name": "DESCRIPTION"
+              },
+              {
+                "name": "DISCOUNT"
+              },
+              {
+                "name": "FROMDATE"
+              },
+              {
+                "name": "ITEMGROUP"
+              },
+              {
+                "name": "Location"
+              },
+              {
+                "name": "PRICEDISCOUNT"
+              },
+              {
+                "name": "PromotionAlternativeKey"
+              },
+              {
+                "name": "PromotionKey"
+              },
+              {
+                "name": "QUANTITY"
+              },
+              {
+                "name": "SORTDISC"
+              },
+              {
+                "name": "STATUS"
+              },
+              {
+                "name": "TODATE"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimSalesType",
+            "columns": [
+              {
+                "name": "Type Name"
+              },
+              {
+                "name": "TypeKey"
+              }
+            ]
+          },
+          {
+            "name": "FactSales",
+            "columns": [
+              {
+                "name": "AmountAfterTax"
+              },
+              {
+                "name": "BrancheKey"
+              },
+              {
+                "name": "CarKey"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Create Date Time"
+              },
+              {
+                "name": "CustomerKey"
+              },
+              {
+                "name": "DimensionKey"
+              },
+              {
+                "name": "DiscountAmount"
+              },
+              {
+                "name": "DiscountPercent"
+              },
+              {
+                "name": "EmployeeKey"
+              },
+              {
+                "name": "GeographyKey"
+              },
+              {
+                "name": "Invent Trance Key"
+              },
+              {
+                "name": "IsDeleted"
+              },
+              {
+                "name": "LastupdateDate"
+              },
+              {
+                "name": "LineAmount"
+              },
+              {
+                "name": "MethodAcquisitionKey"
+              },
+              {
+                "name": "MethodDeliverykey"
+              },
+              {
+                "name": "Order Date"
+              },
+              {
+                "name": "OrderDateAlternativeKey"
+              },
+              {
+                "name": "Payment"
+              },
+              {
+                "name": "PaymentMethodKey"
+              },
+              {
+                "name": "Production Date"
+              },
+              {
+                "name": "ProductionDateAlternativeKey"
+              },
+              {
+                "name": "ProductKey"
+              },
+              {
+                "name": "PromotionKey"
+              },
+              {
+                "name": "Sales Order"
+              },
+              {
+                "name": "SalesOrderLineNumber"
+              },
+              {
+                "name": "SalesQty"
+              },
+              {
+                "name": "Shipping Date"
+              },
+              {
+                "name": "ShippingDateAlternativeKey"
+              },
+              {
+                "name": "StatusKey"
+              },
+              {
+                "name": "StatusOrderKey"
+              },
+              {
+                "name": "TaxAmount"
+              },
+              {
+                "name": "TypeKey"
+              },
+              {
+                "name": "UnitKey"
+              },
+              {
+                "name": "UnitPrice"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Average per Day"
+              },
+              {
+                "name": "Average per Order"
+              },
+              {
+                "name": "Count Of Day"
+              },
+              {
+                "name": "Count Of Product"
+              },
+              {
+                "name": "Count Of Qty"
+              },
+              {
+                "name": "Count Of SO"
+              },
+              {
+                "name": "Discount Amount"
+              },
+              {
+                "name": "Discount Percent"
+              },
+              {
+                "name": "Line Amount"
+              },
+              {
+                "name": "Maximum of Discount Amount"
+              },
+              {
+                "name": "Maximum of Discount Percent"
+              },
+              {
+                "name": "Minimum of Discount Amount"
+              },
+              {
+                "name": "Minimum of DiscountPercent"
+              },
+              {
+                "name": "Tax Amount"
+              },
+              {
+                "name": "Total Amount"
+              },
+              {
+                "name": "Total Payment"
+              },
+              {
+                "name": "Unit Price"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sales Order Perspective",
+        "tables": [
+          {
+            "name": "DateTime",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "Time"
+              }
+            ]
+          },
+          {
+            "name": "DimBranche",
+            "columns": [
+              {
+                "name": "Branche"
+              },
+              {
+                "name": "Branche Key"
+              },
+              {
+                "name": "Branche Sort"
+              },
+              {
+                "name": "BrancheAlternativeKey"
+              },
+              {
+                "name": "BrancheName"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimCompany",
+            "columns": [
+              {
+                "name": "CompanyAlternativeKey"
+              },
+              {
+                "name": "Companykey"
+              },
+              {
+                "name": "CompanyName"
+              },
+              {
+                "name": "Desc"
+              }
+            ]
+          },
+          {
+            "name": "DimCustomer",
+            "columns": [
+              {
+                "name": "Age"
+              },
+              {
+                "name": "Birthday"
+              },
+              {
+                "name": "Classification"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Customer"
+              },
+              {
+                "name": "Customer Group"
+              },
+              {
+                "name": "Customer No."
+              },
+              {
+                "name": "CustomerKey"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Type"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimDate",
+            "columns": [
+              {
+                "name": "Date"
+              },
+              {
+                "name": "DateKey"
+              },
+              {
+                "name": "DayName"
+              },
+              {
+                "name": "DayOfMonth"
+              },
+              {
+                "name": "DayOfQuarter"
+              },
+              {
+                "name": "DayOfWeek"
+              },
+              {
+                "name": "DayOfWeekInMonth"
+              },
+              {
+                "name": "DayOfWeekInYear"
+              },
+              {
+                "name": "DayOfYear"
+              },
+              {
+                "name": "DaySuffix"
+              },
+              {
+                "name": "FirstDayOfMonth"
+              },
+              {
+                "name": "FirstDayOfQuarter"
+              },
+              {
+                "name": "FirstDayOfYear"
+              },
+              {
+                "name": "FullDate"
+              },
+              {
+                "name": "HolidayName"
+              },
+              {
+                "name": "IsHoliday"
+              },
+              {
+                "name": "LastDayOfMonth"
+              },
+              {
+                "name": "LastDayOfQuarter"
+              },
+              {
+                "name": "LastDayOfYear"
+              },
+              {
+                "name": "MMYYYY"
+              },
+              {
+                "name": "MM-YYYY"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "MonthName"
+              },
+              {
+                "name": "MonthOfQuarter"
+              },
+              {
+                "name": "MonthYear"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "QuarterName"
+              },
+              {
+                "name": "Season"
+              },
+              {
+                "name": "Semester"
+              },
+              {
+                "name": "WeekOfMonth"
+              },
+              {
+                "name": "WeekOfQuarter"
+              },
+              {
+                "name": "WeekOfYear"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "YearName"
+              }
+            ],
+            "hierarchies": [
+              {
+                "name": "HierarchyDate"
+              }
+            ]
+          },
+          {
+            "name": "DimEmployee",
+            "columns": [
+              {
+                "name": "BirthDate"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Contract End Date"
+              },
+              {
+                "name": "Contract Type"
+              },
+              {
+                "name": "ContractDate"
+              },
+              {
+                "name": "Departmen"
+              },
+              {
+                "name": "Division"
+              },
+              {
+                "name": "Employee"
+              },
+              {
+                "name": "EmployeeID"
+              },
+              {
+                "name": "EmployeeKey"
+              },
+              {
+                "name": "EmployeeNameFull"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Hire Date"
+              },
+              {
+                "name": "InsuranceDate"
+              },
+              {
+                "name": "Job"
+              },
+              {
+                "name": "UpdatLasteTime"
+              },
+              {
+                "name": "Worke Status"
+              }
+            ]
+          },
+          {
+            "name": "DimGeography",
+            "columns": [
+              {
+                "name": "City"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "GeographyAlternativeKey"
+              },
+              {
+                "name": "GeographyKey"
+              },
+              {
+                "name": "Region"
+              },
+              {
+                "name": "State"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ],
+            "hierarchies": [
+              {
+                "name": "HierarchyGeography"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodAcquisition",
+            "columns": [
+              {
+                "name": "Acquisition"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "MethodAcquisitionAlternativeKey"
+              },
+              {
+                "name": "MethodAcquisitionKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodDelivery",
+            "columns": [
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "Delivery"
+              },
+              {
+                "name": "MethodDeliveryAlternativeKey"
+              },
+              {
+                "name": "MethodDeliveryKey"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimMethodPayment",
+            "columns": [
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "MethodPaymentAlternativeKey"
+              },
+              {
+                "name": "MethodPaymentKey"
+              },
+              {
+                "name": "Payment"
+              },
+              {
+                "name": "UpdatLasteTime"
+              }
+            ]
+          },
+          {
+            "name": "DimOrderStatus",
+            "columns": [
+              {
+                "name": "Status"
+              },
+              {
+                "name": "StatusKey"
+              }
+            ]
+          },
+          {
+            "name": "DimSalesType",
+            "columns": [
+              {
+                "name": "Type Name"
+              },
+              {
+                "name": "TypeKey"
+              }
+            ]
+          },
+          {
+            "name": "FactSalesOrder",
+            "columns": [
+              {
+                "name": "Amount"
+              },
+              {
+                "name": "AmountTax"
+              },
+              {
+                "name": "BrancheKey"
+              },
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "CustomerKey"
+              },
+              {
+                "name": "DimensionKey"
+              },
+              {
+                "name": "DiscountAmount"
+              },
+              {
+                "name": "DiscountPercent"
+              },
+              {
+                "name": "EmployeeKey"
+              },
+              {
+                "name": "GeographyKey"
+              },
+              {
+                "name": "MethodAcquisition"
+              },
+              {
+                "name": "MethodDelivery"
+              },
+              {
+                "name": "MethodPayment"
+              },
+              {
+                "name": "OrderDate"
+              },
+              {
+                "name": "OrderDateKey"
+              },
+              {
+                "name": "Payment"
+              },
+              {
+                "name": "SalesOrderNumber"
+              },
+              {
+                "name": "ShippingDate"
+              },
+              {
+                "name": "ShippingDateKey"
+              },
+              {
+                "name": "StatuseOrderKey"
+              },
+              {
+                "name": "TypeKey"
+              },
+              {
+                "name": "Payment%"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Sales Total"
               }
             ]
           }
