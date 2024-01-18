@@ -2412,7 +2412,7 @@
           },
           {
             "name": "Payment Customer",
-            "expression": "sum(FactBank[AmountCredit])",
+            "expression": "sum(FactBankCustomerPayment[AmountCredit])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
