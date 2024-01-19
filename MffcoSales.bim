@@ -877,10 +877,10 @@
                 "    #\"Filtered Rows\" = Table.SelectRows(dbo_DimEmployee, each ([CompanyKey] = 3)),",
                 "    #\"Cleaned Text\" = Table.TransformColumns(#\"Filtered Rows\",{{\"EmployeeName\", Text.Clean, type text}}),",
                 "    #\"Inserted Text Before Delimiter\" = Table.AddColumn(#\"Cleaned Text\", \"Text Before Delimiter\", each Text.BeforeDelimiter([EmployeeName], \" \", 1), type text),",
-                "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Inserted Text Before Delimiter\",{\"CompanyKey\", \"EmployeeKey\", \"EmployeeAlternativeKey\", \"EmployeeName\", \"Text Before Delimiter\", \"Job\", \"DepartmenName\", \"DivisionName\", \"Gender\", \"ContractType\", \"ContractDate\", \"ContractEndDate\", \"BirthDate\", \"HireDate\", \"InsuranceDate\", \"WorkeStatus\", \"UpdatLasteTime\", \"FactPurchase\", \"FactSalary\", \"FactSales\", \"FactSalesCommission\"}),",
-                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Reordered Columns\",{{\"EmployeeName\", \"EmployeeNameFull\"}, {\"Text Before Delimiter\", \"EmployeeName\"}})",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Inserted Text Before Delimiter\",{{\"EmployeeName\", \"EmployeeNameFull\"}, {\"Text Before Delimiter\", \"EmployeeName\"}}),",
+                "    #\"Reordered Columns\" = Table.ReorderColumns(#\"Renamed Columns\",{\"CompanyKey\", \"EmployeeKey\", \"EmployeeAlternativeKey\", \"EmployeeNameFull\", \"EmployeeName\", \"Job\", \"DepartmenName\", \"DivisionName\", \"Gender\", \"ContractType\", \"ContractDate\", \"ContractEndDate\", \"BirthDate\", \"HireDate\", \"InsuranceDate\", \"WorkeStatus\", \"UpdatLasteTime\"})",
                 "in",
-                "    #\"Renamed Columns\""
+                "    #\"Reordered Columns\""
               ]
             }
           }
@@ -2907,32 +2907,6 @@
         "fromColumn": "BrancheKey",
         "toTable": "DimBranche",
         "toColumn": "Branche Key"
-      },
-      {
-        "name": "76213e22-b405-4104-bb9b-f30d9cafddec",
-        "toCardinality": "many",
-        "fromTable": "FactSalesCommission",
-        "fromColumn": "CompanyKey",
-        "toTable": "DimBranche",
-        "toColumn": "CompanyKey"
-      },
-      {
-        "name": "8091430d-9e52-4ac0-a620-c92d5bf128ea",
-        "toCardinality": "many",
-        "fromTable": "FactSalesCommission",
-        "fromColumn": "CompanyKey",
-        "toTable": "DimEmployee",
-        "toColumn": "CompanyKey",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
-        "name": "7abc329a-dbea-4706-8d95-5830e1003a93",
-        "toCardinality": "many",
-        "fromTable": "DimTargetLevel",
-        "fromColumn": "CompanyKey",
-        "toTable": "FactSalesCommission",
-        "toColumn": "CompanyKey",
-        "crossFilteringBehavior": "bothDirections"
       },
       {
         "name": "6bfc5457-dc52-48f3-9969-580b60aa31a3",
