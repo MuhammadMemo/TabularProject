@@ -1185,118 +1185,6 @@
         ]
       },
       {
-        "name": "DimProduct",
-        "columns": [
-          {
-            "name": "CompanyKey",
-            "dataType": "int64",
-            "sourceColumn": "CompanyKey"
-          },
-          {
-            "name": "ProductKey",
-            "dataType": "int64",
-            "sourceColumn": "ProductKey"
-          },
-          {
-            "name": "ProductAlternativeKey",
-            "dataType": "string",
-            "sourceColumn": "ProductAlternativeKey"
-          },
-          {
-            "name": "ProductName",
-            "dataType": "string",
-            "sourceColumn": "ProductName"
-          },
-          {
-            "name": "Category",
-            "dataType": "string",
-            "sourceColumn": "Category"
-          },
-          {
-            "name": "SubCategory",
-            "dataType": "string",
-            "sourceColumn": "SubCategory"
-          },
-          {
-            "name": "StatusCategory",
-            "dataType": "string",
-            "sourceColumn": "StatusCategory"
-          },
-          {
-            "name": "StatusProduct",
-            "dataType": "string",
-            "sourceColumn": "StatusProduct"
-          },
-          {
-            "name": "GroupType",
-            "dataType": "string",
-            "sourceColumn": "GroupType"
-          },
-          {
-            "name": "SalesPrice",
-            "dataType": "decimal",
-            "sourceColumn": "SalesPrice"
-          },
-          {
-            "name": "PurchasePrice",
-            "dataType": "decimal",
-            "sourceColumn": "PurchasePrice"
-          },
-          {
-            "name": "StartDate",
-            "dataType": "dateTime",
-            "isHidden": true,
-            "sourceColumn": "StartDate"
-          },
-          {
-            "name": "EndDate",
-            "dataType": "dateTime",
-            "isHidden": true,
-            "sourceColumn": "EndDate"
-          },
-          {
-            "name": "Status",
-            "dataType": "boolean",
-            "sourceColumn": "Status"
-          },
-          {
-            "name": "ProductLine",
-            "dataType": "string",
-            "sourceColumn": "ProductLine"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Partition",
-            "dataView": "full",
-            "source": {
-              "type": "m",
-              "expression": [
-                "let",
-                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data]",
-                "in",
-                "    dbo_DimProduct"
-              ]
-            }
-          }
-        ],
-        "measures": [
-          {
-            "name": "Sales Price",
-            "expression": "sum(DimProduct[SalesPrice])"
-          },
-          {
-            "name": "AVG Price",
-            "expression": "AVERAGE(DimProduct[SalesPrice])"
-          },
-          {
-            "name": "Count Product",
-            "expression": "COUNT(DimProduct[ProductAlternativeKey])"
-          }
-        ]
-      },
-      {
         "name": "DimPromotion",
         "columns": [
           {
@@ -2665,6 +2553,137 @@
             }
           }
         ]
+      },
+      {
+        "name": "DimProduct",
+        "columns": [
+          {
+            "name": "CompanyKey",
+            "dataType": "int64",
+            "sourceColumn": "CompanyKey"
+          },
+          {
+            "name": "ID",
+            "dataType": "int64",
+            "sourceColumn": "ID"
+          },
+          {
+            "name": "ProductKey",
+            "dataType": "int64",
+            "sourceColumn": "ProductKey"
+          },
+          {
+            "name": "GROUPTYPE",
+            "dataType": "string",
+            "sourceColumn": "GROUPTYPE"
+          },
+          {
+            "name": "CATEGORY",
+            "dataType": "string",
+            "sourceColumn": "CATEGORY"
+          },
+          {
+            "name": "GROUPNAME",
+            "dataType": "string",
+            "sourceColumn": "GROUPNAME"
+          },
+          {
+            "name": "SUBCATEGORID",
+            "dataType": "int64",
+            "sourceColumn": "SUBCATEGORID"
+          },
+          {
+            "name": "SUBCATEGORNAME",
+            "dataType": "string",
+            "sourceColumn": "SUBCATEGORNAME"
+          },
+          {
+            "name": "LINEID",
+            "dataType": "int64",
+            "sourceColumn": "LINEID"
+          },
+          {
+            "name": "LINENAME",
+            "dataType": "string",
+            "sourceColumn": "LINENAME"
+          },
+          {
+            "name": "ProductAlternativeKey",
+            "dataType": "string",
+            "sourceColumn": "ProductAlternativeKey"
+          },
+          {
+            "name": "ProductName",
+            "dataType": "string",
+            "sourceColumn": "ProductName"
+          },
+          {
+            "name": "CALC",
+            "dataType": "int64",
+            "sourceColumn": "CALC"
+          },
+          {
+            "name": "PRICE",
+            "dataType": "double",
+            "sourceColumn": "PRICE"
+          },
+          {
+            "name": "PRICEQTY",
+            "dataType": "double",
+            "sourceColumn": "PRICEQTY"
+          },
+          {
+            "name": "QTY",
+            "dataType": "int64",
+            "sourceColumn": "QTY"
+          },
+          {
+            "name": "PurchasePrice",
+            "dataType": "decimal",
+            "sourceColumn": "PurchasePrice"
+          },
+          {
+            "name": "TOTALPRICE",
+            "dataType": "decimal",
+            "sourceColumn": "TOTALPRICE"
+          },
+          {
+            "name": "DISCPERCENT",
+            "dataType": "double",
+            "sourceColumn": "DISCPERCENT"
+          },
+          {
+            "name": "DISCAMOUNT",
+            "dataType": "decimal",
+            "sourceColumn": "DISCAMOUNT"
+          },
+          {
+            "name": "TOTALAFTER",
+            "dataType": "decimal",
+            "sourceColumn": "TOTALAFTER"
+          },
+          {
+            "name": "ListProduct",
+            "dataType": "int64",
+            "sourceColumn": "ListProduct"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data]",
+                "in",
+                "    dbo_DimProduct"
+              ]
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -2744,13 +2763,6 @@
         "fromColumn": "PaymentMethodKey",
         "toTable": "DimMethodPayment",
         "toColumn": "MethodPaymentKey"
-      },
-      {
-        "name": "9c161b3d-7507-4639-a51f-72b0560714aa",
-        "fromTable": "FactSales",
-        "fromColumn": "ProductKey",
-        "toTable": "DimProduct",
-        "toColumn": "ProductKey"
       },
       {
         "name": "6d62c46f-4e0d-48d7-a479-b881f40f845c",
@@ -3652,6 +3664,77 @@
                 "name": "Time"
               }
             ]
+          },
+          {
+            "name": "DimProduct",
+            "columns": [
+              {
+                "name": "CompanyKey"
+              },
+              {
+                "name": "ID"
+              },
+              {
+                "name": "ProductKey"
+              },
+              {
+                "name": "GROUPTYPE"
+              },
+              {
+                "name": "CATEGORY"
+              },
+              {
+                "name": "GROUPNAME"
+              },
+              {
+                "name": "SUBCATEGORID"
+              },
+              {
+                "name": "SUBCATEGORNAME"
+              },
+              {
+                "name": "LINEID"
+              },
+              {
+                "name": "LINENAME"
+              },
+              {
+                "name": "ProductAlternativeKey"
+              },
+              {
+                "name": "ProductName"
+              },
+              {
+                "name": "CALC"
+              },
+              {
+                "name": "PRICE"
+              },
+              {
+                "name": "PRICEQTY"
+              },
+              {
+                "name": "QTY"
+              },
+              {
+                "name": "PurchasePrice"
+              },
+              {
+                "name": "TOTALPRICE"
+              },
+              {
+                "name": "DISCPERCENT"
+              },
+              {
+                "name": "DISCAMOUNT"
+              },
+              {
+                "name": "TOTALAFTER"
+              },
+              {
+                "name": "ListProduct"
+              }
+            ]
           }
         ]
       },
@@ -4035,67 +4118,6 @@
               },
               {
                 "name": "StatusKey"
-              }
-            ]
-          },
-          {
-            "name": "DimProduct",
-            "columns": [
-              {
-                "name": "Category"
-              },
-              {
-                "name": "CompanyKey"
-              },
-              {
-                "name": "EndDate"
-              },
-              {
-                "name": "GroupType"
-              },
-              {
-                "name": "ProductAlternativeKey"
-              },
-              {
-                "name": "ProductKey"
-              },
-              {
-                "name": "ProductLine"
-              },
-              {
-                "name": "ProductName"
-              },
-              {
-                "name": "PurchasePrice"
-              },
-              {
-                "name": "SalesPrice"
-              },
-              {
-                "name": "StartDate"
-              },
-              {
-                "name": "Status"
-              },
-              {
-                "name": "StatusCategory"
-              },
-              {
-                "name": "StatusProduct"
-              },
-              {
-                "name": "SubCategory"
-              }
-            ],
-            "measures": [
-              {
-                "name": "AVG Price"
-              },
-              {
-                "name": "Count Product"
-              },
-              {
-                "name": "Sales Price"
               }
             ]
           },
