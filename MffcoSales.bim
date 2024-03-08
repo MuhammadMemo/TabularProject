@@ -2575,17 +2575,14 @@
           {
             "name": "GROUPTYPE",
             "dataType": "string",
-            "sourceColumn": "GROUPTYPE"
-          },
-          {
-            "name": "CATEGORY",
-            "dataType": "string",
-            "sourceColumn": "CATEGORY"
+            "sourceColumn": "GROUPTYPE",
+            "displayFolder": "ProductGroup"
           },
           {
             "name": "GROUPNAME",
             "dataType": "string",
-            "sourceColumn": "GROUPNAME"
+            "sourceColumn": "GROUPNAME",
+            "displayFolder": "ProductGroup"
           },
           {
             "name": "SUBCATEGORID",
@@ -2595,7 +2592,8 @@
           {
             "name": "SUBCATEGORNAME",
             "dataType": "string",
-            "sourceColumn": "SUBCATEGORNAME"
+            "sourceColumn": "SUBCATEGORNAME",
+            "displayFolder": "ProductGroup"
           },
           {
             "name": "LINEID",
@@ -2605,7 +2603,8 @@
           {
             "name": "LINENAME",
             "dataType": "string",
-            "sourceColumn": "LINENAME"
+            "sourceColumn": "LINENAME",
+            "displayFolder": "ProductGroup"
           },
           {
             "name": "ProductAlternativeKey",
@@ -2615,7 +2614,8 @@
           {
             "name": "ProductName",
             "dataType": "string",
-            "sourceColumn": "ProductName"
+            "sourceColumn": "ProductName",
+            "displayFolder": "ProductGroup"
           },
           {
             "name": "CALC",
@@ -2666,6 +2666,12 @@
             "name": "ListProduct",
             "dataType": "int64",
             "sourceColumn": "ListProduct"
+          },
+          {
+            "name": "TOPCATEGORY",
+            "dataType": "string",
+            "sourceColumn": "TOPCATEGORY",
+            "displayFolder": "ProductGroup"
           }
         ],
         "partitions": [
@@ -2677,11 +2683,263 @@
               "expression": [
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
-                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data]",
+                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data],",
+                "    #\"Sorted Rows\" = Table.Sort(dbo_DimProduct,{{\"CALC\", Order.Descending}})",
                 "in",
-                "    dbo_DimProduct"
+                "    #\"Sorted Rows\""
               ]
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "#TotalAfter",
+            "expression": "sum(DimProduct[TOTALAFTER])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "#DiscountAmount",
+            "expression": "sum(DimProduct[DISCAMOUNT])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "#TotalPrice",
+            "expression": "sum(DimProduct[TOTALPRICE])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "#PurchasePrice",
+            "expression": "sum(DimProduct[PurchasePrice])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "#TotalAfterMin",
+            "expression": "MIN(DimProduct[TOTALAFTER])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "#TotalAfterMax",
+            "expression": "MAX(DimProduct[TOTALAFTER])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "DimProductSales",
+        "columns": [
+          {
+            "name": "SUBCATEGORNAME",
+            "dataType": "string",
+            "sourceColumn": "SUBCATEGORNAME"
+          },
+          {
+            "name": "Total",
+            "dataType": "double",
+            "sourceColumn": "Total"
+          },
+          {
+            "name": "ID",
+            "dataType": "double",
+            "sourceColumn": "ID"
+          },
+          {
+            "name": "Group",
+            "dataType": "string",
+            "sourceColumn": "Group"
+          },
+          {
+            "name": "TopGroup",
+            "dataType": "string",
+            "sourceColumn": "TopGroup"
+          },
+          {
+            "name": "Price",
+            "dataType": "double",
+            "sourceColumn": "Price"
+          },
+          {
+            "name": "DiscPrec",
+            "dataType": "double",
+            "sourceColumn": "DiscPrec"
+          },
+          {
+            "name": "DiscAmount",
+            "dataType": "double",
+            "sourceColumn": "DiscAmount"
+          },
+          {
+            "name": "GroupType",
+            "dataType": "string",
+            "sourceColumn": "GroupType"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
+                "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data],",
+                "    #\"Sorted Rows\" = Table.Sort(dbo_DimProduct,{{\"CALC\", Order.Descending}}),",
+                "    #\"Grouped Rows\" = Table.Group(#\"Sorted Rows\", {\"SUBCATEGORNAME\"}, {{\"Total\", each List.Sum([TOTALAFTER]), type number}, {\"ID\", each List.Min([SUBCATEGORID]), type number}, {\"Group\", each List.Min([GROUPNAME]), type text}, {\"TopGroup\", each List.Min([TOPCATEGORY]), type text}, {\"Price\", each List.Sum([TOTALPRICE]), type number}, {\"DiscPrec\", each List.Min([DISCPERCENT]), type number}, {\"DiscAmount\", each List.Sum([DISCAMOUNT]), type number}, {\"GroupType\", each List.Min([GROUPTYPE]), type text}}),",
+                "    #\"Sorted Rows1\" = Table.Sort(#\"Grouped Rows\",{{\"ID\", Order.Ascending}}),",
+                "    #\"Filtered Rows\" = Table.SelectRows(#\"Sorted Rows1\", each ([SUBCATEGORNAME] <> \"\")),",
+                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Filtered Rows\",\"انتريهات زان\",\"انتريهات\",Replacer.ReplaceText,{\"Group\"}),",
+                "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"انتريهات مكسي\",\"انتريهات\",Replacer.ReplaceText,{\"Group\"}),",
+                "    #\"Replaced Value2\" = Table.ReplaceValue(#\"Replaced Value1\",\"انتريهات الموردين\",\"انتريهات\",Replacer.ReplaceText,{\"Group\"}),",
+                "    #\"Replaced Value3\" = Table.ReplaceValue(#\"Replaced Value2\",\"صالونات الموردين\",\"صالونات\",Replacer.ReplaceText,{\"Group\"})",
+                "in",
+                "    #\"Replaced Value3\""
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "TotalSum",
+            "expression": "sum(DimProductSales[Total])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "TotalAmount",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "TotaMin",
+            "expression": "Min(DimProductSales[Total])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "TotalAmount",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "TotalMax",
+            "expression": "Max(DimProductSales[Total])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "TotalAmount",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "ProductCount",
+            "expression": "COUNT(DimProductSales[SUBCATEGORNAME])",
+            "formatString": "0",
+            "displayFolder": "Count"
+          },
+          {
+            "name": "GroupCount",
+            "expression": "DISTINCTCOUNT(DimProductSales[Group])",
+            "displayFolder": "Count"
+          },
+          {
+            "name": "DiscMin",
+            "expression": "Min(DimProductSales[DiscPrec])",
+            "formatString": "0",
+            "displayFolder": "Discount"
+          },
+          {
+            "name": "DiscMax",
+            "expression": "max(DimProductSales[DiscPrec])",
+            "formatString": "0",
+            "displayFolder": "Discount"
+          },
+          {
+            "name": "DiscAvg",
+            "expression": "AVERAGE(DimProductSales[DiscPrec])",
+            "formatString": "0",
+            "displayFolder": "Discount"
+          },
+          {
+            "name": "TotaAvg",
+            "expression": "AVERAGE(DimProductSales[Total])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "TotalAmount",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "PriceSum",
+            "expression": "sum(DimProductSales[Price])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "PriceAvg",
+            "expression": "AVERAGE(DimProductSales[Price])",
+            "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
+            "displayFolder": "Price",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
+              }
+            ]
           }
         ]
       }
@@ -2997,6 +3255,13 @@
         "fromColumn": "CustomerKey",
         "toTable": "DimCustomer",
         "toColumn": "CustomerKey"
+      },
+      {
+        "name": "b45ca210-9b78-433c-85dc-a9cdc4a865c0",
+        "fromTable": "FactSales",
+        "fromColumn": "ProductKey",
+        "toTable": "DimProduct",
+        "toColumn": "ProductKey"
       }
     ],
     "cultures": [
@@ -3681,9 +3946,6 @@
                 "name": "GROUPTYPE"
               },
               {
-                "name": "CATEGORY"
-              },
-              {
                 "name": "GROUPNAME"
               },
               {
@@ -3733,6 +3995,9 @@
               },
               {
                 "name": "ListProduct"
+              },
+              {
+                "name": "TOPCATEGORY"
               }
             ]
           }
