@@ -1438,8 +1438,9 @@
           },
           {
             "name": "DayOfMonth",
-            "dataType": "string",
-            "sourceColumn": "DayOfMonth"
+            "dataType": "int64",
+            "sourceColumn": "DayOfMonth",
+            "formatString": "0"
           },
           {
             "name": "DaySuffix",
@@ -2684,9 +2685,11 @@
                 "let",
                 "    Source = #\"SQL/hyperv-srv;DataWarehouse\",",
                 "    dbo_DimProduct = Source{[Schema=\"dbo\",Item=\"DimProduct\"]}[Data],",
-                "    #\"Sorted Rows\" = Table.Sort(dbo_DimProduct,{{\"CALC\", Order.Descending}})",
+                "    #\"Sorted Rows\" = Table.Sort(dbo_DimProduct,{{\"CALC\", Order.Descending}}),",
+                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Sorted Rows\",\"كراسي السفر\",\"غرف السفر\",Replacer.ReplaceText,{\"GROUPNAME\"}),",
+                "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"ترابيزات انتريهات\",\"انتريهات زان\",Replacer.ReplaceText,{\"GROUPNAME\"})",
                 "in",
-                "    #\"Sorted Rows\""
+                "    #\"Replaced Value1\""
               ]
             }
           }
@@ -2802,7 +2805,8 @@
           {
             "name": "DiscPrec",
             "dataType": "double",
-            "sourceColumn": "DiscPrec"
+            "sourceColumn": "DiscPrec",
+            "formatString": "0"
           },
           {
             "name": "DiscAmount",
@@ -2832,9 +2836,10 @@
                 "    #\"Replaced Value\" = Table.ReplaceValue(#\"Filtered Rows\",\"انتريهات زان\",\"انتريهات\",Replacer.ReplaceText,{\"Group\"}),",
                 "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"انتريهات مكسي\",\"انتريهات\",Replacer.ReplaceText,{\"Group\"}),",
                 "    #\"Replaced Value2\" = Table.ReplaceValue(#\"Replaced Value1\",\"انتريهات الموردين\",\"انتريهات\",Replacer.ReplaceText,{\"Group\"}),",
-                "    #\"Replaced Value3\" = Table.ReplaceValue(#\"Replaced Value2\",\"صالونات الموردين\",\"صالونات\",Replacer.ReplaceText,{\"Group\"})",
+                "    #\"Replaced Value3\" = Table.ReplaceValue(#\"Replaced Value2\",\"صالونات الموردين\",\"صالونات\",Replacer.ReplaceText,{\"Group\"}),",
+                "    #\"Filtered Rows1\" = Table.SelectRows(#\"Replaced Value3\", each ([SUBCATEGORNAME] <> \"F 17  انترية\" and [SUBCATEGORNAME] <> \"الصالونات\" and [SUBCATEGORNAME] <> \"صالونات\" and [SUBCATEGORNAME] <> \"صالونات الموردين\"))",
                 "in",
-                "    #\"Replaced Value3\""
+                "    #\"Filtered Rows1\""
               ]
             }
           }
@@ -2940,6 +2945,12 @@
                 "value": "<Format Format=\"Currency\"><Currency LCID=\"1033\" DisplayName=\"\" Symbol=\"\" PositivePattern=\"0\" NegativePattern=\"0\" /></Format>"
               }
             ]
+          },
+          {
+            "name": "DiscSum",
+            "expression": "Sum(DimProductSales[DiscPrec])",
+            "formatString": "0",
+            "displayFolder": "Discount"
           }
         ]
       }
