@@ -1816,7 +1816,7 @@
           },
           {
             "name": "Average per Employee",
-            "expression": "DIVIDE(FactSalesCommission[Commission Amount],FactSalesCommission[Count Of Employee])",
+            "expression": "DIVIDE(FactSalesCommission[Commission Amount],DimMethodAcquisition)",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
