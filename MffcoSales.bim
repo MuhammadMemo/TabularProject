@@ -1816,7 +1816,7 @@
           },
           {
             "name": "Average per Employee",
-            "expression": "DIVIDE(FactSalesCommission[Commission Amount],DimMethodAcquisition)",
+            "expression": "DIVIDE(FactSalesCommission[Commission Amount],[Count Of Employee])",
             "formatString": "\"\"#,0;(\"\"#,0);\"\"#,0",
             "annotations": [
               {
@@ -2951,6 +2951,116 @@
             "expression": "Sum(DimProductSales[DiscPrec])",
             "formatString": "0",
             "displayFolder": "Discount"
+          }
+        ]
+      },
+      {
+        "name": "Time Intelligence",
+        "calculationGroup": {
+          "calculationItems": [
+            {
+              "name": "Current",
+              "expression": "SELECTEDMEASURE()"
+            },
+            {
+              "name": "YTD",
+              "expression": "CALCULATE(SELECTEDMEASURE(), DATESYTD(DimDate[Date]))",
+              "ordinal": 1
+            },
+            {
+              "name": "QTD",
+              "expression": "CALCULATE(SELECTEDMEASURE(), DATESQTD(DimDate[Date]))",
+              "ordinal": 3
+            },
+            {
+              "name": "PY",
+              "expression": "CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(DimDate[Date]))",
+              "ordinal": 5
+            },
+            {
+              "name": "MTD",
+              "expression": "CALCULATE(SELECTEDMEASURE(), DATESMTD(DimDate[Date]))",
+              "ordinal": 7
+            },
+            {
+              "name": "PY MTD",
+              "expression": [
+                "CALCULATE(",
+                "    SELECTEDMEASURE(),",
+                "    SAMEPERIODLASTYEAR(DimDate[Date]),",
+                "    'Time Intelligence'[Time Calculation] = \"MTD\"",
+                ")"
+              ],
+              "ordinal": 9
+            },
+            {
+              "name": "PY QTD",
+              "expression": [
+                "CALCULATE(",
+                "    SELECTEDMEASURE(),",
+                "    SAMEPERIODLASTYEAR(DimDate[Date]),",
+                "    'Time Intelligence'[Time Calculation] = \"QTD\"",
+                ")"
+              ],
+              "ordinal": 11
+            },
+            {
+              "name": "PY YTD",
+              "expression": [
+                "CALCULATE(",
+                "    SELECTEDMEASURE(),",
+                "    SAMEPERIODLASTYEAR(DimDate[Date]),",
+                "    'Time Intelligence'[Time Calculation] = \"YTD\"",
+                ")"
+              ],
+              "ordinal": 13
+            },
+            {
+              "name": "YOY",
+              "expression": [
+                "SELECTEDMEASURE() -",
+                "CALCULATE(",
+                "    SELECTEDMEASURE(),",
+                "    'Time Intelligence'[Time Calculation] = \"PY\"",
+                ")"
+              ],
+              "ordinal": 15
+            },
+            {
+              "name": "YOY%",
+              "expression": [
+                "DIVIDE(",
+                "    CALCULATE(",
+                "        SELECTEDMEASURE(),",
+                "        'Time Intelligence'[Time Calculation]=\"YOY\"",
+                "    ),",
+                "    CALCULATE(",
+                "        SELECTEDMEASURE(),",
+                "        'Time Intelligence'[Time Calculation]=\"PY\"",
+                "    )",
+                ")"
+              ],
+              "ordinal": 17,
+              "formatStringDefinition": {
+                "expression": "\"$#,##0;($#,##0)\"  "
+              }
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "Time Calculation",
+            "dataType": "string",
+            "sourceColumn": "Name"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
           }
         ]
       }
