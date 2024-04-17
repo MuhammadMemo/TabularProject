@@ -2960,12 +2960,13 @@
           "calculationItems": [
             {
               "name": "Current",
-              "expression": "SELECTEDMEASURE()"
+              "expression": "SELECTEDMEASURE()",
+              "ordinal": 1
             },
             {
               "name": "YTD",
               "expression": "CALCULATE(SELECTEDMEASURE(), DATESYTD(DimDate[Date]))",
-              "ordinal": 1
+              "ordinal": 2
             },
             {
               "name": "QTD",
@@ -2975,12 +2976,12 @@
             {
               "name": "PY",
               "expression": "CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(DimDate[Date]))",
-              "ordinal": 5
+              "ordinal": 4
             },
             {
               "name": "MTD",
               "expression": "CALCULATE(SELECTEDMEASURE(), DATESMTD(DimDate[Date]))",
-              "ordinal": 7
+              "ordinal": 5
             },
             {
               "name": "PY MTD",
@@ -2991,7 +2992,7 @@
                 "    'Time Intelligence'[Time Calculation] = \"MTD\"",
                 ")"
               ],
-              "ordinal": 9
+              "ordinal": 8
             },
             {
               "name": "PY QTD",
@@ -3002,7 +3003,7 @@
                 "    'Time Intelligence'[Time Calculation] = \"QTD\"",
                 ")"
               ],
-              "ordinal": 11
+              "ordinal": 7
             },
             {
               "name": "PY YTD",
@@ -3013,7 +3014,7 @@
                 "    'Time Intelligence'[Time Calculation] = \"YTD\"",
                 ")"
               ],
-              "ordinal": 13
+              "ordinal": 6
             },
             {
               "name": "YOY",
@@ -3051,7 +3052,14 @@
           {
             "name": "Time Calculation",
             "dataType": "string",
-            "sourceColumn": "Name"
+            "sourceColumn": "Name",
+            "sortByColumn": "Ordering"
+          },
+          {
+            "name": "Ordering",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Ordinal"
           }
         ],
         "partitions": [
