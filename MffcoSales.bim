@@ -493,6 +493,10 @@
             "name": "Count Of Day",
             "expression": "DISTINCTCOUNT(FactSales[Order Date])",
             "formatString": "0"
+          },
+          {
+            "name": "PY",
+            "expression": "CALCULATE([Total Amount], SAMEPERIODLASTYEAR(DimDate[Date]))   "
           }
         ]
       },
@@ -2955,77 +2959,35 @@
         ]
       },
       {
-        "name": "Time Intelligence",
+        "name": "Date Intelligence",
         "calculationGroup": {
           "calculationItems": [
             {
-              "name": "Current",
-              "expression": "SELECTEDMEASURE()",
+              "name": "Current Year ",
+              "expression": "   SELECTEDMEASURE()",
               "ordinal": 1
             },
             {
-              "name": "YTD",
-              "expression": "CALCULATE(SELECTEDMEASURE(), DATESYTD(DimDate[Date]))",
+              "name": "Previous Year",
+              "expression": [
+                "CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(DimDate[Date]))   ",
+                ""
+              ],
               "ordinal": 2
-            },
-            {
-              "name": "QTD",
-              "expression": "CALCULATE(SELECTEDMEASURE(), DATESQTD(DimDate[Date]))",
-              "ordinal": 3
-            },
-            {
-              "name": "PY",
-              "expression": "CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR(DimDate[Date]))",
-              "ordinal": 4
-            },
-            {
-              "name": "MTD",
-              "expression": "CALCULATE(SELECTEDMEASURE(), DATESMTD(DimDate[Date]))",
-              "ordinal": 5
-            },
-            {
-              "name": "PY MTD",
-              "expression": [
-                "CALCULATE(",
-                "    SELECTEDMEASURE(),",
-                "    SAMEPERIODLASTYEAR(DimDate[Date]),",
-                "    'Time Intelligence'[Time Calculation] = \"MTD\"",
-                ")"
-              ],
-              "ordinal": 8
-            },
-            {
-              "name": "PY QTD",
-              "expression": [
-                "CALCULATE(",
-                "    SELECTEDMEASURE(),",
-                "    SAMEPERIODLASTYEAR(DimDate[Date]),",
-                "    'Time Intelligence'[Time Calculation] = \"QTD\"",
-                ")"
-              ],
-              "ordinal": 7
-            },
-            {
-              "name": "PY YTD",
-              "expression": [
-                "CALCULATE(",
-                "    SELECTEDMEASURE(),",
-                "    SAMEPERIODLASTYEAR(DimDate[Date]),",
-                "    'Time Intelligence'[Time Calculation] = \"YTD\"",
-                ")"
-              ],
-              "ordinal": 6
             },
             {
               "name": "YOY",
               "expression": [
-                "SELECTEDMEASURE() -",
+                "SELECTEDMEASURE()-",
                 "CALCULATE(",
-                "    SELECTEDMEASURE(),",
-                "    'Time Intelligence'[Time Calculation] = \"PY\"",
-                ")"
+                "SELECTEDMEASURE(),'Date Intelligence'[Date Calculation] = \"Previous Year\"",
+                ")",
+                ""
               ],
-              "ordinal": 15
+              "ordinal": 3,
+              "formatStringDefinition": {
+                "expression": "\"0.00;-0.00\""
+              }
             },
             {
               "name": "YOY%",
@@ -3033,30 +2995,35 @@
                 "DIVIDE(",
                 "    CALCULATE(",
                 "        SELECTEDMEASURE(),",
-                "        'Time Intelligence'[Time Calculation]=\"YOY\"",
+                "        'Date Intelligence'[Date Calculation]=\"YOY\"",
                 "    ),",
                 "    CALCULATE(",
                 "        SELECTEDMEASURE(),",
-                "        'Time Intelligence'[Time Calculation]=\"PY\"",
+                "        'Date Intelligence'[Date Calculation]=\"Previous Year\"",
                 "    )",
-                ")"
+                ")    "
               ],
-              "ordinal": 17,
+              "ordinal": 4,
               "formatStringDefinition": {
-                "expression": "\"$#,##0;($#,##0)\"  "
+                "expression": "\"0.00%;-0.00%\""
               }
+            },
+            {
+              "name": "YTD",
+              "expression": "CALCULATE(SELECTEDMEASURE(), DATESYTD(DimDate[Date]))",
+              "ordinal": 5
             }
           ]
         },
         "columns": [
           {
-            "name": "Time Calculation",
+            "name": "Date Calculation",
             "dataType": "string",
             "sourceColumn": "Name",
-            "sortByColumn": "Ordering"
+            "sortByColumn": "Order"
           },
           {
-            "name": "Ordering",
+            "name": "Order",
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "Ordinal"
@@ -3187,13 +3154,6 @@
         "toTable": "DimDate",
         "toColumn": "DateKey",
         "isActive": false
-      },
-      {
-        "name": "b862e642-d68d-4d26-83ad-2f444abcf77b",
-        "fromTable": "FactSales",
-        "fromColumn": "OrderDateAlternativeKey",
-        "toTable": "DimDate",
-        "toColumn": "DateKey"
       },
       {
         "name": "a7a51300-dc16-4fa7-96d6-ee1b8d060343",
@@ -3391,6 +3351,13 @@
         "fromColumn": "ProductKey",
         "toTable": "DimProduct",
         "toColumn": "ProductKey"
+      },
+      {
+        "name": "0af54b4a-b500-4565-9fc0-270c5ab18c55",
+        "fromTable": "FactSales",
+        "fromColumn": "OrderDateAlternativeKey",
+        "toTable": "DimDate",
+        "toColumn": "DateKey"
       }
     ],
     "cultures": [
